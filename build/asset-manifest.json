@@ -1,0 +1,20 @@
+{
+  "files": {
+    "main.css": "/seraphim-technologies/static/css/main.1e92e4a1.chunk.css",
+    "main.js": "/seraphim-technologies/static/js/main.5794737b.chunk.js",
+    "main.js.map": "/seraphim-technologies/static/js/main.5794737b.chunk.js.map",
+    "runtime-main.js": "/seraphim-technologies/static/js/runtime-main.f7f4a751.js",
+    "runtime-main.js.map": "/seraphim-technologies/static/js/runtime-main.f7f4a751.js.map",
+    "static/js/2.7184db02.chunk.js": "/seraphim-technologies/static/js/2.7184db02.chunk.js",
+    "static/js/2.7184db02.chunk.js.map": "/seraphim-technologies/static/js/2.7184db02.chunk.js.map",
+    "index.html": "/seraphim-technologies/index.html",
+    "static/css/main.1e92e4a1.chunk.css.map": "/seraphim-technologies/static/css/main.1e92e4a1.chunk.css.map",
+    "static/js/2.7184db02.chunk.js.LICENSE.txt": "/seraphim-technologies/static/js/2.7184db02.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.f7f4a751.js",
+    "static/js/2.7184db02.chunk.js",
+    "static/css/main.1e92e4a1.chunk.css",
+    "static/js/main.5794737b.chunk.js"
+  ]
+}
