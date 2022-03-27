@@ -1,0 +1,22 @@
+.footer span{
+    height: 20px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    word-spacing: 3px;
+    font-size: large;
+    overflow: hidden;
+    padding-bottom: 30px;
+    padding-top: 30px;
+    background:#6c757d;
+    align-items: center;
+    color: white;
+}
+
+.footer-link:hover {
+    color: white;
+}
+
+.footer-link {
+    font-weight: bold !important;
+}

@@ -1,0 +1,46 @@
+.content-display {
+    justify-content: flex-end;
+}
+
+.content-display > li > a {
+    color: black
+}
+.content-display > li > a:hover {
+    color: black
+}
+
+.page-item.active .page-link {
+    background-color: #AEAEAE;
+    border-color: #AEAEAE;
+}
+
+.search > div{
+    width: 30%
+}
+
+
+@media only screen and (max-width: 480px){
+    .table-pagination {
+        display: flex;
+        justify-content: flex-end;
+        margin-bottom: 5px;
+    }
+    // #prod-table{
+    //     // width: auto;
+    // }
+    .content-display {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        overflow-x: scroll;
+        // display:inline-block;
+        display: block;
+    }
+
+    .content-display > li {
+        // display:inline-block;
+        // float:left;
+        display: inline-block;
+        
+    }
+}

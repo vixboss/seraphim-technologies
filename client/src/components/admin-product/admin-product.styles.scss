@@ -1,0 +1,44 @@
+.center-item {
+    display: flex;
+    justify-content: center;
+    margin-top:50px;
+}
+
+.add-detail-field:hover {
+    cursor: pointer;
+}
+
+.buttons{
+    display: flex;
+    justify-content:flex-start;
+    margin-bottom: 30px;
+}
+
+.add-leftMargin {
+    margin-left: 30px;
+}
+
+#dropdown-basic-button {
+    color: white;
+    background-color: #AEAEAE;
+    border-color: #AEAEAE;
+}
+
+.group .form-input-label {
+    
+}
+
+@media only screen and (max-width: 480px){
+    .group .form-input-label {
+        font-size: 12px;
+    }
+    .buttons > button {
+        min-width: 45%;
+    }
+}
+#timePicker > div, 
+#datePicker > div {
+    position: relative;
+    margin: 45px 0; 
+    width: 100%;
+}
