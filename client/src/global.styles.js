@@ -57,4 +57,9 @@ export const GlobalStyle = createGlobalStyle`
     .inherited-color {
         background-color: #6c757d;
     }
+    .App {
+        height: 100vh;
+        display:flex; 
+        flex-direction:column; 
+    }
 `;

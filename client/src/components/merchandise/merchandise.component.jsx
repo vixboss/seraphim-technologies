@@ -1,13 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import { Row, Col, Container, Form} from 'react-bootstrap'; 
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
 
-
+import {selectMerchandiseTitle} from '../../redux/merchandise/merchandise.selector';
 import FormInput from '../form-input/form-input.component';
 import CustomButton from '../custom-button/custom-button.component';
+import MerchandiseListContainer from '../merchandise-list/merchandise-list.container';
+import { 
+        addMerchandiseTitleStart, 
+        updateMerchandiseTitleStart, 
+        deleteMerchandiseTitleStart, 
+        getAllMerchandiseTitleStart 
+    } from '../../redux/merchandise/merchandise.action';
 
 import './merchandise.styles.scss';
 
-const MerchandiseComponent = () => {
+const MerchandiseComponent = ({getAllMerchandiseTitleStart, addMerchandiseTitleStart, updateMerchandiseTitleStart, deleteMerchandiseTitleStart,merchandise}) => {
     const [merchandiseTitle, setMerchandiseTitle] = useState({id: '', title: ''});
     const [buttonName, setButtonName] = useState('Submit');
 
@@ -18,13 +27,13 @@ const MerchandiseComponent = () => {
         if(merchandiseTitle.id === ''){
             const merchandTitle = {};
             merchandTitle.title = merchandiseTitle.title.toLowerCase();
-            // addmerchandiseTitleStart(merchandTitle);
+            addMerchandiseTitleStart(merchandTitle);
         }
         else{
             const merchandTitle = {};
             merchandTitle.id = merchandiseTitle.id;
             merchandTitle.title = merchandiseTitle.title.toLowerCase();
-            // updatemerchandiseTitleStart(merchandiseTitle);
+            updateMerchandiseTitleStart(merchandiseTitle);
         }
     }
     const handleChange = (event) => {
@@ -42,22 +51,21 @@ const MerchandiseComponent = () => {
         setButtonName('Update');
     }
 
-    const deletemerchandiseTitle = (type) => {
+    const deleteMerchandiseTitle = (type) => {
         const {id} = type;
-        // deletemerchandiseTitleStart(id);
+        deleteMerchandiseTitleStart(id);
     }
 
-    // useEffect(() => {
-    //     // cancelChange(); 
-    // },[productType]);
+    useEffect(() => {
+        cancelChange(); 
+    },[merchandise]);
 
-    // useEffect(() => {
-    //     // getAllmerchandiseTitleStart();
-    // }, [])
+    useEffect(() => {
+        getAllMerchandiseTitleStart();
+    }, [])
 
     return(
-        <>
-             <Container>
+        <Container>
             <Col className='admin-title'>
                 <Row>
                     <h1>Merchandise Title</h1>
@@ -99,12 +107,26 @@ const MerchandiseComponent = () => {
                     </Form>
                 </Row>
                 <div className='title-table'>
-                    {/* <MerchandiseTitleListContainer productType={productType} updateTitle={updateTitle} deleteProductTitle={deleteProductTitle}/> */}
+                    <MerchandiseListContainer 
+                        merchandise = { merchandise }
+                        updateTitle = { updateTitle }
+                        deleteMerchandiseTitle = { deleteMerchandiseTitle }
+                    /> 
                 </div>
             </Col>
         </Container>
-        </>
     );
 }
 
-export default MerchandiseComponent;
+const mapDispatchToProps = dispatch => ({
+    addMerchandiseTitleStart: title => dispatch(addMerchandiseTitleStart(title)),
+    getAllMerchandiseTitleStart: () => dispatch(getAllMerchandiseTitleStart()),
+    updateMerchandiseTitleStart: title => dispatch(updateMerchandiseTitleStart(title)),
+    deleteMerchandiseTitleStart: id => dispatch(deleteMerchandiseTitleStart(id))
+});
+
+const mapStateToProps = createStructuredSelector({
+    merchandise: selectMerchandiseTitle
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(MerchandiseComponent);

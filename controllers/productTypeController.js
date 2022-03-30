@@ -53,7 +53,6 @@ const getAllProductType = async(req, res, next) => {
                 );
                 productTypeArray.push(productType);
             });
-            console.log(productTypeArray);
             res.status(200).send({
                 productTypeArray
             });
@@ -114,7 +113,6 @@ const deleteProductTypeById = async(req, res, next) => {
         const collectionRef = await firestore.collection('collections');
         await collectionRef.get().then(snapshot => {
             snapshot.docs.map(docSnapshot => {
-                console.log(docSnapshot.data().title.toLowerCase());
                 if(title.toLowerCase() === docSnapshot.data().title.toLowerCase()) {
                     isProductExistOfTitle = true;
                 }

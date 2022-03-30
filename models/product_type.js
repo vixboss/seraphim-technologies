@@ -1,5 +1,5 @@
-const { execute } = require('../db');
-const db = require('../db');
+// const { execute } = require('../db');
+// const db = require('../db');
 
 class ProductType {
 

@@ -7,6 +7,7 @@ const productTypeRoutes = require('./routes/product_type-routes');
 const adminRoutes = require('./routes/admin.routes');
 const productRoutes = require('./routes/product.routes');
 const stripeRoutes = require('./routes/stripe.routes');
+const merchandiseRoutes = require('./routes/merchandise.routes');
 
 if (process.env.NODE_ENV !== 'production') require('dotenv').config();
 
@@ -26,6 +27,7 @@ app.use('/api', productTypeRoutes);
 app.use('/api', adminRoutes);
 app.use('/api', productRoutes);
 app.use('/api', stripeRoutes);
+app.use('/api', merchandiseRoutes);
 
 /*********************************************************/
 
