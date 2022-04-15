@@ -16,6 +16,9 @@ import AdminHeader from './components/admin-header/admin-header-component';
 import AdminTitle from './components/admin-title/admin-title.component';
 import AdminProduct from './components/admin-product/admin-product.component';
 import MerchandiseComponent from './components/merchandise/merchandise.component';
+import PrivacyPolicyPageComponent from './pages/privacy-policy/privacy-policy.component';
+import TermsAndConditionsPageComponent from './pages/terms-and-conditions/terms-and-conditions.component';
+import RefundAndCancellationPageComponent from './pages/refund-cancellation/refund-cancellation.component';
 
 import { checkUserSession } from './redux/user/user.action';
 
@@ -53,7 +56,12 @@ const App = ({ checkUserSession, currentuser, currentAdmin }) => {
         <Route exact path='/checkout' component = {CheckoutPage}/>
         <Route exact path='/signin' 
           render = {
-            () => currentuser ? <Redirect to='/' />: <SignInAndSignUpPage/>}/>
+            () => currentuser ? <Redirect to='/' />: <SignInAndSignUpPage/>
+          }
+        />
+        <Route exact path = '/refund-cancellation' component={ RefundAndCancellationPageComponent }/>
+        <Route exact path = '/terms' component={ TermsAndConditionsPageComponent } />
+        <Route exact path = '/privacy-policy' component = { PrivacyPolicyPageComponent }/>
         <Route path='/admin/panel' component= {AdminPanelPage}/>
         <Route exact path = '/admin/title' component={AdminTitle}/>
         <Route exact path = '/admin/product' component={AdminProduct}/>

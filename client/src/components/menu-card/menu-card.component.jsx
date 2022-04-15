@@ -13,7 +13,7 @@ const MenuCard = ({item, history, fetchItemDescription }) => {
     return(
         <>
             {
-                item.map((itm, idx) => {
+                item.length != 0 ? item.map((itm, idx) => {
                     const category = itm.title;
                     const product = itm.name;
 
@@ -56,7 +56,12 @@ const MenuCard = ({item, history, fetchItemDescription }) => {
                         </Col>
                     )
                 }
-                )
+                ) 
+                : 
+                
+                <Col xs={12} md={12}>
+                    <h3 className='animate-charcter' style={{ display: 'flex', justifyContent: 'center' }}>No Upcoming Webinar...</h3>
+                </Col>
             }
         </>
     )

@@ -24,3 +24,42 @@
 .footer-link {
     font-weight: bold !important;
 }
+
+.terms-and-conditions {
+    margin-top: auto;
+    background: linear-gradient(to left, #6c757d, #434343);    padding-top: 30px;
+    padding-bottom: 50px;
+
+    span {
+        padding-bottom: 10px;
+    }
+    span a {
+        color: white;
+    }
+    span a:hover {
+        color: #B0B0B0;
+    }
+}
+
+.social-media-links {
+    a {
+        font-size: 18px;
+        display: inline-block;
+        background: #787878;
+        color: #ffffff !important;
+        line-height: 1;
+        padding: 8px 0;
+        margin-right: 4px;
+        border-radius: 50%;
+        text-align: center;
+        width: 36px;
+        height: 36px;
+        transition: 0.3s;
+    }
+}
+
+@media (min-width: 769px) and (max-width:1600px) {
+    .terms-and-conditions span{
+        font-size: large;
+    }
+}

@@ -5,7 +5,7 @@ import './merchandise-list.styles.scss';
 
 const MerchandiseListComponent = ({merchandise, updateTitle, deleteMerchandiseTitle}) => {
     return(
-        <Table striped bordered hover id="product-title-table">
+            <Table striped bordered hover id="product-title-table">
                 <thead>
                     <tr>
                         <th>#</th>

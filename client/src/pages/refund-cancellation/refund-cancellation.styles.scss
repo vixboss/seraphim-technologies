@@ -1,0 +1,27 @@
+.refund-container {
+    padding-bottom: 30px;
+    p {
+        text-align: justify;
+
+        a {
+            font-weight: 800;
+        }
+        a:hover {
+            color: #1aa5d8;
+        }
+    }
+
+    ul {
+        list-style-position: inside;
+    }
+
+    li a {
+        font-weight: 800;
+    }
+
+    li {
+        a:hover {
+            color: #1aa5d8;
+        }
+    }
+}
