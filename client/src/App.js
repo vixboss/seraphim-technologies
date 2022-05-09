@@ -19,6 +19,7 @@ import MerchandiseComponent from './components/merchandise/merchandise.component
 import PrivacyPolicyPageComponent from './pages/privacy-policy/privacy-policy.component';
 import TermsAndConditionsPageComponent from './pages/terms-and-conditions/terms-and-conditions.component';
 import RefundAndCancellationPageComponent from './pages/refund-cancellation/refund-cancellation.component';
+import UserPurchasesPages from './pages/user-purchases/user-purchases.component';
 
 import { checkUserSession } from './redux/user/user.action';
 
@@ -67,6 +68,7 @@ const App = ({ checkUserSession, currentuser, currentAdmin }) => {
         <Route exact path = '/admin/product' component={AdminProduct}/>
         <Route exact path = '/admin/banner' component={AdminProduct}/>
         <Route exact path = '/admin/merchandise' component={MerchandiseComponent}/>
+        <Route exact path = '/admin/user-purchase' component = {UserPurchasesPages}/>
         <Route exact path='/admin'
           render = {
             () => currentAdmin ? <Redirect to='/admin/title'/> : <AdminLoginPage/>

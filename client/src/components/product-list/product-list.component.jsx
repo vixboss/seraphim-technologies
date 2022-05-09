@@ -227,9 +227,9 @@ const ProductList = ({ collection, updateProduct, responseData, deleteProductSta
                     <thead>
                         <tr>
                             <th>#</th>
+                            <th>Speaker Name</th>
                             <th>Product Category</th>
-                            <th>Name</th>
-                            <th>Price</th>
+                            <th>Product Name</th>
                             <th colSpan={2}>Action</th>
                         </tr>
                     </thead>
@@ -241,9 +241,9 @@ const ProductList = ({ collection, updateProduct, responseData, deleteProductSta
                                     return(
                                         <tr key={i+1}>
                                             <td> {collections.count} </td>
+                                            <td> {collections.speakerName} </td>
                                             <td> {collections.title.capitalizeFirstCharacter()} </td>
                                             <td> {collections.name} </td>
-                                            <td> ${collections.price} </td>
                                             <td><i className="fa fa-pencil-square-o fa-lg onHover" aria-hidden="true" onClick={() => updateProduct(collections.id)}></i></td>
                                             <td><i className="fa fa-times fa-lg onHover" aria-hidden="true" onClick={() => handleRemove(collections.id)}></i></td>
                                         </tr>
@@ -260,9 +260,9 @@ const ProductList = ({ collection, updateProduct, responseData, deleteProductSta
                                         return(
                                             <tr key={i+1}>
                                                 <td> {collections.count} </td>
+                                                <td> {collections.speakerName} </td>
                                                 <td> {collections.title.capitalizeFirstCharacter()} </td>
                                                 <td> {collections.name} </td>
-                                                <td> ${collections.price} </td>
                                                 <td><i className="fa fa-pencil-square-o fa-lg onHover" aria-hidden="true" onClick={() => updateProduct(collections.id)}></i></td>
                                                 <td><i className="fa fa-times fa-lg onHover" aria-hidden="true" onClick={() => handleRemove(collections.id)}></i></td>
                                             </tr>

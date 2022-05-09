@@ -1,19 +1,21 @@
 require('dotenv').config();
 const bodyParser = require('body-parser');
 const nodemailer = require('nodemailer');
+const firebase = require('../db');
+const firestore = firebase.firestore();
+const fb = require('firebase-admin');
+
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
-const storeItems = new Map([
-    [1, { priceInCents: 10000, name: "Learn react Today"}],
-    [2, { priceInCents: 20000, name: "Learn CSS Today"}]
-]);
-
 const stripePayment = async(req, res, next) => {
+    const currentUser = req.body.currentUser;
+    const cartItems = req.body.cartItems;
+    console.log(currentUser)
     try {
         const session = await stripe.checkout.sessions.create({
             payment_method_types: ["card"],
             mode: "payment",
-            line_items: req.body.map(item => {
+            line_items: cartItems.map(item => {
                 // const storeItem = storeItems.get(item.id);
                 return {
                     price_data: {
@@ -21,12 +23,13 @@ const stripePayment = async(req, res, next) => {
                         product_data: {
                             name: item.name+' ('+ item.mode +')',
                         },
-                        unit_amount: item.price * 100
-
+                        unit_amount: item.price * 100,
+                        
                     },
-                    quantity: item.quantity
+                    quantity: item.quantity,
                 }
             }),
+            customer_email: currentUser.email,
             success_url:"https://webinardock.com/shop",
             cancel_url: "https://webinardock.com/checkout"
        }); 
@@ -77,12 +80,12 @@ function mail(email, receipt) {
 
 const stripePaymentSuccessful = (req, res, next) => {
     const event = req.body;
+    // console.log(event.data.object);
     const billing_details = event.data.object.charges.data[0].billing_details;
     const email = billing_details.email;
     const name = billing_details.name;
     const address = billing_details.address;
     const receipt = event.data.object.charges.data[0].receipt_url;
-    console.log(receipt);
 
     // On payment goes success.
 
@@ -99,7 +102,74 @@ const stripePaymentSuccessful = (req, res, next) => {
     res.status(200).json({received: true});
 }
 
+const checkoutCompletedSuccessful = async (req, res, next) => {
+    const event = req.body;
+
+    if(event.type === 'checkout.session.completed'){
+
+        // In "checkout.session.completed" event handler, get the ID of the Checkout Session
+        const id = event.data.object.id; // "cs_xxx"
+
+        // Retrieve the Checkout Session with expand
+        const session = await stripe.checkout.sessions.retrieve(id, {
+            expand: [ "line_items" ]
+        });
+    
+        // Get the customer email
+        const email = event.data.object.customer_email;
+    
+        // Get the Items
+        const items = session.line_items;
+    
+        // To save customer products
+        await savePurchasedProduct(email, items);
+    }
+}
+
+const savePurchasedProduct = async(email, items) => {
+    try{
+        const customerEmail = email;
+        const customerItems = items;
+        const collectionRef = await firestore.collection('user_purchased');
+        var flag = false;
+        await collectionRef.get().then(snapshot =>{
+            const collectionsMap = snapshot.docs.map(docSnapshot => {
+                const { email } = docSnapshot.data();
+                const  id  = docSnapshot.id;
+
+                // console.log(email);
+                // console.log(customerEmail);
+
+                if(email === customerEmail){
+                    // console.log("from Inside");
+                    flag = true;
+                    collectionRef.doc(id).update({
+                        items: fb.firestore.FieldValue.arrayUnion({
+                            ...customerItems.data, 
+                            date: new Date(),
+                        })
+                    });
+                }
+            });
+
+            if(!flag){
+                collectionRef.doc().set({
+                    email: customerEmail,
+                    items: [{
+                        ...customerItems.data, 
+                        date: new Date(),
+                    }]
+                    
+                });
+            }
+        });
+    } catch(error) {
+        console.error(error.message);
+    }
+}
+
 module.exports = {
     stripePayment,
-    stripePaymentSuccessful
+    stripePaymentSuccessful,
+    checkoutCompletedSuccessful
 }

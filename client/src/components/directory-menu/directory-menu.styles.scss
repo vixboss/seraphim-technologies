@@ -1,14 +1,26 @@
 .upcoming-webinars {
     margin-top: 20px;
+    span {
+        background-color: #1aa5d8;
+    }
+}
+
+.recorded-webinars{
+    span a{
+        color: white;
+    }
+    span a:hover {
+        color: black;
+    }
 }
 
 .onHover:hover {
     cursor: pointer;
 }
 
-.onHover > span > a:Hover {
-    color: white;
-}
+// .onHover > span > a:Hover {
+//     color: white;
+// }
 
 .client-image {
     display: flex;

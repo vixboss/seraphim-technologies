@@ -15,7 +15,6 @@ import { selectCurrentUser }  from '../../redux/user/user.selector';
 const MySwal = withReactContent(Swal);
 
 const StripeCheckoutButton = ({price, history, clearCart, currentUser, cartItems}) => {
-    console.log(cartItems);
     const priceForStripe = price * 100;
     // const publishableKey = 'pk_test_51Jp5Q6SFe3HyXD2syryE9oomRsf33oRj1UD3A3AKGQHAjNl2ATfQqRfTP0ScBy12aXDxb3IvqG5TxXZrV44xlQHV00sjGGemup';
     // const onToken = token => {
@@ -57,7 +56,10 @@ const StripeCheckoutButton = ({price, history, clearCart, currentUser, cartItems
         axios({
             url: `${host}/api/stripe`,
             method: 'POST',
-            data: cartItems,  
+            data: {
+                    cartItems,
+                    currentUser
+                },  
         }).then((response) => {
             if(response.status === 200){
                 // MySwal.fire({

@@ -1,9 +1,12 @@
 import { takeLatest, put, all, call } from 'redux-saga/effects';
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
 
 import UserActionTypes from './user.type';
 import { signInSuccess, signInFailure, signOutSuccess, signOutFailure, signUpSuccess, signUpFailure } from './user.action';
 import { auth, googleProvider, createUserProfileDocument, getCurrentUser } from '../../firebase/firebase.utils';
 
+const MySwal = withReactContent(Swal);
 export function* getSnapshotFromUserAuth(userAuth, additionalData) {
     try{
         const userRef = yield call(createUserProfileDocument, userAuth, additionalData);
@@ -45,6 +48,13 @@ export function* signInWithEmail({payload: {email, password}}){
         yield getSnapshotFromUserAuth(user);
     } catch(error){
         yield put(signInFailure(error));
+        MySwal.fire({
+            position: 'top-end',
+            icon: 'error',
+            title: 'Username or Password incorrect.',
+            showConfirmButton: false,
+            timer: 1500
+        });
     }
 }
 

@@ -75,8 +75,8 @@ const Footer = () => {
                 </Container>
             </div>
             <div className='footer'>
-                <span> &copy; {year} Copyright &nbsp;
-                    <Link to="/" style={{'fontWeight': 'bold !important'}} className= "footer-link">
+                <span> &copy; {year} Copyright
+                    <Link to="/" className= "footer-link" style={{textIndent: '5px'}}>
                         <strong>Webinar Dock</strong>
                     </Link>. All Rights Reserved 
                 </span>

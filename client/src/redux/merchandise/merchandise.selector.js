@@ -6,4 +6,15 @@ export const selectMerchandiseTitle = createSelector([selectMerchandise], (merch
     merchandiseTitle.merchandise ? merchandiseTitle.merchandise: []
 );
 
+export const selectMerchandiseTitleAsArray = createSelector([selectMerchandise],   merchandiseTitle => {
+    var arr = [];
+    if(merchandiseTitle.merchandise !== null){
+        merchandiseTitle.merchandise.map(val => {
+            arr.push(val.title);
+        });
+    }
+
+    return arr;
+});
+
 export const isMerchandiseFetching = createSelector([selectMerchandise], merchandise => merchandise.isFetching);

@@ -73,7 +73,7 @@ const DirectoryMenu = ({fetchCollectionsStart, collections}) => {
     return(
         <>     
             <h3 className="upcoming-webinars home-page-border">
-                <Badge pill bg="primary">{'Upcoming Webinars: '}</Badge>
+                <Badge pill bg={false}>{'Upcoming Webinars: '}</Badge>
             </h3>
             <Row md={4} className="directory-menu g-4 home-page-border">
                 <MenuCardContainer item = {upcomingItemArray}/>

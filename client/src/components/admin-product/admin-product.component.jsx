@@ -10,30 +10,31 @@ import DatePicker from '@mui/lab/DatePicker';
 import TimePicker from '@mui/lab/TimePicker';
 import TextField from '@mui/material/TextField';
 import enLocale from 'date-fns/locale/en-US';
-import OutlinedInput from '@mui/material/OutlinedInput';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select, { SelectChangeEvent } from '@mui/material/Select';
-import Chip from '@mui/material/Chip';
-import { Theme, useTheme } from '@mui/material/styles';
+
 import Box from '@mui/material/Box';
+import Card from '@mui/material/Card';
+import CardActions from '@mui/material/CardActions';
+import CardContent from '@mui/material/CardContent';
+import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
 
 
 import { selectResponseData, selectProductById } from './../../redux/product/product.selector';
 import { getAllProductTitleStart } from './../../redux/product/product.action';
+import { getAllMerchandiseTitleStart } from '../../redux/merchandise/merchandise.action';
 import { selectCollectionsForPreview } from './../../redux/shop/shop.selector';
 import { fetchCollectionsStart } from './../../redux/shop/shop.actions';
 import ProductListContainer from '../product-list/product-list.container';
 import FormInput from '../form-input/form-input.component';
 import CustomButton from '../custom-button/custom-button.component';
 import { selectProductType } from '../../redux/product/product.selector';
+import { selectMerchandiseTitleAsArray } from '../../redux/merchandise/merchandise.selector';
 import { addProductStart, getProductByIdStart, updateProductStart } from './../../redux/product/product.action';
 import { changeObjectValueToKeyValue, uuidv4 } from '../../factory';
 
 import './admin-product.styles.scss';
 
-const AdminProduct = ({fetchCollectionsStart, updateProductStart, getProductByIdStart, productById, responseData, addProductStart, collections, selectProductType, getAllProductTitleStart}) => {
+const AdminProduct = ({fetchCollectionsStart, updateProductStart, getProductByIdStart, productById, responseData, addProductStart, collections, selectProductType, getAllProductTitleStart, getAllMerchandiseTitleStart, selectMerchandiseTitleAsArray}) => {
     const productStatus = ['Recorded', 'Upcoming'];
     const MySwal = withReactContent(Swal);
     let d = new Date();
@@ -225,6 +226,8 @@ const AdminProduct = ({fetchCollectionsStart, updateProductStart, getProductById
         setDescription('');
         setDetailField([{detailType: '', detailTypeField: ''}]);
         setCheckUpdateId(false);
+        setSelectedMerchandise([]);
+        setMerchandise(arr);
     }
 
     const getProductById = (id) => {
@@ -263,6 +266,7 @@ const AdminProduct = ({fetchCollectionsStart, updateProductStart, getProductById
                 }
             });
             setDescription(data.productDescription.description);
+            // setSelectedMerchandise(data.merchandise);
             const arrayObj = [];
             Object.keys(data.productDescription.detailFields).forEach(key =>
                 arrayObj.push({
@@ -270,6 +274,8 @@ const AdminProduct = ({fetchCollectionsStart, updateProductStart, getProductById
                     detailTypeField:data.productDescription.detailFields[key]
                 })
             );
+            const merchandiseObject = typeof data.merchandise !== "undefined" ? data.merchandise: merchandisePriceArray;
+            setMerchandise(merchandiseObject);
 
             arrayObj.length > 0 ? setDetailField(arrayObj) : setDetailField([{detailType: '', detailTypeField: ''}]);
         }
@@ -277,11 +283,25 @@ const AdminProduct = ({fetchCollectionsStart, updateProductStart, getProductById
 
     useEffect(() => {
         getAllProductTitleStart();
+        getAllMerchandiseTitleStart();
     }, []);
 
+    const arr = [];
+    const [merchandisePriceArray, setMerchandisePriceArray] = useState();
     useEffect(() => {
         setProductType(selectProductType);
+        selectMerchandiseTitleAsArray.map((merchandise) => {
+            arr.push({
+                name : merchandise,
+                price: ''
+            });
+        });
     });
+    
+    useEffect(() => {
+        setMerchandisePriceArray(arr);
+        setMerchandise(arr);
+    }, [selectMerchandiseTitleAsArray])
 
     const localeMap = {
         en: enLocale,
@@ -303,18 +323,8 @@ const AdminProduct = ({fetchCollectionsStart, updateProductStart, getProductById
             },
         },
     };
-    const names = [
-        'Oliver Hansen',
-        'Van Henry',
-        'April Tucker',
-        'Ralph Hubbard',
-        'Omar Alexander',
-        'Carlos Abbott',
-        'Miriam Wagner',
-        'Bradley Wilkerson',
-        'Virginia Andrews',
-        'Kelly Snyder',
-    ];
+    const INIT_MERCHANDISE = [];
+    const [merchandise, setMerchandise] = useState(INIT_MERCHANDISE);
 
     function getStyles(name, personName, theme) {
         return {
@@ -325,18 +335,33 @@ const AdminProduct = ({fetchCollectionsStart, updateProductStart, getProductById
         };
     }
 
-    const theme = useTheme();
-    const [personName, setPersonName] = React.useState([]);
+    const [selectedMerchandise, setSelectedMerchandise] = React.useState([]);
 
     const handleChangeMultiSelect = (event) => {
         const {
         target: { value },
         } = event;
-        setPersonName(
+        setSelectedMerchandise(
         // On autofill we get a stringified value.
             typeof value === 'string' ? value.split(',') : value,
         );
     };
+
+    useEffect(() => {
+        setProductDetails({...productDetails, merchandise: selectedMerchandise });
+    }, [selectedMerchandise]);
+
+    const handleChangeMerchandiseField = (event, index) => {
+        const {name, value} = event.target;
+        const list = [...merchandise];
+        list.map((merchand) => {
+            if(merchand.name === name){
+                merchand.price = value;
+            }
+        });
+        setMerchandise(list);
+        setProductDetails({...productDetails, merchandise: list});
+    }
 
     return(
         <Container>
@@ -366,7 +391,7 @@ const AdminProduct = ({fetchCollectionsStart, updateProductStart, getProductById
                                 />
                             </Col>
                             
-                            <Col>
+                            {/*<Col>
                                 <FormInput
                                     name="price"
                                     label="Price ($)"
@@ -374,7 +399,7 @@ const AdminProduct = ({fetchCollectionsStart, updateProductStart, getProductById
                                     handleChange={handleChange}
                                     required
                                 />
-                            </Col>
+                            </Col>*/}
                             <Col>
                                 <FormInput
                                     name="imageUrl"
@@ -442,7 +467,7 @@ const AdminProduct = ({fetchCollectionsStart, updateProductStart, getProductById
                             <Col>
                                 <FormInput
                                     name="heading"
-                                    label="Product Heading"
+                                    label="Heading"
                                     value={heading}
                                     handleChange={handleChange}
                                     required
@@ -465,16 +490,16 @@ const AdminProduct = ({fetchCollectionsStart, updateProductStart, getProductById
                                 }
                                 </DropdownButton>
                             </Col>
-                            <Col xs = {6} lg md>
+                            {/*<Col xs = {6} lg md>
                                 
                                 <FormControl style={{width: '100%'}} className='center-multi-select'>
                                     <InputLabel id="demo-multiple-chip-label"
-                                    >Merchandise</InputLabel>
+                                    >Mrch.</InputLabel>
                                     <Select
                                     labelId="demo-multiple-chip-label"
                                     id="demo-multiple-chip"
                                     multiple
-                                    value={personName}
+                                    value={selectedMerchandise}
                                     onChange={handleChangeMultiSelect}
                                     input={<OutlinedInput id="select-multiple-chip" label="Chip" />}
                                     renderValue={(selected) => (
@@ -486,11 +511,11 @@ const AdminProduct = ({fetchCollectionsStart, updateProductStart, getProductById
                                     )}
                                     MenuProps={MenuProps}
                                     >
-                                    {names.map((name) => (
+                                    {merchandise.map((name) => (
                                         <MenuItem
                                         key={name}
                                         value={name}
-                                        style={getStyles(name, personName, theme)}
+                                        style={getStyles(name, selectedMerchandise, theme)}
                                         >
                                         {name}
                                         </MenuItem>
@@ -498,7 +523,7 @@ const AdminProduct = ({fetchCollectionsStart, updateProductStart, getProductById
                                     </Select>
                                 </FormControl>
 
-                            </Col>
+                            </Col>*/}
                             <Col xs = {6} lg md>   
                                {/* <FormInput
                                     name="description"
@@ -518,6 +543,46 @@ const AdminProduct = ({fetchCollectionsStart, updateProductStart, getProductById
                                     onChange={handleDescriptionChange}
                                     />
                                 </FloatingLabel>
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col xs = {12} lg = {6} md = {6}>
+                                <Card sx={{ minWidth: 275 }} className="padding-top">
+                                    <CardContent>
+                                        <Typography variant="h5" component="div">
+                                            Merchandise (in USD)
+                                        </Typography>
+                                        <Row>
+                                            {
+                                                merchandise.map((merchand, index) => {
+                                                    return (
+                                                        <Col xs={6} md={4} lg={4} key={index}>
+                                                            <FormInput
+                                                                name={merchand.name}
+                                                                label={merchand.name}
+                                                                value={merchand.price}
+                                                                handleChange={handleChangeMerchandiseField}
+                                                                onKeyPress={(event) => {
+                                                                    if (!/[0-9]/.test(event.key)) {
+                                                                      event.preventDefault();
+                                                                    }
+                                                                }}
+                                                                onPaste={(e)=>{
+                                                                    e.preventDefault()
+                                                                    return false;
+                                                                }} 
+                                                                onCopy={(e)=>{
+                                                                    e.preventDefault()
+                                                                    return false;
+                                                                }} 
+                                                            />
+                                                        </Col>
+                                                    )
+                                                }) 
+                                            }
+                                        </Row>
+                                    </CardContent>
+                                </Card>
                             </Col>
                         </Row>
                         
@@ -595,7 +660,8 @@ const mapStateToProps = createStructuredSelector({
     collections: selectCollectionsForPreview,
     selectProductType: selectProductType,
     responseData: selectResponseData,
-    productById: selectProductById
+    productById: selectProductById,
+    selectMerchandiseTitleAsArray: selectMerchandiseTitleAsArray
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -603,7 +669,7 @@ const mapDispatchToProps = dispatch => ({
     addProductStart: (data) => dispatch(addProductStart(data)),
     getProductByIdStart: (id) => dispatch(getProductByIdStart({id})),
     updateProductStart: (data) => dispatch(updateProductStart(data)),
-    getAllProductTitleStart: () => dispatch(getAllProductTitleStart())
-
+    getAllProductTitleStart: () => dispatch(getAllProductTitleStart()),
+    getAllMerchandiseTitleStart: () => dispatch(getAllMerchandiseTitleStart())
 })
 export default connect(mapStateToProps, mapDispatchToProps)(AdminProduct);

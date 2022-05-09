@@ -41,22 +41,10 @@ const ProductDescriptionLeftColumn = ({id, item, addItem, name}) => {
         }
       }));
     
-    const { imageUrl, price } = item;
+    const { imageUrl, price , merchandise} = item;
     const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
-    const cost = [
-        {
-            price: '250',
-            mode: 'Live Webinar'
-        },
-        {
-            price: '300',
-            mode: 'Recorded Webinar'
-        },
-        {
-            price: '350',
-            mode: 'DVD'
-        }
-    ];
+
+    const cost = merchandise;
     const [accumulatedPrice, setAccumulatedPrice] = useState(0);
     const [itemList, setItemList] = useState([]);
     const onCheck = (event, amount, modeName, image) => {
@@ -113,20 +101,22 @@ const ProductDescriptionLeftColumn = ({id, item, addItem, name}) => {
                     </AddButton>
                </Col> */}
                     {
-                        cost.map((productPrice, index) => {
-                            return (
-                                <Row className="align" key={index}>
-                                    <Col sm = {8} xs = {6}>
-                                        <span>{productPrice.mode.capitalizeFirstCharacter()}</span>
-                                    </Col>
-                                    <Col sm = {2} xs = {4}>
-                                        <span>${productPrice.price}</span>
-                                    </Col>
-                                    <Col sm = {2} xs = {2}>
-                                        <Checkbox className='icon-color' {...label} onClick ={(event) => onCheck(event, productPrice.price, productPrice.mode, imageUrl)}/>
-                                    </Col>
-                                </Row>
-                            );
+                        cost && cost.map((productPrice, index) => {
+                            if(productPrice.price !== ''){
+                                return (
+                                    <Row className="align" key={index}>
+                                        <Col sm = {8} xs = {6}>
+                                            <span>{productPrice.name.capitalizeFirstCharacter()}</span>
+                                        </Col>
+                                        <Col sm = {2} xs = {4}>
+                                            <span>${productPrice.price}</span>
+                                        </Col>
+                                        <Col sm = {2} xs = {2}>
+                                            <Checkbox className='icon-color' {...label} onClick ={(event) => onCheck(event, productPrice.price, productPrice.name, imageUrl)}/>
+                                        </Col>
+                                    </Row>
+                                );
+                            }
                         })
                     }
                     {
