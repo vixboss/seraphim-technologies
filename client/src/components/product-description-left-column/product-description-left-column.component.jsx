@@ -12,11 +12,14 @@ import { styled } from '@mui/material/styles';
 import MuiGrid from "@mui/material/Grid";
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
+import jsPDF from 'jspdf';
+import autoTable from 'jspdf-autotable'
 
-
+import WD from './../../assets/wdNew.jpg';
 import { addItem } from '../../redux/cart/cart.action';
 
 import './product-description-left-column.styles.scss';
+import { useEffect } from 'react';
 // import { AddButton } from './product-description-left-column.styles';
 // import { previousSaturday } from 'date-fns/esm';
 
@@ -24,7 +27,7 @@ import './product-description-left-column.styles.scss';
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
-const ProductDescriptionLeftColumn = ({id, item, addItem, name}) => {
+const ProductDescriptionLeftColumn = ({id, item, addItem, name, date}) => {
     const Root = styled('div')(({ theme }) => ({
         width: '100%',
         ...theme.typography.body2,
@@ -86,8 +89,126 @@ const ProductDescriptionLeftColumn = ({id, item, addItem, name}) => {
 
         setOpen(false);
     };
+
+    const handleFormDownload = (event) => {
+
+        /********************************************************/
+        /********************************************************/
+        /****************CODE FOR PDF GENERATION*****************/
+        /********************************************************/
+        /********************************************************/
+
+        const doc = new jsPDF('portrait', 'px', 'a4', 'false');
+        doc.addImage(WD, 'PNG', 20, 0, 50, 50);
+        
+        // Setting Header of PDF
+        doc.setFont("Helvetica");
+        doc.setFontSize(18);
+        doc.text('Customer/Payment Detail Form', 225, 30, 'center');
+        doc.setFontSize(12);
+
+        // Setting Tables in PDF
+        var startingPage = doc.internal.getCurrentPageInfo().pageNumber;
+        doc.autoTable({
+            head: [['Payment Information']],
+            body: [
+                ["Credit Card #: _______________________________"],
+                ["Expiration Date: ____/ ____/ (mm/YY)"],
+                ["Cardholder's Name: __________________________"],
+                ["CVV or CVC: __________________________________________"],
+                ["Signature : __________________________________________"],
+                ["Billing Email : __________________________________________"],
+                ["Tick the mode:"],
+                ["[  ] Visa   [  ] Master Card   [  ] Discover"],
+                ["[  ] American Express"],
+                ["[  ] Others (Type Here): _______________________"]
+            ],
+            margin:{
+                top:50,
+                right: 230
+            },
+            headStyles:{
+                valign: 'middle',
+                halign : 'center'
+            },
+            avoidPageSplit: true
+        });
+
+        doc.setPage(startingPage);
+
+        doc.autoTable({
+            head: [['Personal Information']],
+            body: [
+                ["Name: _____________________________________"],
+                ["Address: ___________________________________________"],
+                ["Address Line 2: ___________________________________________"],
+                ["City: _______________________________________"],
+                ["State : _____________________________________"],
+                ["Zip : _______________________________________"],
+                ["Phone: _____________________________________"],
+                ["Fax: _______________________________________"],
+                ["Email: _____________________________________"],
+            ],
+            margin:{
+                // top:40,
+                left: 230
+            },
+            headStyles:{
+                valign: 'middle',
+                halign : 'center'
+            },
+            startY: 50,
+            
+        });
+
+        // Setting Payment Option Line:
+        doc.setLineWidth(1.0);
+        doc.text('If you want to make the payment through check or ACH please E-mail us at: cs@webinardock.com', 30, 290, 'left').setFont(undefined, 'bold').line(335, 292, 425, 292);
+        
+        // Setting Second Heading in PDF.
+        doc.setFontSize(18);
+        doc.text('Product Order Form', 225, 320, 'center');
+        doc.setFontSize(12);
+
+        // Setting Conference Name and Date in PDF.
+        doc.text('Conference Title: ', 30, 350, 'left').setFont(undefined, 'normal');
+        doc.text(name, 120, 350).setFont(undefined, 'bold');
+
+        doc.text('Conference Date: ', 30, 360, 'left').setFont(undefined, 'normal');
+        doc.text(date.convertToDate().split(' ').splice(1).join(' '), 120, 360).setFont(undefined, 'bold');
+
+        // Setting Dynamic Table in PDF for Quantity.
+        var productArray = [];
+        if(typeof cost !== "undefined"){
+            cost.map((prdArray) => {
+                if(prdArray.price !== ''){
+                    var filterArray = [];
+                    filterArray.push(prdArray.name);
+                    filterArray.push('________');
+                    filterArray.push("$" + prdArray.price);
+                    filterArray.push('________');
+                    productArray.push(filterArray);
+                }
+            });
+
+            productArray.push(['', '', 'Coupon Code', '________']);
+            productArray.push(['', '', 'Total', '________']);
+        }
+
+        // Setting Auto tables.
+        doc.autoTable({
+            head: [['Product', 'Quantity', 'Price', 'Total']],
+            body: productArray,
+            startY: 380,
+
+        });
+
+        doc.text('Please send the completed order form via fax or e-mail',220, 620, 'center');
+        doc.save('a.pdf');
+    }
+
     return (
-        <>
+        <>  
             <Row>
                 <img id={id} data-image="red" className="active product-description-image" src={imageUrl} alt=""/>
             </Row>
@@ -160,6 +281,32 @@ const ProductDescriptionLeftColumn = ({id, item, addItem, name}) => {
                                 </Grid>
                                 
                             </Grid>
+                        </Row>
+                    }
+                    {
+                        <Row className='align'>
+                            <Col className="border-align-inside-box">
+                                <ul style={{ listStyleType: 'none', paddingLeft: 0 }}>
+                                    <li>
+                                        <span>*</span>
+                                        For more than 6 attendee mail us at cs@webinardock.com
+                                    </li>
+                                    <li>
+                                        <span>*</span>
+                                        For cheque or ACH payment mail us at cs@webinardock.com
+                                    </li>
+                                    <li>
+                                        <span>*</span>
+                                        <Tooltip title="Click to download from">
+                                            <span 
+                                                style={{color: '#1aa5d8', cursor: 'pointer'}}
+                                                onClick = {handleFormDownload}
+                                            >Click </span> 
+                                        </Tooltip>
+                                        to download the Order Form.
+                                    </li>
+                                </ul>
+                            </Col>
                         </Row>
                     }
             </Row>

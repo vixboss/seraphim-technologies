@@ -154,6 +154,41 @@
   }
 }
 
+li {
+  list-style-type: none;
+  display: inline-block;
+  margin: 5px 10px;
 
+}
+
+li > .link {
+  // color: #333;
+  text-decoration: none;
+  display: inline-block;
+  position: relative;
+}
+
+li > .link::after {
+  content: "";
+  display: block;
+  margin: auto;
+  height: 3px;
+  width: 0;
+  top: 5px;
+  background: transparent;
+  transition: all 0.3s;
+  
+}
+
+// li > .link:hover::after, 
+li > .link.active-nav::after {
+  width: 100%;
+  background: #1aa5d8;
+}
+
+.user-name-display {
+  color: #DCDCDC;
+  text-transform: capitalize;
+}
 
 

@@ -32,6 +32,8 @@
     "firebase-functions": "^3.16.0",
     "jquery": "^3.6.0",
     "jsonwebtoken": "^8.5.1",
+    "jspdf": "^2.5.1",
+    "jspdf-autotable": "^3.5.23",
     "moment-timezone": "^0.5.34",
     "mysql2": "^2.3.3",
     "ngrok": "^4.3.0",

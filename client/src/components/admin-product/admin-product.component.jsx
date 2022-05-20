@@ -246,6 +246,7 @@ const AdminProduct = ({fetchCollectionsStart, updateProductStart, getProductById
     useEffect(() => {
         if(productById.status === 200 || productById.status === 201){
             const { data } = productById;
+            const merchandiseObject = typeof data.merchandise !== "undefined" ? data.merchandise: merchandisePriceArray;
             setCheckUpdateId(true);
             setProductDetails({
                 id: data.id,
@@ -259,6 +260,7 @@ const AdminProduct = ({fetchCollectionsStart, updateProductStart, getProductById
                 duration: data.duration,
                 time:data.time,
                 createdAt: new Date(),
+                merchandise: merchandiseObject,
                 speakerName:data.speakerName,
                 productDescription: {
                     'description': data.productDescription.description,
@@ -274,7 +276,6 @@ const AdminProduct = ({fetchCollectionsStart, updateProductStart, getProductById
                     detailTypeField:data.productDescription.detailFields[key]
                 })
             );
-            const merchandiseObject = typeof data.merchandise !== "undefined" ? data.merchandise: merchandisePriceArray;
             setMerchandise(merchandiseObject);
 
             arrayObj.length > 0 ? setDetailField(arrayObj) : setDetailField([{detailType: '', detailTypeField: ''}]);

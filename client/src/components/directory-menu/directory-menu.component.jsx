@@ -62,8 +62,8 @@ const DirectoryMenu = ({fetchCollectionsStart, collections}) => {
 
 
 
-        setRecordedItemArray(recorded.slice(0,4), console.log(recordedItemArray));
-        setUpcomingItemArray(upcoming.slice(0,4), console.log(upcomingItemArray));
+        setRecordedItemArray(recorded.slice(0,4));
+        setUpcomingItemArray(upcoming.slice(0,4));
 
         // setRecordedItemArray(recorded, console.log(recordedItemArray));
         // setUpcomingItemArray(upcoming, console.log(upcomingItemArray));
