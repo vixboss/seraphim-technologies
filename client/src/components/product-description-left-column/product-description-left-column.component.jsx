@@ -225,7 +225,7 @@ const ProductDescriptionLeftColumn = ({id, item, addItem, name, date}) => {
         });
 
         doc.text('Please send the completed order form via fax or e-mail',220, 620, 'center');
-        doc.save('a.pdf');
+        doc.save('order_form.pdf');
         doc.autoPrint();
     }
 
