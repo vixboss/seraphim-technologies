@@ -8,7 +8,7 @@ import { fetchItemDescription } from './../../redux/shop/shop.actions';
 
 import './menu-card.styles.scss';
 
-const MenuCard = ({item, history, fetchItemDescription }) => {
+const MenuCard = ({item, history, fetchItemDescription, type }) => {
     
     return(
         <>
@@ -60,7 +60,7 @@ const MenuCard = ({item, history, fetchItemDescription }) => {
                 : 
                 
                 <Col xs={12} md={12}>
-                    <h3 className='animate-charcter' style={{ display: 'flex', justifyContent: 'center' }}>No Upcoming Webinar...</h3>
+                    <h3 className='animate-charcter' style={{ display: 'flex', justifyContent: 'center' }}>No {type} Webinar...</h3>
                 </Col>
             }
         </>

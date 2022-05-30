@@ -47,7 +47,7 @@ const PrivacyPolicyPageComponent = () => {
                     We may disclose your personal information in the following circumstances:
                 </h4>
                 
-                <ul>
+                <ul className='ul-display'>
                     <li>
                         We share the information to trusted partners who work on behalf of or with <Link to='/'> Webinar Dock </Link> under extremely strict confidentiality agreements.
                     </li>

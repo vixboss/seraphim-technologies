@@ -27,7 +27,7 @@ const RefundAndCancellationPageComponent = () => {
                     Our cancellation policy for live conferences is as follows:
                 </p>
                 
-                <ul>
+                <ul className='ul-display'>
                     <li>
                         Cancellations are allowed and accepted for live conferences only if the request to cancel is placed at least 72 hours before the scheduled time of the conference. Requests placed under 48hrs will not be accepted. Cancellations to webinars are refundable, only a small fee of $30 is deducted and used for processing the request.
                     </li>
@@ -42,7 +42,7 @@ const RefundAndCancellationPageComponent = () => {
                 <p>
                     Our Substitution policy for live conferences is as follows:
                 </p>
-                <ul>
+                <ul className='ul-display'>
                     <li>
                         Participants can opt for a substitution in place of a cancellation so as to avoid the processing fee that comes with cancelling.
                     </li>
@@ -56,7 +56,7 @@ const RefundAndCancellationPageComponent = () => {
                 <h4>
                     Below are cases and situations in which we do not allow Substitutions and Cancellations:
                 </h4>
-                <ul>
+                <ul className='ul-display'>
                     <li>
                         Substitution/Cancellation is not allowed if the attendee missed the scheduled session
                     </li>
@@ -75,7 +75,7 @@ const RefundAndCancellationPageComponent = () => {
                 <p>
                     The following is our refund policy for Live, Pre-Recorded, On demand webinars and audio conferences:
                 </p>
-                <ul>
+                <ul className='ul-display'>
                     <li>
                         If <Link to='/'>Webinar Dock</Link> cancels a webinar due to technical fault or related challenges, 100% refund of the participation fees is done.
                     </li>
@@ -94,7 +94,7 @@ const RefundAndCancellationPageComponent = () => {
                 <p>
                     The following is our refund policy for Live, Pre-Recorded, On demand webinars and audio conferences:
                 </p>
-                <ul>
+                <ul className='ul-display'>
                     <li>
                         If <Link to='/'>Webinar Dock</Link> cancels a webinar due to technical fault or related challenges, 100% refund of the participation fees are refunded.
                     </li>
@@ -110,7 +110,7 @@ const RefundAndCancellationPageComponent = () => {
                 <h4>
                     REFUND Policy For DVD
                 </h4>
-                <ul>
+                <ul className='ul-display'>
                     <li>
                         100% refund if the DVD is damaged during delivery or malfunctioning. The refund is subject to the participant submitting evidence.
                     </li>
@@ -122,7 +122,7 @@ const RefundAndCancellationPageComponent = () => {
                 <h4>
                     REFUND Policy For Digital Downloads including Transcripts
                 </h4>
-                <ul>
+                <ul className='ul-display'>
                     <li>
                         No refund is offered in cases of digital downloads and transcripts.
                     </li>

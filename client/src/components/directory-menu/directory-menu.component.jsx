@@ -76,7 +76,7 @@ const DirectoryMenu = ({fetchCollectionsStart, collections}) => {
                 <Badge pill bg={false}>{'Upcoming Webinars: '}</Badge>
             </h3>
             <Row md={4} className="directory-menu g-4 home-page-border">
-                <MenuCardContainer item = {upcomingItemArray}/>
+                <MenuCardContainer item = {upcomingItemArray} type= {'Upcoming'}/>
             </Row>
             <h3 className="recorded-webinars onHover home-page-border">
                 <Badge pill bg="secondary">
@@ -86,7 +86,7 @@ const DirectoryMenu = ({fetchCollectionsStart, collections}) => {
             </Badge>
             </h3>
             <Row md={4} className="directory-menu g-4 home-page-border">
-                <MenuCardContainer item = {recordedItemArray}/>
+                <MenuCardContainer item = {recordedItemArray} type= {'Recorded'}/>
             </Row>
         </>
     );

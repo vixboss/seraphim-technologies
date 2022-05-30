@@ -26,7 +26,7 @@ const TermsAndConditionsPageComponent = () => {
                 <p>
                     The content on this website is subject to the following conditions unless otherwise stated by the section concerned:
                 </p>
-                <ul>
+                <ul className='ul-display'>
                     <li>
                         The material on this side can only be used for personal, informational, or internal business purposes.
                     </li>
@@ -41,7 +41,7 @@ const TermsAndConditionsPageComponent = () => {
                     </li>
                     <li>
                         Backlinks to the home page of the Site from any Pre-Approved Site (as defined below) are allowed, but under the following conditions:
-                        <ul>
+                        <ul className='ul-display'>
                             <li>
                                 You do not frame the Site or any portions of it.
                             </li>
@@ -69,7 +69,7 @@ const TermsAndConditionsPageComponent = () => {
                     In using the Site, including all Content and services available through it, you agree that you shall not:
                 </p>
                 
-                <ul>
+                <ul className='ul-display'>
                     <li>
                         Alter or attempt to alter any content on the site, this includes deleting, replacing and modifying.
                     </li>

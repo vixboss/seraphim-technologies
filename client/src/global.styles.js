@@ -63,6 +63,13 @@ export const GlobalStyle = createGlobalStyle`
         flex-direction:column; 
     }
 
+    .ul-display li{
+        display: list-item;
+        list-style-type: unset;
+        list-style-position: outside;
+        margin-left: 2rem;
+    }
+
     @media (min-width: 320px) and (max-width: 768px) {
         html {
             font-size: medium;
