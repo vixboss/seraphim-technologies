@@ -171,11 +171,11 @@ const ProductDescriptionLeftColumn = ({id, item, addItem, name, date}) => {
         doc.setFontSize(12);
 
         // Setting Conference Name and Date in PDF.
-        doc.text('Conference Title: ', 30, 350, 'left').setFont(undefined, 'normal');
-        doc.text(name, 120, 350).setFont(undefined, 'bold');
+        // doc.text('Conference Title: ', 30, 350, 'left').setFont(undefined, 'normal');
+        // doc.text(name, 120, 350).setFont(undefined, 'bold');
 
-        doc.text('Conference Date: ', 30, 360, 'left').setFont(undefined, 'normal');
-        doc.text(date.convertToDate().split(' ').splice(1).join(' '), 120, 360).setFont(undefined, 'bold');
+        // doc.text('Conference Date: ', 30, 360, 'left').setFont(undefined, 'normal');
+        // doc.text(date.convertToDate().split(' ').splice(1).join(' '), 120, 360).setFont(undefined, 'bold');
 
         // Setting Dynamic Table in PDF for Quantity.
         var productArray = [];
@@ -197,14 +197,36 @@ const ProductDescriptionLeftColumn = ({id, item, addItem, name, date}) => {
 
         // Setting Auto tables.
         doc.autoTable({
+            body:[
+                ['Conference Title:', name],
+                ['Conference Date:', date.convertToDate().split(' ').splice(1).join(' ')]
+            ],
+            theme: 'plain',
+            startY: 330,
+            styles: { 
+                fontSize: 11 
+            },
+            columnStyles: {
+                0: {
+                    cellWidth: 80,
+                    fontStyle: 'bold'
+                },
+                1: {
+                    halign: 'left'
+                }
+              }
+        });
+
+        doc.autoTable({
             head: [['Product', 'Quantity', 'Price', 'Total']],
             body: productArray,
-            startY: 380,
+            startY: 400,
 
         });
 
         doc.text('Please send the completed order form via fax or e-mail',220, 620, 'center');
         doc.save('a.pdf');
+        doc.autoPrint();
     }
 
     return (
