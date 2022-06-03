@@ -70,6 +70,26 @@ export const GlobalStyle = createGlobalStyle`
         margin-left: 2rem;
     }
 
+    .clickable-button {
+        display: flex;
+        margin: 0;
+        flex-direction: column;
+        padding: 0;
+        margin-bottom: 10px;
+    
+        div {
+            width: fit-content;
+            margin-left: auto;
+            margin-right: 20px;
+            color: #fff;
+            background-color: #5c636a;
+            cursor: pointer;
+        }
+        div:hover {
+            background-color: #aaaeb2;
+        }
+    }
+
     @media (min-width: 320px) and (max-width: 768px) {
         html {
             font-size: medium;

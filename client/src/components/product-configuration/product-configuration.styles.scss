@@ -18,3 +18,18 @@
     list-style-type: square;
     display: list-item;
 }
+
+.detail-field-style li
+{
+    display: list-item;
+    list-style-type: unset;
+}
+
+li {
+    display: list-item;
+    list-style-type: unset;
+}
+.detail-field-style + p,
+strong {
+    font-weight: 800;
+}

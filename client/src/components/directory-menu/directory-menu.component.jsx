@@ -1,9 +1,11 @@
 import React, {useEffect, useState} from "react";
 import { connect } from 'react-redux';
+import { withRouter } from "react-router-dom";
 import { Row, Badge } from 'react-bootstrap';
 import { createStructuredSelector } from "reselect";
 import { Link } from 'react-router-dom';
 import moment from 'moment-timezone';
+import Chip from '@mui/material/Chip';
 
 import { selectCollectionsForPreview } from '../../redux/shop/shop.selector';
 import MenuCardContainer from "../menu-card/menu-card.container";
@@ -11,7 +13,7 @@ import { fetchCollectionsStart } from '../../redux/shop/shop.actions';
 import { convertDate } from "../../factory";
 import './directory-menu.styles.scss';
 
-const DirectoryMenu = ({fetchCollectionsStart, collections}) => {
+const DirectoryMenu = ({fetchCollectionsStart, collections, history}) => {
     useEffect(() => {
         fetchCollectionsStart();
     }, [fetchCollectionsStart]);
@@ -67,7 +69,6 @@ const DirectoryMenu = ({fetchCollectionsStart, collections}) => {
 
         // setRecordedItemArray(recorded, console.log(recordedItemArray));
         // setUpcomingItemArray(upcoming, console.log(upcomingItemArray));
-
     }, [collections]);
 
     return(
@@ -78,6 +79,12 @@ const DirectoryMenu = ({fetchCollectionsStart, collections}) => {
             <Row md={4} className="directory-menu g-4 home-page-border">
                 <MenuCardContainer item = {upcomingItemArray} type= {'Upcoming'}/>
             </Row>
+            {
+                upcomingItemArray.length > 0 &&
+                <Row className = "clickable-button">
+                    <Chip label="View More..." onClick = {() => history.push('/shop')}/>
+                </Row>
+            }
             <h3 className="recorded-webinars onHover home-page-border">
                 <Badge pill bg="secondary">
                     <Link to='/shop'>
@@ -88,6 +95,12 @@ const DirectoryMenu = ({fetchCollectionsStart, collections}) => {
             <Row md={4} className="directory-menu g-4 home-page-border">
                 <MenuCardContainer item = {recordedItemArray} type= {'Recorded'}/>
             </Row>
+            {
+                recordedItemArray.length > 0 &&
+                <Row className = "clickable-button">
+                    <Chip label="View More..." onClick = {() => history.push('/shop')}/>
+                </Row>
+            }
         </>
     );
 }
@@ -97,4 +110,4 @@ const mapStateToProps = createStructuredSelector({
 const mapDispatchToProps = dispatch => ({
     fetchCollectionsStart: () => dispatch(fetchCollectionsStart())
 });
-export default connect(mapStateToProps, mapDispatchToProps)(DirectoryMenu);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(DirectoryMenu));

@@ -8,7 +8,7 @@ import ProductDescriptionLeftColumn from '../product-description-left-column/pro
 import './product-description.styles.scss';
 
 const ProductDescription = ({collectionItem, history, match }) => {
-    const {id, name, productDescription, heading, date} = collectionItem;
+    const {id, name, productDescription, heading, date, detailFieldTxtArea} = collectionItem;
     return (
         // <div className="product-description-page">
         //     {/* Left Column / Headphones Image */}
@@ -40,7 +40,7 @@ const ProductDescription = ({collectionItem, history, match }) => {
                         <h1>{name}</h1>
                         <p>{heading}</p>
                     </div>
-                    <ProductConfiguration productConfiguration={productDescription}/>
+                    <ProductConfiguration productConfiguration={productDescription} detailFieldTxtArea = {detailFieldTxtArea}/>
                 </Grid>
             </Grid>
     )

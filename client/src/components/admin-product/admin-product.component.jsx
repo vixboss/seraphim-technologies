@@ -60,6 +60,7 @@ const AdminProduct = ({fetchCollectionsStart, updateProductStart, getProductById
         time: new Date(),
         speakerName:"",
         createdAt: new Date(),
+        detailFieldTxtArea: "",
         productDescription : {
             description: '',
             detailFields:{}
@@ -72,7 +73,7 @@ const AdminProduct = ({fetchCollectionsStart, updateProductStart, getProductById
 
     const [productType, setProductType] = useState(selectProductType);
 
-    const { imageUrl, name, price, heading, title, date, duration, status, time, speakerName, productDescription } = productDetails;
+    const { imageUrl, name, price, heading, title, date, duration, status, time, speakerName, productDescription, detailFieldTxtArea } = productDetails;
   
     const [pagination, setPagination] = useState({
         offSet: 0,
@@ -131,6 +132,7 @@ const AdminProduct = ({fetchCollectionsStart, updateProductStart, getProductById
     const handleChange =(event) => {
         const {name, value} = event.target;
         setProductDetails({...productDetails, [name]: value });
+        
     }
 
     const handleDate = (event) => {
@@ -167,13 +169,25 @@ const AdminProduct = ({fetchCollectionsStart, updateProductStart, getProductById
 
     const handleSubmit = async (event) => {
         event.preventDefault();
+        const detField = changeObjectValueToKeyValue(detailField);
         if(title !== "Select Product Type"){
+            var {description} = productDetails.productDescription; 
+            var prodDetail = {...productDetails,
+                productDescription: {
+                    description: description,
+                    detailFields: {
+                        ...detField
+                    }
+                }
+            };
             var productCollections = {
                 title: title,
                 items: [
+                    // prodDetail
                     productDetails
                 ]
             }
+            
             if(!checkUpdateId){
                 addProductStart(productCollections);
             }
@@ -186,7 +200,7 @@ const AdminProduct = ({fetchCollectionsStart, updateProductStart, getProductById
             MySwal.fire({
                 position: 'top-end',
                 icon: 'error',
-                title: "Select Product Type",
+                title: "Product Type not selected or Detail Fields not filled.",
                 showConfirmButton: false,
                 timer: 1500
             });
@@ -218,6 +232,7 @@ const AdminProduct = ({fetchCollectionsStart, updateProductStart, getProductById
             time:new Date(),
             speakerName:"",
             createdAt: new Date(),
+            detailFieldTxtArea: "",
             productDescription : {
                 description: '',
                 detailFields:{}
@@ -262,6 +277,7 @@ const AdminProduct = ({fetchCollectionsStart, updateProductStart, getProductById
                 createdAt: new Date(),
                 merchandise: merchandiseObject,
                 speakerName:data.speakerName,
+                detailFieldTxtArea: data.detailFieldTxtArea,
                 productDescription: {
                     'description': data.productDescription.description,
                     'detailFields': data.productDescription.detailFields
@@ -362,7 +378,9 @@ const AdminProduct = ({fetchCollectionsStart, updateProductStart, getProductById
         });
         setMerchandise(list);
         setProductDetails({...productDetails, merchandise: list});
+        console.log(productDetails);
     }
+
 
     return(
         <Container>
@@ -585,50 +603,62 @@ const AdminProduct = ({fetchCollectionsStart, updateProductStart, getProductById
                                     </CardContent>
                                 </Card>
                             </Col>
+
+                            <Col xs = {12} lg = {6} md = {6}>
+                                <FloatingLabel controlId="floatingTextarea" name="detailFieldTxtArea" label="Detail Field (As HTML)">
+                                    <Form.Control
+                                    as="textarea"
+                                    name="detailFieldTxtArea"
+                                    value={detailFieldTxtArea}
+                                    placeholder="Leave a comment here"
+                                    style={{ height: '100px' }}
+                                    onChange={handleChange}
+                                    />
+                                </FloatingLabel>
+                            </Col>
                         </Row>
-                        
                         {
-                            detailField.map((item, i) => {
-                                return(
-                                    <Row key={i}>
-                                        <Col>
-                                            <FormInput
-                                                name="detailType"
-                                                label="Detail Type"
-                                                value={item.detailType}
-                                                onChange={(e) => handleChangeDetailTypeField(e, i)}
-                                            />
-                                        </Col>
-                                        <Col>
-                                            <FormInput
-                                                name="detailTypeField"
-                                                label="Detail Fields"
-                                                value={item.detailTypeField}
-                                                onChange={(e) => handleChangeDetailTypeField(e, i)}
-                                            />
-                                        </Col>
-                                        <Col>
-                                            <Row>
-                                                {
-                                                    detailField.length - 1 === i &&
-                                                    <Col>
-                                                        <i className="fa fa-plus fa-3x center-item add-detail-field" aria-hidden="true" onClick={handleAddDetailType}></i>
-                                                    </Col>
+                            // detailField.map((item, i) => {
+                            //     return(
+                            //         <Row key={i}>
+                            //             <Col>
+                            //                 <FormInput
+                            //                     name="detailType"
+                            //                     label="Detail Type"
+                            //                     value={item.detailType}
+                            //                     onChange={(e) => handleChangeDetailTypeField(e, i)}
+                            //                 />
+                            //             </Col>
+                            //             <Col>
+                            //                 <FormInput
+                            //                     name="detailTypeField"
+                            //                     label="Detail Fields"
+                            //                     value={item.detailTypeField}
+                            //                     onChange={(e) => handleChangeDetailTypeField(e, i)}
+                            //                 />
+                            //             </Col>
+                            //             <Col>
+                            //                 <Row>
+                            //                     {
+                            //                         detailField.length - 1 === i &&
+                            //                         <Col>
+                            //                             <i className="fa fa-plus fa-3x center-item add-detail-field" aria-hidden="true" onClick={handleAddDetailType}></i>
+                            //                         </Col>
                                                     
-                                                }
-                                                {
-                                                    (detailField.length + 1 !== i) &&
-                                                    <Col>
-                                                        <i className="fa fa-minus fa-3x center-item add-detail-field" aria-hidden="true" onClick={() => handleRemoveDetailTypeField(i)}></i>
-                                                    </Col>
-                                                }
-                                            </Row>
-                                        </Col>
-                                    </Row>
-                                )
-                            })
+                            //                     }
+                            //                     {
+                            //                         (detailField.length + 1 !== i) &&
+                            //                         <Col>
+                            //                             <i className="fa fa-minus fa-3x center-item add-detail-field" aria-hidden="true" onClick={() => handleRemoveDetailTypeField(i)}></i>
+                            //                         </Col>
+                            //                     }
+                            //                 </Row>
+                            //             </Col>
+                            //         </Row>
+                            //     )
+                            // })
                         }
-                        <Row>
+                        <Row style = {{ marginTop: '20px'}}>
                             <Col className='buttons'>
                                 <CustomButton
                                     type="submit"

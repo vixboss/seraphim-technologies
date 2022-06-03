@@ -27,9 +27,10 @@ const MenuCard = ({item, history, fetchItemDescription, type }) => {
                             <Card
                                 bg="light"
                                 className="mb-4 mt-2"
+                                style = {{ minHeight: '380px'}}
                             >
                                 <Card.Img variant="top" src={itm.imageUrl} width="180px" height="160px"/>
-                                <Card.Body>
+                                <Card.Body style = {{ display: 'flex', flexDirection: 'column'}}>
                                     <Card.Title>{itm.name}</Card.Title>
                                     <Card.Text>
                                         <span>
@@ -44,7 +45,7 @@ const MenuCard = ({item, history, fetchItemDescription, type }) => {
                                             {itm.date.convertToDate()} &nbsp; | &nbsp; {itm.time.convertToTime()} EST
                                         </span>
                                     </Card.Text>
-                                    <Row>
+                                    <Row style = {{ justifyContent: 'center', marginTop: 'auto'}}>
                                         <Button variant="secondary" className="btn-text-size"
                                         onClick = {() => {
                                             history.push(`/shop/${itm.title.replace(/\s+/g, '-').toLowerCase()}/${itm.name.replace(/\s+/g, '-').toLowerCase()}`, {category, product})

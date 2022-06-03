@@ -23,7 +23,7 @@ const CollectionPreview = ({ categoryId, title, items, history, match, routeName
           ))
         }
       </PreviewContainer>*/}
-    <CollectionItem key={items.id} item={items} title={title} categoryId= {categoryId} productId= {items.id}/>
+    <CollectionItem key={items.id} item={items} title={title} categoryId= {categoryId} productId= {items.id} routeName = {routeName}/>
   </CollectionPreviewContainer>
 );
 
