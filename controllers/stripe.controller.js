@@ -137,15 +137,12 @@ const savePurchasedProduct = async(email, items) => {
                 const { email } = docSnapshot.data();
                 const  id  = docSnapshot.id;
 
-                // console.log(email);
-                // console.log(customerEmail);
-
                 if(email === customerEmail){
-                    // console.log("from Inside");
                     flag = true;
                     collectionRef.doc(id).update({
                         items: fb.firestore.FieldValue.arrayUnion({
                             ...customerItems.data, 
+                            status: 'Active',
                             date: new Date(),
                         })
                     });

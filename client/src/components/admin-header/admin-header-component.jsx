@@ -44,6 +44,7 @@ const AdminHeader = ({adminSignOutStart, history}) => {
         const banner = document.querySelector('.banner');
         const menu = document.querySelector('.menu');
         const purchase = document.querySelector('.purchase');
+        const dashboard = document.querySelector('.dashboard');
 
 
         if(newPath === "/admin"){
@@ -54,6 +55,7 @@ const AdminHeader = ({adminSignOutStart, history}) => {
             banner.classList.add('hidden');
             merchandise.classList.add('hidden');
             purchase.classList.add('hidden');
+            dashboard.classList.add('hidden');
             menu.classList.remove("active");
 
         }
@@ -65,6 +67,7 @@ const AdminHeader = ({adminSignOutStart, history}) => {
             merchandise.classList.remove('hidden');
             purchase.classList.remove('hidden');
             banner.classList.remove('hidden');
+            dashboard.classList.remove('hidden');
         }
     });
     return (
@@ -72,6 +75,7 @@ const AdminHeader = ({adminSignOutStart, history}) => {
         <ul className="menu">
             <li className="logo"><Link to="/"><SvgWD height={80} width={80}/></Link></li>
             
+            <li className="item dashboard hidden"><Link className="link" to='/admin/dashboard'>Dashboard</Link></li>
             <li className="item title hidden"><Link className="link" to='/admin/title'>Title</Link></li>
             <li className="item product hidden"><Link className="link" to="/admin/product">Product</Link></li>
             <li className="item merchandise hidden"><Link className="link" to="/admin/merchandise">merchandise</Link></li>

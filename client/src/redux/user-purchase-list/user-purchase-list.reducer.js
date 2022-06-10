@@ -1,4 +1,4 @@
-import UserPurchaseActionType from './user-purchase.type';
+import UserPurchaseListActionType from './user-purchase-list.type';
 
 const INITIAL_STATE = {
     purchase: null,
@@ -7,21 +7,21 @@ const INITIAL_STATE = {
     responseData: []
 }
 
-const userPurchaseReducer = (state = INITIAL_STATE, action) => {
+const userPurchaseListReducer = (state = INITIAL_STATE, action) => {
     switch(action.type) {
-        case UserPurchaseActionType.GET_USER_PURCHASE_START:
+        case UserPurchaseListActionType.GET_USER_PURCHASE_LIST_START:
             return {
                 ...state,
                 isFetching: true
             }
-        case UserPurchaseActionType.GET_USER_PURCHASE_SUCCESS:
-            return {
+        case UserPurchaseListActionType.GET_USER_PURCHASE_LIST_SUCCESS:
+            return{
                 ...state,
                 isFetching: false,
                 error: false,
-                userPurchase: action.payload
+                items: action.payload
             }
-        case UserPurchaseActionType.GET_USER_PURCHASE_FAILURE: 
+        case UserPurchaseListActionType.GET_USER_PURCHASE_LIST_FAILURE:
             return {
                 ...state,
                 isFetching:false,
@@ -32,4 +32,4 @@ const userPurchaseReducer = (state = INITIAL_STATE, action) => {
     }
 }
 
-export default userPurchaseReducer;
+export default userPurchaseListReducer;

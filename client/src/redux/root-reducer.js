@@ -9,6 +9,8 @@ import shopReducer from './shop/shop.reducer';
 import adminReducer from './admin/admin.reducer';
 import productReducer from './product/product.reducer';
 import merchandiseReducer from './merchandise/merchandise.reducer';
+import userPurchaseReducer from './user-purchase/user-purchase.reducer';
+import userPurchaseListReducer from './user-purchase-list/user-purchase-list.reducer';
 
 const persistConfig = {
     key: 'root',
@@ -23,6 +25,8 @@ const rootReducer = combineReducers({
     shop: shopReducer ,
     admin: adminReducer,
     product: productReducer,
-    merchandise: merchandiseReducer
+    merchandise: merchandiseReducer,
+    userPurchase: userPurchaseReducer,
+    userPurchaseList: userPurchaseListReducer
 });
 export default persistReducer(persistConfig, rootReducer);

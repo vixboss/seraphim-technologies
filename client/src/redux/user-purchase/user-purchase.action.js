@@ -1,8 +1,15 @@
 import UserPurchaseActionType from './user-purchase.type';
 
-const getAllUserPurchaseStart = () => ({
+export const getAllUserPurchaseStart = () => ({
     type: UserPurchaseActionType.GET_USER_PURCHASE_START
 });
 
-const 
+export const getAllUserPurchaseSuccess = (userPurchase) => ({
+    type: UserPurchaseActionType.GET_USER_PURCHASE_SUCCESS,
+    payload: userPurchase
+});
 
+export const getAllUserPurchaseFailure = (error) => ({
+    type: UserPurchaseActionType.GET_USER_PURCHASE_FAILURE,
+    payload: error
+});
