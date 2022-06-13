@@ -5,6 +5,7 @@ import withReactContent from "sweetalert2-react-content";
 
 import { host } from "../../api.config";
 import UserPurchaseListActionType from './user-purchase-list.type';
+import {unAuthorized} from '../../factory';
 import {
     getAllUserPurchaseListSuccess,
     getAllUserPurchaseListFailure
@@ -20,7 +21,7 @@ export function* getUserPurchaseListStart () {
     } catch (error) {
         let err = error.response.data;
         yield put(getAllUserPurchaseListFailure(error));
-
+        
         MySwal.fire({
             position: 'top-end',
             icon: 'error',
@@ -28,6 +29,7 @@ export function* getUserPurchaseListStart () {
             showConfirmButton: false,
             timer: 1500
         });
+        yield put(unAuthorized(error));
     }
 }
 

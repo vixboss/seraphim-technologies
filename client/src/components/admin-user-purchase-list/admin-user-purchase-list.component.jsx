@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 // import { Table } from 'react-bootstrap';
-import { Row } from 'react-bootstrap';
+import { Row, Col } from 'react-bootstrap';
 import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -9,6 +9,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
+import FormInput from '../form-input/form-input.component.jsx';
 
 import './admin-user-purchase-list.style.scss';
 
@@ -56,9 +57,40 @@ const AdminUserPurchaseList = ({data}) => {
         setRowsPerPage(+event.target.value);
         setPage(0);
     };
+
+    const [search, setSearch] = useState('');
+    const handleSearch = (event) => {
+        const {value} = event.target;
+        setSearch(value);
+        if(value !== ""){
+            setRows(data.filter((productList) => {
+                return Object.values(productList)
+                    .join(" ")
+                    .toLowerCase()
+                    .includes(value.toLowerCase());
+            })); 
+        }
+        else {
+            setRows(data);
+        }
+    }
     return(
         <Row md = {8} xs = {8}>
             <Paper sx={{ width: '100%', overflow: 'hidden' }} id= 'user-list-paper'>
+                <Row>
+                    <Col md={10}>
+                        <h1>User Purchase List</h1>
+                    </Col>
+                    <Col md = {2} className="search-input">
+                        <FormInput
+                            name="search"
+                            label="Search"
+                            value={search}
+                            onChange={handleSearch}
+                            autoComplete="off"
+                        />
+                    </Col>
+                </Row>
                 <TableContainer sx={{ maxHeight: 500 }}>
                     <Table stickyHeader aria-label="sticky table">
                         <TableHead>
@@ -84,9 +116,8 @@ const AdminUserPurchaseList = ({data}) => {
                                 <TableRow hover role="checkbox" tabIndex={-1} key={row.s_no}>
                                     {columns.map((column) => {
                                     const value = row[column.id];
-                                    const nestedValue = row['userPurchase'][column.id];
+                                    
                                     return (
-                                        typeof row[column.id] !== "undefined" ?
                                         <TableCell key={column.id} align={column.align}
                                         style = {value === 'Active' ? {color: 'red'}:{color: ''}}
                                         >
@@ -95,15 +126,7 @@ const AdminUserPurchaseList = ({data}) => {
                                                 ? column.format(value)
                                                 : value
                                             }
-                                        </TableCell> :
-                                        <TableCell key={column.id} align={column.align}
-                                        >
-                                            {
-                                                column.format
-                                                ? column.format(nestedValue)
-                                                : nestedValue
-                                            }
-                                        </TableCell> 
+                                        </TableCell>
                                     )
                                     })}
                                 </TableRow>

@@ -5,6 +5,7 @@ import withReactContent from "sweetalert2-react-content";
 
 import { host } from "../../api.config";
 import UserPurchaseActionType from './user-purchase.type';
+import {unAuthorized} from '../../factory';
 import {
     getAllUserPurchaseSuccess,
     getAllUserPurchaseFailure,
@@ -27,6 +28,7 @@ export function* getUserPurchaseStart() {
             showConfirmButton: false,
             timer: 1500
         });
+        yield put(unAuthorized(error));
     }
 }
 

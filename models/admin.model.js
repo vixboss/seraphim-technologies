@@ -4,7 +4,7 @@ class Admin {
     static findAll(email, password){
 
         let sql = `
-            SELECT * FROM admincredentials WHERE email = '${email}' AND password = '${password}'
+            SELECT * FROM admin WHERE email = '${email}' AND password = '${password}'
         `;
         return db.execute(sql);
     }

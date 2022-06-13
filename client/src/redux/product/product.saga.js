@@ -5,6 +5,7 @@ import withReactContent from 'sweetalert2-react-content';
 
 import { host } from '../../api.config';
 import ProductActionType from './product.types';
+import {unAuthorized} from '../../factory';
 
 import { 
         getAllProductTitleSuccess, 
@@ -41,6 +42,7 @@ export function* getProductTitleStart() {
             showConfirmButton: false,
             timer: 1500
         });
+        yield put(unAuthorized(error));
     }
 }
 
@@ -68,6 +70,7 @@ export function* addProductTitleStart({payload: {title}}) {
             timer: 1500
         });
         yield put(addProductTitleFailure(error));
+        yield put(unAuthorized(error));
     }
 }
 
@@ -94,6 +97,7 @@ export function* addProductStart({payload: {title, items}}){
             timer: 1500
         });
         yield put(addProductFailure(error));
+        yield put(unAuthorized(error));
     }
 }
 
@@ -121,6 +125,7 @@ export function* updateProductTitleStart({payload: {id, title}}) {
             timer: 1500
         });
         yield put(updateProductTitleFailure(error));
+        yield put(unAuthorized(error));
     }
 }
 
@@ -140,6 +145,7 @@ export function* getProductById({payload: {id}}){
             timer: 1500
         });
         yield put(getProductByIdFailure(error));
+        yield put(unAuthorized(error));
     }
 }
 
@@ -168,6 +174,7 @@ export function* deleteProductTitleStart({payload}) {
             timer: 1500
         });
         yield put(deleteProductTitleFailure(error));
+        yield put(unAuthorized(error));
     }
 }
 
@@ -195,6 +202,7 @@ export function* deleteProductStart({payload}) {
             timer: 1500
         });
         yield put(deleteProductFailure(error));
+        yield put(unAuthorized(error));
     }
 }
 
@@ -239,6 +247,7 @@ export function* updateProductStart({payload}){
             timer: 1500
         });
         yield put(updateProductFailure(error));
+        yield put(unAuthorized(error));
     }
 }
 

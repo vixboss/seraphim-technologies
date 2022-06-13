@@ -56,19 +56,18 @@ const getAllCurrentUserPurchase = async (req, res, next) => {
                             var val = doc[key];
                             date = dateConverter(doc['date']._seconds);
                             time = timeConverter(doc['date']._seconds);
+
                             status = doc['status'];
                             if(key !== 'date' && key !== 'status'){
                                 currentUserPurchaseArray.push({
                                     email: email,
                                     date: date,
                                     time: time,
-                                    userPurchase: {
-                                        id: val.id,
-                                        amount_total: val.amount_total,
-                                        quantity: val.quantity,
-                                        description: val.description,
-                                        currency: val.currency,
-                                    },
+                                    id: val.id,
+                                    amount_total: val.amount_total,
+                                    quantity: val.quantity,
+                                    description: val.description,
+                                    currency: val.currency,
                                     status: status
                                 });
                             }
@@ -76,13 +75,15 @@ const getAllCurrentUserPurchase = async (req, res, next) => {
                     }
                 });
             });
+            const sortedCurrentUserPurchaseArray = currentUserPurchaseArray.sort((a, b) => new Date(b.date) - new Date(a.date));
             var newCurrentUserPurchaseArray = [];
-            currentUserPurchaseArray.map((currentUsrPurchase, index) => {
+            sortedCurrentUserPurchaseArray.map((currentUsrPurchase, index) => {
                 newCurrentUserPurchaseArray.push({
                     ...currentUsrPurchase,
                     s_no: index + 1
                 });
             });
+            
             res.status(200).send(newCurrentUserPurchaseArray);
         })
     } catch (error) {

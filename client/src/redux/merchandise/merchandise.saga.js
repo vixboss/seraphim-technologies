@@ -6,6 +6,7 @@ import withReactContent from 'sweetalert2-react-content';
 
 import { host } from '../../api.config';
 import MerchandiseTypes from './merchandise.types';
+import {unAuthorized} from '../../factory';
 import { 
         getAllMerchandiseTitleSuccess, 
         getAllMerchandiseTitleFailure, 
@@ -42,6 +43,7 @@ export function* addMerchandiseStart({payload: {title}}){
             timer: 1500
         });
         yield put(addMerchandiseTitleFailure(error));
+        yield put(unAuthorized(error));
     }
 }
 
@@ -60,6 +62,7 @@ export function* getMerchandiseTitleStart() {
             showConfirmButton: false,
             timer: 1500
         });
+        yield put(unAuthorized(error));
     }
 }
 
@@ -87,6 +90,7 @@ export function* updateMerchandiseStart({payload}){
             timer: 1500
         });
         yield put(updateMerchandiseTitleFailure(error));
+        yield put(unAuthorized(error));
     }
 }
 
@@ -138,6 +142,7 @@ export function* deleteMerchandiseStart({payload}) {
             timer: 1500
         });
         yield put(deleteMerchandiseTitleFailure(error));
+        yield put(unAuthorized(error));
     }
 }
 
