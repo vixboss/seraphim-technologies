@@ -9,6 +9,6 @@ router.post('/product', verifyToken, addProduct);
 router.delete('/product/:id',verifyToken, deleteProduct);
 router.get('/product/:id',verifyToken, getProductById);
 router.put('/product/:id',verifyToken, updateProduct);
-router.get('/product',verifyToken, getAllProduct);
+router.get('/product', getAllProduct);
 
 module.exports = router;
