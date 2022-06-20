@@ -50,21 +50,37 @@ export const addCollectionAndDocuments = async (collectionKey, objectsToAdd) => 
 }
 
 export const convertCollectionsSnapshotToMap = (collections) => {
-    const transformedCollection = collections.docs.map(docSnapshot => {
-        const { title, items } = docSnapshot.data();
+    // const transformedCollection = collections.docs.map(docSnapshot => {
+    //     const { title, items } = docSnapshot.data();
 
+    //     console.log(docSnapshot.data());
+    //     return {
+    //         routeName: encodeURI(title.toLowerCase()),
+    //         id: docSnapshot.id,
+    //         title,
+    //         items
+    //     }
+    // })
+
+    // return transformedCollection.reduce((accumulator, collection) => {
+    //     accumulator[collection.title.toLowerCase()] = collection;
+    //     return accumulator;
+    // }, {});
+
+    const transformedCollection = collections.data.map(docSnapshot => {
         return {
-            routeName: encodeURI(title.toLowerCase()),
-            id: docSnapshot.id,
-            title,
-            items
+                    routeName: encodeURI(docSnapshot.title.toLowerCase()),
+                    id: docSnapshot.id,
+                    title: docSnapshot.title,
+                    items: docSnapshot.items
         }
-    })
+    });
 
     return transformedCollection.reduce((accumulator, collection) => {
         accumulator[collection.title.toLowerCase()] = collection;
         return accumulator;
     }, {});
+    
 }
 
 export const getCurrentUser = () => {

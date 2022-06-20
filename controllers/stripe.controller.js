@@ -1,9 +1,9 @@
 require('dotenv').config();
 const bodyParser = require('body-parser');
 const nodemailer = require('nodemailer');
-const firebase = require('../db');
-const firestore = firebase.firestore();
-const fb = require('firebase-admin');
+// const firebase = require('../db');
+// const firestore = firebase.firestore();
+// const fb = require('firebase-admin');
 
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
@@ -127,42 +127,42 @@ const checkoutCompletedSuccessful = async (req, res, next) => {
 }
 
 const savePurchasedProduct = async(email, items) => {
-    try{
-        const customerEmail = email;
-        const customerItems = items;
-        const collectionRef = await firestore.collection('user_purchased');
-        var flag = false;
-        await collectionRef.get().then(snapshot =>{
-            const collectionsMap = snapshot.docs.map(docSnapshot => {
-                const { email } = docSnapshot.data();
-                const  id  = docSnapshot.id;
+    // try{
+    //     const customerEmail = email;
+    //     const customerItems = items;
+    //     const collectionRef = await firestore.collection('user_purchased');
+    //     var flag = false;
+    //     await collectionRef.get().then(snapshot =>{
+    //         const collectionsMap = snapshot.docs.map(docSnapshot => {
+    //             const { email } = docSnapshot.data();
+    //             const  id  = docSnapshot.id;
 
-                if(email === customerEmail){
-                    flag = true;
-                    collectionRef.doc(id).update({
-                        items: fb.firestore.FieldValue.arrayUnion({
-                            ...customerItems.data, 
-                            status: 'Active',
-                            date: new Date(),
-                        })
-                    });
-                }
-            });
+    //             if(email === customerEmail){
+    //                 flag = true;
+    //                 collectionRef.doc(id).update({
+    //                     items: fb.firestore.FieldValue.arrayUnion({
+    //                         ...customerItems.data, 
+    //                         status: 'Active',
+    //                         date: new Date(),
+    //                     })
+    //                 });
+    //             }
+    //         });
 
-            if(!flag){
-                collectionRef.doc().set({
-                    email: customerEmail,
-                    items: [{
-                        ...customerItems.data, 
-                        date: new Date(),
-                    }]
+    //         if(!flag){
+    //             collectionRef.doc().set({
+    //                 email: customerEmail,
+    //                 items: [{
+    //                     ...customerItems.data, 
+    //                     date: new Date(),
+    //                 }]
                     
-                });
-            }
-        });
-    } catch(error) {
-        console.error(error.message);
-    }
+    //             });
+    //         }
+    //     });
+    // } catch(error) {
+    //     console.error(error.message);
+    // }
 }
 
 module.exports = {

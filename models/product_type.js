@@ -1,76 +1,76 @@
-// const { execute } = require('../db');
-// const db = require('../db');
+const { execute } = require('../db');
+const db = require('../db');
 
 class ProductType {
 
-    constructor(id, title){
-        this.id = id;
-        this.title = title;
-    }
-
-    // constructor(title){
+    // constructor(id, title){
+    //     this.id = id;
     //     this.title = title;
     // }
 
-    // save() {
-    //     let d = new Date();
-    //     let yyyy = d.getFullYear();
-    //     let mm = d.getMonth() + 1;
-    //     let dd = d.getDate();
+    constructor(title){
+        this.title = title;
+    }
 
-    //     let hh = d.getHours();
-    //     let min = d.getMinutes();
-    //     let ss = d.getSeconds();
+    save() {
+        let d = new Date();
+        let yyyy = d.getFullYear();
+        let mm = d.getMonth() + 1;
+        let dd = d.getDate();
 
-    //     let createdAt = `${yyyy}-${mm}-${dd} ${hh}:${min}:${ss}`;
+        let hh = d.getHours();
+        let min = d.getMinutes();
+        let ss = d.getSeconds();
 
-    //     let sql = `
-    //         INSERT INTO title(
-    //             title,
-    //             createdAt
-    //         )
-    //         VALUES(
-    //             '${this.title}',
-    //             '${createdAt}'
-    //         )
-    //     `;
+        let createdAt = `${yyyy}-${mm}-${dd} ${hh}:${min}:${ss}`;
 
-    //     return db.execute(sql);
-    // }
+        let sql = `
+            INSERT INTO productType(
+                title,
+                createdAt
+            )
+            VALUES(
+                '${this.title}',
+                '${createdAt}'
+            )
+        `;
 
-    // static update(id, title) {
-    //     let d = new Date();
-    //     let yyyy = d.getFullYear();
-    //     let mm = d.getMonth() + 1;
-    //     let dd = d.getDate();
+        return db.execute(sql);
+    }
 
-    //     let hh = d.getHours();
-    //     let min = d.getMinutes();
-    //     let ss = d.getSeconds();
+    static update(id, title) {
+        let d = new Date();
+        let yyyy = d.getFullYear();
+        let mm = d.getMonth() + 1;
+        let dd = d.getDate();
 
-    //     let createdAtUpdate = `${yyyy}-${mm}-${dd} ${hh}:${min}:${ss}`;
+        let hh = d.getHours();
+        let min = d.getMinutes();
+        let ss = d.getSeconds();
 
-    //     let sql = `
-    //         UPDATE title SET title = '${title}', createdAt = '${createdAtUpdate}' WHERE id = ${id}
-    //     `;
+        let createdAtUpdate = `${yyyy}-${mm}-${dd} ${hh}:${min}:${ss}`;
 
-    //     return db.execute(sql);
-    // }
+        let sql = `
+            UPDATE productType SET title = '${title}', createdAt = '${createdAtUpdate}' WHERE id = ${id}
+        `;
 
-    // static findAll() {
-    //     let sql = `SELECT * from title ORDER BY createdAt DESC`;
-    //     return db.execute(sql);
-    // }
+        return db.execute(sql);
+    }
 
-    // static findById(id) {
-    //     let sql = `SELECT * FROM title WHERE id = ${id}`;
-    //     return db.execute(sql);
-    // }
+    static findAll() {
+        let sql = `SELECT * from productType ORDER BY createdAt DESC`;
+        return db.execute(sql);
+    }
 
-    // static remove(id) {
-    //     let sql = `DELETE FROM title WHERE id = ${id}`;
-    //     return db.execute(sql);
-    // }
+    static findById(id) {
+        let sql = `SELECT * FROM productType WHERE id = ${id}`;
+        return db.execute(sql);
+    }
+
+    static remove(id) {
+        let sql = `DELETE FROM productType WHERE id = ${id}`;
+        return db.execute(sql);
+    }
 }
 
 module.exports = ProductType;

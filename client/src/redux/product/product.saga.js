@@ -132,7 +132,7 @@ export function* updateProductTitleStart({payload: {id, title}}) {
 export function* getProductById({payload: {id}}){
     try {
         const productById = yield axios.get(`${host}/api/product/${id}`);
-        if(productById.status === 200 || productById === 201){
+        if(productById.status === 200 || productById.status === 201){
             yield put(getProductByIdSuccess(productById));
         }
     } catch (error) {
@@ -226,6 +226,7 @@ export function* deletionConfirmation() {
 
 export function* updateProductStart({payload}){
     try {
+        console.log(payload);
         const updatedProduct = yield axios.put(`${host}/api/product/${payload.items[0].id}`, payload);
         if(updatedProduct.status === 200 || updatedProduct === 201 ){
             yield put(updateProductSuccess(updatedProduct));

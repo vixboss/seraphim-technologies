@@ -181,7 +181,7 @@ const ProductDescriptionLeftColumn = ({id, item, addItem, name, date}) => {
         var productArray = [];
         if(typeof cost !== "undefined"){
             cost.map((prdArray) => {
-                if(prdArray.price !== ''){
+                if(prdArray.price !== '' && prdArray.price !== null){
                     var filterArray = [];
                     filterArray.push(prdArray.name);
                     filterArray.push('________');
@@ -245,7 +245,7 @@ const ProductDescriptionLeftColumn = ({id, item, addItem, name, date}) => {
                </Col> */}
                     {
                         cost && cost.map((productPrice, index) => {
-                            if(productPrice.price !== ''){
+                            if(productPrice.price !== '' && productPrice.price !== null){
                                 return (
                                     <Row className="align" key={index}>
                                         <Col sm = {8} xs = {6}>

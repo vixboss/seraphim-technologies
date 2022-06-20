@@ -207,13 +207,12 @@ const ProductList = ({ collection, updateProduct, responseData, deleteProductSta
     /**************************************************** */
     
     const handleRemove = (id) => {
-        console.log(id);
         deleteProductStart(id);
     }
 
     return(
         <Row className="product-list">
-            <div className='search'>
+            <div className='search-div'>
                 <FormInput
                     name="search"
                     label="Search"

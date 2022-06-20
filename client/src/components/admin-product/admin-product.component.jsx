@@ -51,8 +51,11 @@ const AdminProduct = ({fetchCollectionsStart, updateProductStart, getProductById
         id: uuidv4(),
         imageUrl : "",
         name: "",
-        price: "",
-        title : "Select Product Type",
+        title : {
+            id: '',
+            title: "Select Product Type"
+        },
+        titleId:"",
         status:"Recorded",
         heading: "",
         date: new Date(),
@@ -61,10 +64,11 @@ const AdminProduct = ({fetchCollectionsStart, updateProductStart, getProductById
         speakerName:"",
         createdAt: new Date(),
         detailFieldTxtArea: "",
-        productDescription : {
-            description: '',
-            detailFields:{}
-        }
+        description: ''
+        // productDescription : {
+        //     description: '',
+        //     detailFields:{}
+        // }
     });
 
     const [checkUpdateId, setCheckUpdateId] = useState(false);
@@ -73,7 +77,7 @@ const AdminProduct = ({fetchCollectionsStart, updateProductStart, getProductById
 
     const [productType, setProductType] = useState(selectProductType);
 
-    const { imageUrl, name, price, heading, title, date, duration, status, time, speakerName, productDescription, detailFieldTxtArea } = productDetails;
+    const { imageUrl, name, heading, title, date, duration, status, time, speakerName, productDescription, detailFieldTxtArea } = productDetails;
   
     const [pagination, setPagination] = useState({
         offSet: 0,
@@ -208,9 +212,13 @@ const AdminProduct = ({fetchCollectionsStart, updateProductStart, getProductById
     }
 
     
-    const typeDropdownChange = (e) => {
+    const typeDropdownChange = (e, id) => {
         const value = e.target.innerHTML.toLowerCase();
-        setProductDetails({...productDetails, 'title': value });
+        console.log(value);
+        setProductDetails({...productDetails, 'titleId': id ,'title': {
+            id: id,
+            title: value
+        } });
     }
 
     const statusDropdownChange = (e) => {
@@ -223,8 +231,10 @@ const AdminProduct = ({fetchCollectionsStart, updateProductStart, getProductById
             id: uuidv4(),
             imageUrl : "",
             name: "",
-            price: "",
-            title : "Select Product Type",
+            title : {
+                id: '',
+                title: "Select Product Type"
+            },
             heading: "",
             status:"Recorded",
             date: new Date(),
@@ -233,10 +243,11 @@ const AdminProduct = ({fetchCollectionsStart, updateProductStart, getProductById
             speakerName:"",
             createdAt: new Date(),
             detailFieldTxtArea: "",
-            productDescription : {
-                description: '',
-                detailFields:{}
-            }
+            description: ''
+            // productDescription : {
+            //     description: '',
+            //     detailFields:{}
+            // }
         });
         setDescription('');
         setDetailField([{detailType: '', detailTypeField: ''}]);
@@ -261,37 +272,41 @@ const AdminProduct = ({fetchCollectionsStart, updateProductStart, getProductById
     useEffect(() => {
         if(productById.status === 200 || productById.status === 201){
             const { data } = productById;
-            const merchandiseObject = typeof data.merchandise !== "undefined" ? data.merchandise: merchandisePriceArray;
+            const merchandiseObject = typeof data[0].merchandise !== "undefined" ? data[0].merchandise: merchandisePriceArray;
             setCheckUpdateId(true);
             setProductDetails({
-                id: data.id,
-                imageUrl: data.imageUrl,
-                name: data.name,
-                price: data.price,
-                title: data.title,
-                heading: data.heading,
-                date: data.date,
-                status: data.status,
-                duration: data.duration,
-                time:data.time,
+                id: data[0].id,
+                imageUrl: data[0].imageUrl,
+                name: data[0].name,
+                title: {
+                    id: data[0].productType_id,
+                    title: data[0].title
+                },
+                titleId: data[0].productType_id,
+                heading: data[0].heading,
+                date: data[0].date,
+                status: data[0].status,
+                duration: data[0].duration,
+                time:data[0].time,
                 createdAt: new Date(),
                 merchandise: merchandiseObject,
-                speakerName:data.speakerName,
-                detailFieldTxtArea: data.detailFieldTxtArea,
-                productDescription: {
-                    'description': data.productDescription.description,
-                    'detailFields': data.productDescription.detailFields
-                }
+                speakerName:data[0].speakerName,
+                detailFieldTxtArea: data[0].detailFieldTxtArea,
+                description: data[0].description
+                // productDescription: {
+                //     'description': data[0].productDescription.description,
+                //     'detailFields': data[0].productDescription.detailFields
+                // }
             });
-            setDescription(data.productDescription.description);
+            setDescription(data[0].description);
             // setSelectedMerchandise(data.merchandise);
             const arrayObj = [];
-            Object.keys(data.productDescription.detailFields).forEach(key =>
-                arrayObj.push({
-                    detailType: key,
-                    detailTypeField:data.productDescription.detailFields[key]
-                })
-            );
+            // Object.keys(data.productDescription.detailFields).forEach(key =>
+            //     arrayObj.push({
+            //         detailType: key,
+            //         detailTypeField:data.productDescription.detailFields[key]
+            //     })
+            // );
             setMerchandise(merchandiseObject);
 
             arrayObj.length > 0 ? setDetailField(arrayObj) : setDetailField([{detailType: '', detailTypeField: ''}]);
@@ -309,8 +324,9 @@ const AdminProduct = ({fetchCollectionsStart, updateProductStart, getProductById
         setProductType(selectProductType);
         selectMerchandiseTitleAsArray.map((merchandise) => {
             arr.push({
-                name : merchandise,
-                price: ''
+                id: merchandise.id,
+                name : merchandise.title,
+                price: null
             });
         });
     });
@@ -373,12 +389,11 @@ const AdminProduct = ({fetchCollectionsStart, updateProductStart, getProductById
         const list = [...merchandise];
         list.map((merchand) => {
             if(merchand.name === name){
-                merchand.price = value;
+                merchand.price = value ==="" ? null : parseInt(value);
             }
         });
         setMerchandise(list);
         setProductDetails({...productDetails, merchandise: list});
-        console.log(productDetails);
     }
 
 
@@ -409,16 +424,6 @@ const AdminProduct = ({fetchCollectionsStart, updateProductStart, getProductById
                                     required
                                 />
                             </Col>
-                            
-                            {/*<Col>
-                                <FormInput
-                                    name="price"
-                                    label="Price ($)"
-                                    value={price}
-                                    handleChange={handleChange}
-                                    required
-                                />
-                            </Col>*/}
                             <Col>
                                 <FormInput
                                     name="imageUrl"
@@ -429,16 +434,9 @@ const AdminProduct = ({fetchCollectionsStart, updateProductStart, getProductById
                                 />
                             </Col>
                         </Row>
+
                         <Row>
                             <Col id="datePicker">
-                               {/* <FormInput
-                                    name="date"
-                                    label="Date"
-                                    value={date}
-                                    handleChange={handleChange}
-                                    required
-                               /> */}
-
                                 <LocalizationProvider dateAdapter={AdapterDateFns}
                                 locale={localeMap[locale]}
                                 >
@@ -463,14 +461,6 @@ const AdminProduct = ({fetchCollectionsStart, updateProductStart, getProductById
                                 />
                             </Col>
                             <Col id="timePicker">
-                                {/*<FormInput
-                                    name="time"
-                                    label="Time in EST"
-                                    value={time}
-                                    handleChange={handleChange}
-                                    required
-                                />*/}
-
                                 <LocalizationProvider dateAdapter={AdapterDateFns}>
                                     <TimePicker
                                         label="Time"
@@ -482,6 +472,7 @@ const AdminProduct = ({fetchCollectionsStart, updateProductStart, getProductById
                                 </LocalizationProvider>
                             </Col>
                         </Row>
+                    
                         <Row>
                             <Col>
                                 <FormInput
@@ -495,7 +486,7 @@ const AdminProduct = ({fetchCollectionsStart, updateProductStart, getProductById
                             <Col>
                                 <DropdownButton 
                                     id="dropdown-basic-button" 
-                                    title={title} 
+                                    title={ typeof (title.title) !== "undefined"? title.title : ''} 
                                     className="center-item"
                                     required
                                 >
@@ -503,55 +494,13 @@ const AdminProduct = ({fetchCollectionsStart, updateProductStart, getProductById
                                     productType.map((type, index) => {
                                         return(
                                             <Dropdown.Item key={type.id}
-                                            onClick={(e) => typeDropdownChange(e)}>{type.title.capitalizeFirstCharacter()}</Dropdown.Item>
+                                            onClick={(e) => typeDropdownChange(e, type.id)}>{type.title.capitalizeFirstCharacter()}</Dropdown.Item>
                                         )
                                     })
                                 }
                                 </DropdownButton>
                             </Col>
-                            {/*<Col xs = {6} lg md>
-                                
-                                <FormControl style={{width: '100%'}} className='center-multi-select'>
-                                    <InputLabel id="demo-multiple-chip-label"
-                                    >Mrch.</InputLabel>
-                                    <Select
-                                    labelId="demo-multiple-chip-label"
-                                    id="demo-multiple-chip"
-                                    multiple
-                                    value={selectedMerchandise}
-                                    onChange={handleChangeMultiSelect}
-                                    input={<OutlinedInput id="select-multiple-chip" label="Chip" />}
-                                    renderValue={(selected) => (
-                                        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-                                        {selected.map((value) => (
-                                            <Chip key={value} label={value} />
-                                        ))}
-                                        </Box>
-                                    )}
-                                    MenuProps={MenuProps}
-                                    >
-                                    {merchandise.map((name) => (
-                                        <MenuItem
-                                        key={name}
-                                        value={name}
-                                        style={getStyles(name, selectedMerchandise, theme)}
-                                        >
-                                        {name}
-                                        </MenuItem>
-                                    ))}
-                                    </Select>
-                                </FormControl>
-
-                            </Col>*/}
-                            <Col xs = {6} lg md>   
-                               {/* <FormInput
-                                    name="description"
-                                    label="Description"
-                                    value={description}
-                                    handleChange={handleDescriptionChange}
-                                    
-                               /> */}
-
+                            <Col xs = {6} lg md>
                                 <FloatingLabel controlId="floatingTextarea" name="description" label="Description">
                                     <Form.Control
                                     as="textarea"
@@ -564,6 +513,8 @@ const AdminProduct = ({fetchCollectionsStart, updateProductStart, getProductById
                                 </FloatingLabel>
                             </Col>
                         </Row>
+
+                        
                         <Row>
                             <Col xs = {12} lg = {6} md = {6}>
                                 <Card sx={{ minWidth: 275 }} className="padding-top">
@@ -579,7 +530,7 @@ const AdminProduct = ({fetchCollectionsStart, updateProductStart, getProductById
                                                             <FormInput
                                                                 name={merchand.name}
                                                                 label={merchand.name}
-                                                                value={merchand.price}
+                                                                value={merchand.price !== null ? merchand.price.toString() : ""}
                                                                 handleChange={handleChangeMerchandiseField}
                                                                 onKeyPress={(event) => {
                                                                     if (!/[0-9]/.test(event.key)) {
@@ -617,6 +568,8 @@ const AdminProduct = ({fetchCollectionsStart, updateProductStart, getProductById
                                 </FloatingLabel>
                             </Col>
                         </Row>
+                
+
                         {
                             // detailField.map((item, i) => {
                             //     return(
@@ -658,6 +611,7 @@ const AdminProduct = ({fetchCollectionsStart, updateProductStart, getProductById
                             //     )
                             // })
                         }
+
                         <Row style = {{ marginTop: '20px'}}>
                             <Col className='buttons'>
                                 <CustomButton

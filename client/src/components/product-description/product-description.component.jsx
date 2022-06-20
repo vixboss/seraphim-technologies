@@ -8,7 +8,7 @@ import ProductDescriptionLeftColumn from '../product-description-left-column/pro
 import './product-description.styles.scss';
 
 const ProductDescription = ({collectionItem, history, match }) => {
-    const {id, name, productDescription, heading, date, detailFieldTxtArea} = collectionItem;
+    const {id, name, description, heading, speakerName, date, duration, detailFieldTxtArea} = collectionItem;
     return (
         // <div className="product-description-page">
         //     {/* Left Column / Headphones Image */}
@@ -36,11 +36,16 @@ const ProductDescription = ({collectionItem, history, match }) => {
                 </Grid>
                 <Grid item md={8}>
                     <div className="product-description">
-                        <span>{match.params.id.toUpperCase()}</span>
-                        <h1>{name}</h1>
-                        <p>{heading}</p>
+                        <h1 style={{textAlign: 'center'}}>{name}</h1>
                     </div>
-                    <ProductConfiguration productConfiguration={productDescription} detailFieldTxtArea = {detailFieldTxtArea}/>
+                    <ProductConfiguration 
+                        description={description} 
+                        detailFieldTxtArea = {detailFieldTxtArea}
+                        date = {date}
+                        duration = {duration}
+                        speakerName = { speakerName }
+                        industry = {match.params.id.toUpperCase()}
+                    />
                 </Grid>
             </Grid>
     )

@@ -4,14 +4,6 @@
     justify-content: center;
     margin:  30px auto;
 
-    @media screen and (max-width: 800px) {
-        display: unset;
-        .product-description h1{
-            font-size: 30px;
-            letter-spacing: 2px;
-        }
-      }
-
       /* Columns */
     .left-column {
         width: 40%;
@@ -56,6 +48,11 @@
         font-size: 38px;
         color: #43484D;
         letter-spacing: -2px;
+        @media screen and (max-width: 800px) {
+            display: unset;
+            font-size: 30px;
+            letter-spacing: 0.5px;
+        }
     }
     .product-description p {
         font-size: 16px;

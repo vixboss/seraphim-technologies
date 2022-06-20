@@ -1,24 +1,24 @@
 'use strict';
 const { response } = require('express');
-const firebase = require('../db');
-const firestore = firebase.firestore();
+// const firebase = require('../db');
+// const firestore = firebase.firestore();
 // const fb = require('firebase-admin');
 const moment = require('moment-timezone');
 
 const getAllPurchasedProduct = async ( req, res, next ) => {
-    try {
-        var purchasedArray = [];
-        const collectionRef = await firestore.collection('user_purchased');
-        await collectionRef.get().then(snapshot => {
-            snapshot.docs.map(docSnapshot => {
-                purchasedArray.push(docSnapshot.data());
-            });
-        });
+    // try {
+    //     var purchasedArray = [];
+    //     const collectionRef = await firestore.collection('user_purchased');
+    //     await collectionRef.get().then(snapshot => {
+    //         snapshot.docs.map(docSnapshot => {
+    //             purchasedArray.push(docSnapshot.data());
+    //         });
+    //     });
 
-        res.status(200).send(purchasedArray);
-    } catch (error) {
-        res.status(400).send(error.message);
-    }
+    //     res.status(200).send(purchasedArray);
+    // } catch (error) {
+    //     res.status(400).send(error.message);
+    // }
 }
 
 const dateConverter = (UNIX_timestamp) => {
@@ -40,55 +40,55 @@ const timeConverter = (UNIX_timestamp) => {
     return (myDatetimeString);
 }
 const getAllCurrentUserPurchase = async (req, res, next) => {
-    try {
-        let currentUserPurchaseArray = [];
-        const collectionRef = await firestore.collection('user_purchased');
-        await collectionRef.get().then(snapshot => {
-            snapshot.docs.map(docSnapshot => {
-                var email = docSnapshot.data().email;
-                docSnapshot.data().items.map(doc => {
-                    let date;
-                    let time;
-                    let status;
-                    for (var key in doc) {
+    // try {
+    //     let currentUserPurchaseArray = [];
+    //     const collectionRef = await firestore.collection('user_purchased');
+    //     await collectionRef.get().then(snapshot => {
+    //         snapshot.docs.map(docSnapshot => {
+    //             var email = docSnapshot.data().email;
+    //             docSnapshot.data().items.map(doc => {
+    //                 let date;
+    //                 let time;
+    //                 let status;
+    //                 for (var key in doc) {
                         
-                        if (doc.hasOwnProperty(key)) {
-                            var val = doc[key];
-                            date = dateConverter(doc['date']._seconds);
-                            time = timeConverter(doc['date']._seconds);
+    //                     if (doc.hasOwnProperty(key)) {
+    //                         var val = doc[key];
+    //                         date = dateConverter(doc['date']._seconds);
+    //                         time = timeConverter(doc['date']._seconds);
 
-                            status = doc['status'];
-                            if(key !== 'date' && key !== 'status'){
-                                currentUserPurchaseArray.push({
-                                    email: email,
-                                    date: date,
-                                    time: time,
-                                    id: val.id,
-                                    amount_total: val.amount_total,
-                                    quantity: val.quantity,
-                                    description: val.description,
-                                    currency: val.currency,
-                                    status: status
-                                });
-                            }
-                        }
-                    }
-                });
-            });
-            const sortedCurrentUserPurchaseArray = currentUserPurchaseArray.sort((a, b) => new Date(b.date) - new Date(a.date));
-            var newCurrentUserPurchaseArray = [];
-            sortedCurrentUserPurchaseArray.map((currentUsrPurchase, index) => {
-                newCurrentUserPurchaseArray.push({
-                    ...currentUsrPurchase,
-                    s_no: index + 1
-                });
-            });
+    //                         status = doc['status'];
+    //                         if(key !== 'date' && key !== 'status'){
+    //                             currentUserPurchaseArray.push({
+    //                                 email: email,
+    //                                 date: date,
+    //                                 time: time,
+    //                                 id: val.id,
+    //                                 amount_total: val.amount_total,
+    //                                 quantity: val.quantity,
+    //                                 description: val.description,
+    //                                 currency: val.currency,
+    //                                 status: status
+    //                             });
+    //                         }
+    //                     }
+    //                 }
+    //             });
+    //         });
+    //         const sortedCurrentUserPurchaseArray = currentUserPurchaseArray.sort((a, b) => new Date(b.date) - new Date(a.date));
+    //         var newCurrentUserPurchaseArray = [];
+    //         sortedCurrentUserPurchaseArray.map((currentUsrPurchase, index) => {
+    //             newCurrentUserPurchaseArray.push({
+    //                 ...currentUsrPurchase,
+    //                 s_no: index + 1
+    //             });
+    //         });
             
-            res.status(200).send(newCurrentUserPurchaseArray);
-        })
-    } catch (error) {
-        res.status(400).send(error.message);
-    }
+    //         res.status(200).send(newCurrentUserPurchaseArray);
+    //     })
+    // } catch (error) {
+    //     res.status(400).send(error.message);
+    // }
 }
 
 module.exports = {

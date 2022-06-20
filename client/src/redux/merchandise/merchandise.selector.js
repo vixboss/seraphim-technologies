@@ -10,7 +10,7 @@ export const selectMerchandiseTitleAsArray = createSelector([selectMerchandise],
     var arr = [];
     if(merchandiseTitle.merchandise !== null){
         merchandiseTitle.merchandise.map(val => {
-            arr.push(val.title);
+            arr.push(val);
         });
     }
 

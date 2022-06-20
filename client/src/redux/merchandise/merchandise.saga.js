@@ -28,13 +28,13 @@ export function* addMerchandiseStart({payload: {title}}){
             MySwal.fire({
                 position: 'top-end',
                 icon: 'success',
-                title: 'Product Added Successfully.',
+                title: 'Merchandise Added Successfully.',
                 showConfirmButton: false,
                 timer: 1500
             });
         }
     } catch (error) {
-        let err = error.response.data;
+        let err = error.response.data.message;
         MySwal.fire({
             position: 'top-end',
             icon: 'error',
