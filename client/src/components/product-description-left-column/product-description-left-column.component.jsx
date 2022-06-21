@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router';
 import Checkbox from '@mui/material/Checkbox';
 import { Row, Col } from 'react-bootstrap';
 import IconButton from '@mui/material/IconButton';
@@ -27,7 +28,7 @@ import { useEffect } from 'react';
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
-const ProductDescriptionLeftColumn = ({id, item, addItem, name, date}) => {
+const ProductDescriptionLeftColumn = ({id, item, addItem, name, date, history}) => {
     const Root = styled('div')(({ theme }) => ({
         width: '100%',
         ...theme.typography.body2,
@@ -296,7 +297,13 @@ const ProductDescriptionLeftColumn = ({id, item, addItem, name, date}) => {
                                 </Divider>
                                 <Grid item xs>
                                     <Tooltip title="Add To Cart">
-                                        <IconButton color="primary" aria-label="add to shopping cart" onClick = {handleCartItem} className="icon-color">
+                                        <IconButton color="primary" aria-label="add to shopping cart" onClick = {
+                                            () => {
+
+                                                handleCartItem(); 
+                                                history.push('/checkout');
+                                            }
+                                        } className="icon-color">
                                             <AddShoppingCartIcon/>
                                         </IconButton>
                                     </Tooltip>
@@ -354,4 +361,4 @@ const mapDispatchtoProps = dispatch => ({
     addItem : item => dispatch(addItem(item))
 });
 
-export default connect(null, mapDispatchtoProps)(ProductDescriptionLeftColumn);
+export default withRouter(connect(null, mapDispatchtoProps)(ProductDescriptionLeftColumn));

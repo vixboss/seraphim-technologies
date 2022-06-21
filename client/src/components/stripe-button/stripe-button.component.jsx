@@ -109,7 +109,8 @@ const StripeCheckoutButton = ({price, history, clearCart, currentUser, cartItems
             {
 
                 currentUser !== null ? <Button variant="contained" onClick={payment}>
-                    Pay Now
+                <i className="fa fa-credit-card" aria-hidden="true"></i>    
+                &nbsp; Pay Now
                 </Button> : <Button variant="contained" onClick={() => history.push('/signin')}>
                     Sign In for payment.
                 </Button>

@@ -44,11 +44,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 //   next();
 // });
 
-const host = process.env.NODE_ENV === 'development' || typeof process.env.NODE_ENV === "undefined" ? `http://localhost:${3000}` : "https://webinardock.com";
-
-console.log(process.env.NODE_ENV);
 app.use(function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", host);
+  res.header("Access-Control-Allow-Origin", '*');
   res.header("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
   next();

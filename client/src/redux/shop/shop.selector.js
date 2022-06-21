@@ -34,7 +34,7 @@ export const selectIsCollectionsLoaded = createSelector(
 
 export const selectIsCollectionsItemDetailFetching = createSelector(
     [selectShop],
-    shop=> shop.isFetchingItemDetails
+    shop=> shop.isFetching
 ) 
 
 export const selectIsCollectionsItemDetailLoaded = createSelector(

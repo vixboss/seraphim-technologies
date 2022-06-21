@@ -2,6 +2,7 @@ import React, {useState} from "react";
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import {Row} from 'react-bootstrap';
+import { withRouter } from 'react-router-dom';
 
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
@@ -18,7 +19,7 @@ import { selectCartItems, selectCartTotal } from './../../redux/cart/cart.select
 
 import './checkout.styles.scss';
 
-const CheckoutPage = ({cartItems, total}) => {
+const CheckoutPage = ({cartItems, total, history}) => {
     const [open, setOpen] = useState(false);
 
     const handleClickOpen = () => {
@@ -68,6 +69,18 @@ const CheckoutPage = ({cartItems, total}) => {
     // </div>
 
     <Row className="page-border set-margin">
+        <div className="continue-button">
+            <span className="continue-button-span">
+                <Button 
+                    className="continue-shopping-button"
+                    variant="contained" 
+                    onClick={() => history.push('/shop')}
+                >
+                    <i className="fa fa-arrow-left" aria-hidden="true"></i>
+                    &nbsp; Continue Shopping
+                </Button>
+            </span>
+        </div>
         {
             cartItems.map((cartItem, index) =>(
                 <CheckoutItem key={index} cartItem={cartItem}/>
@@ -111,4 +124,4 @@ const mapStateToProps = createStructuredSelector({
     total: selectCartTotal
 })
 
-export default connect(mapStateToProps)(CheckoutPage);
+export default withRouter(connect(mapStateToProps)(CheckoutPage));
