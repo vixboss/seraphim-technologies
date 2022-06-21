@@ -104,7 +104,6 @@ const stripePaymentSuccessful = (req, res, next) => {
 
 const checkoutCompletedSuccessful = async (req, res, next) => {
     const event = req.body;
-
     if(event.type === 'checkout.session.completed'){
 
         // In "checkout.session.completed" event handler, get the ID of the Checkout Session
@@ -126,43 +125,54 @@ const checkoutCompletedSuccessful = async (req, res, next) => {
     }
 }
 
-const savePurchasedProduct = async(email, items) => {
-    // try{
-    //     const customerEmail = email;
-    //     const customerItems = items;
-    //     const collectionRef = await firestore.collection('user_purchased');
-    //     var flag = false;
-    //     await collectionRef.get().then(snapshot =>{
-    //         const collectionsMap = snapshot.docs.map(docSnapshot => {
-    //             const { email } = docSnapshot.data();
-    //             const  id  = docSnapshot.id;
+// const savePurchasedProduct = async(email, items) => {
+//     // try{
+//     //     const customerEmail = email;
+//     //     const customerItems = items;
+//     //     const collectionRef = await firestore.collection('user_purchased');
+//     //     var flag = false;
+//     //     await collectionRef.get().then(snapshot =>{
+//     //         const collectionsMap = snapshot.docs.map(docSnapshot => {
+//     //             const { email } = docSnapshot.data();
+//     //             const  id  = docSnapshot.id;
 
-    //             if(email === customerEmail){
-    //                 flag = true;
-    //                 collectionRef.doc(id).update({
-    //                     items: fb.firestore.FieldValue.arrayUnion({
-    //                         ...customerItems.data, 
-    //                         status: 'Active',
-    //                         date: new Date(),
-    //                     })
-    //                 });
-    //             }
-    //         });
+//     //             if(email === customerEmail){
+//     //                 flag = true;
+//     //                 collectionRef.doc(id).update({
+//     //                     items: fb.firestore.FieldValue.arrayUnion({
+//     //                         ...customerItems.data, 
+//     //                         status: 'Active',
+//     //                         date: new Date(),
+//     //                     })
+//     //                 });
+//     //             }
+//     //         });
 
-    //         if(!flag){
-    //             collectionRef.doc().set({
-    //                 email: customerEmail,
-    //                 items: [{
-    //                     ...customerItems.data, 
-    //                     date: new Date(),
-    //                 }]
+//     //         if(!flag){
+//     //             collectionRef.doc().set({
+//     //                 email: customerEmail,
+//     //                 items: [{
+//     //                     ...customerItems.data, 
+//     //                     date: new Date(),
+//     //                 }]
                     
-    //             });
-    //         }
-    //     });
-    // } catch(error) {
-    //     console.error(error.message);
-    // }
+//     //             });
+//     //         }
+//     //     });
+//     // } catch(error) {
+//     //     console.error(error.message);
+//     // }
+// }
+
+const savePurchasedProduct = async(email, items) => {
+    try {
+        const userEmail = email;
+        const data = items.data;
+        console.log(data);
+        
+    } catch (error) {
+        console.error(error.message);
+    }
 }
 
 module.exports = {

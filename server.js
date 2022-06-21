@@ -44,8 +44,16 @@ app.use(bodyParser.urlencoded({ extended: true }));
 //   next();
 // });
 
+var host;
+if (process.env.NODE_ENV !== 'product') {
+  host = "http://localhost:3000";
+}
+else{
+  host = "https://webinardock.com";
+}
+
 app.use(function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Origin", host);
   res.header("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
   next();

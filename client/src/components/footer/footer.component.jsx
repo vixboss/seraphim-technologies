@@ -72,6 +72,14 @@ const Footer = () => {
                             </Row>
                         </Col>
                     </Row>
+                    <Row>
+                        <span style = {{color: 'rgb(26, 165, 216)'}}>For Customer Support: &nbsp;  &nbsp;
+                            <i className="fa fa-envelope" aria-hidden="true"></i>  &nbsp;
+                            <a href = "mailto:cs@webinardock.com">
+                                cs@webinardock.com
+                            </a> 
+                        </span>
+                    </Row>
                 </Container>
             </div>
             <div className='footer'>
