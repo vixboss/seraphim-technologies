@@ -37,6 +37,20 @@ export const currentDateAndTimeInEST = (date) => {
     var myDatetimeString = moment(date).tz(myTimezone).format(myDatetimeFormat);
     return (myDatetimeString);
 }
+
+// Convert Date to IST
+export const currentDateAndTimeInIST = (date) => {
+    var myTimezone = "Asia/Kolkata";
+    var myDatetimeFormat= "ddd MMM D yyyy hh:mm:ss a";
+    var myDatetimeString = moment(date).tz(myTimezone).format(myDatetimeFormat);
+    return (myDatetimeString);
+}
+
+export const unixTimeStampToDate = (date) => {
+    var myDatetimeFormat= "ddd MMM D yyyy hh:mm:ss a z";
+    return moment(date).format(myDatetimeFormat);
+}
+
 export const paragraphToList = (para) => {
     var finalList = [];
     var newArray= [];
@@ -144,6 +158,31 @@ export const convertDate = (dt) => {
     return (year + '-' + month + '-' + day);
 }
 
+export const unAuthorized = (error) => {
+    var status = error.response.status;
+        var redirectLocation = window.location.origin + '/admin';
+
+        if(status === 403 || status === 401){
+            setTimeout(() => {
+                window.location.href = redirectLocation;
+            }, 2000);
+        }
+}
+
+export const srvTime = () => {
+    
+    //FF, Opera, Safari, Chrome
+    var xmlHttp = new XMLHttpRequest();
+    
+    xmlHttp.open('HEAD',window.location.href.toString(),false);
+    xmlHttp.setRequestHeader("Content-Type", "text/html");
+    xmlHttp.send('');
+
+    var myTimezone = "Asia/Kolkata";
+    var myDatetimeFormat= "ddd MMM D yyyy hh:mm:ss";
+    return moment(xmlHttp.getResponseHeader("Date")).tz(myTimezone).format(myDatetimeFormat);
+}
+
 Object.defineProperty(String.prototype, 'capitalizeFirstCharacter', {
     value: function() {
         return this.charAt(0).toUpperCase() + this.slice(1);
@@ -171,13 +210,9 @@ Object.defineProperty(String.prototype, 'convertToTime', {
     enumerable: false
 });
 
-export const unAuthorized = (error) => {
-    var status = error.response.status;
-        var redirectLocation = window.location.origin + '/admin';
-
-        if(status === 403 || status === 401){
-            setTimeout(() => {
-                window.location.href = redirectLocation;
-            }, 2000);
-        }
-}
+Object.defineProperty(String.prototype, 'dotSeparator', {
+    value: function() {
+        return this.slice(0,10).concat('...');
+    },
+    enumerable: false
+});

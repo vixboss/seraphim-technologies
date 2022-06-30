@@ -214,7 +214,6 @@ const AdminProduct = ({fetchCollectionsStart, updateProductStart, getProductById
     
     const typeDropdownChange = (e, id) => {
         const value = e.target.innerHTML.toLowerCase();
-        console.log(value);
         setProductDetails({...productDetails, 'titleId': id ,'title': {
             id: id,
             title: value

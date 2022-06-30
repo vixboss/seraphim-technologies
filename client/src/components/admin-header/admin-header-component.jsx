@@ -43,7 +43,7 @@ const AdminHeader = ({adminSignOutStart, history}) => {
         const merchandise = document.querySelector('.merchandise');
         const banner = document.querySelector('.banner');
         const menu = document.querySelector('.menu');
-        const purchase = document.querySelector('.purchase');
+        const discount = document.querySelector('.discount');
         const dashboard = document.querySelector('.dashboard');
 
 
@@ -54,7 +54,7 @@ const AdminHeader = ({adminSignOutStart, history}) => {
             title.classList.add('hidden');
             banner.classList.add('hidden');
             merchandise.classList.add('hidden');
-            purchase.classList.add('hidden');
+            discount.classList.add('hidden');
             dashboard.classList.add('hidden');
             menu.classList.remove("active");
 
@@ -65,7 +65,7 @@ const AdminHeader = ({adminSignOutStart, history}) => {
             product.classList.remove('hidden');
             title.classList.remove('hidden');
             merchandise.classList.remove('hidden');
-            purchase.classList.remove('hidden');
+            discount.classList.remove('hidden');
             banner.classList.remove('hidden');
             dashboard.classList.remove('hidden');
         }
@@ -80,7 +80,7 @@ const AdminHeader = ({adminSignOutStart, history}) => {
             <li className="item product hidden"><Link className="link" to="/admin/product">Product</Link></li>
             <li className="item merchandise hidden"><Link className="link" to="/admin/merchandise">merchandise</Link></li>
             <li className="item banner hidden"><Link className="link" to='/admin/banner'>Banner</Link></li>
-            <li className="item purchase hidden"><Link className="link" to='/admin/user-purchase'>Purchase</Link></li>
+            <li className="item discount hidden"><Link className="link" to='/admin/discount'>Discount</Link></li>
             <li className="item signOut hidden link" style={{cursor: 'pointer'}} onClick={signOutAdmin}>Sign Out</li>
             
             <li className="toggle hidden"><a href="#">{React.createElement('i', {className: childLink})}</a></li>

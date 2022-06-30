@@ -5,9 +5,8 @@ import { createStructuredSelector } from 'reselect';
 
 import FormInput from '../form-input/form-input.component';
 import CustomButton from '../custom-button/custom-button.component';
-import { getAllProductTitleStart } from './../../redux/product/product.action';
 import ProductTitleListContainer from '../product-title-list/product-title-list.container';
-import { addProductTitleStart, updateProductTitleStart, deleteProductTitleStart } from './../../redux/product/product.action';
+import { addProductTitleStart, updateProductTitleStart, deleteProductTitleStart, getAllProductTitleStart } from './../../redux/product/product.action';
 import { selectProductType } from '../../redux/product/product.selector';
 import './admin-title.styles.scss';
 

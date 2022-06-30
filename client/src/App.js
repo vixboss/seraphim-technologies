@@ -19,7 +19,7 @@ import MerchandiseComponent from './components/merchandise/merchandise.component
 import PrivacyPolicyPageComponent from './pages/privacy-policy/privacy-policy.component';
 import TermsAndConditionsPageComponent from './pages/terms-and-conditions/terms-and-conditions.component';
 import RefundAndCancellationPageComponent from './pages/refund-cancellation/refund-cancellation.component';
-import UserPurchasesPages from './pages/user-purchases/user-purchases.component';
+import DiscountPage from './pages/discount/discount.component';
 import AdminBanner from './components/admin-banner/admin-banner.component';
 import AdminDashboard from './components/admin-dashboard/admin-dashboard.component';
 
@@ -70,7 +70,7 @@ const App = ({ checkUserSession, currentuser, currentAdmin }) => {
         <Route exact path = '/admin/product' component={AdminProduct}/>
         <Route exact path = '/admin/banner' component={AdminBanner}/>
         <Route exact path = '/admin/merchandise' component={MerchandiseComponent}/>
-        <Route exact path = '/admin/user-purchase' component = {UserPurchasesPages}/>
+        <Route exact path = '/admin/discount' component = {DiscountPage}/>
         <Route exact path = '/admin/dashboard' component={AdminDashboard} />
         <Route exact path='/admin'
           render = {

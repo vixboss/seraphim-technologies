@@ -1,0 +1,32 @@
+.discount-field {
+    // width: 380px;
+    display: flex;
+    flex-direction: column;
+
+    .buttons{
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 30px;
+    }
+    @media screen and (max-width: 768px) {
+        padding-bottom: 20px;
+    }
+
+}
+
+@media only screen and (max-width: 480px){
+    .discount-field {
+        width: auto;
+    }
+    // #product-discount-table {
+    //     width: -webkit-fill-available;
+    // }
+
+    // .discount > div {
+    //     width: 45%;
+    // }
+}
+
+.onHover:hover {
+    cursor: pointer;
+}

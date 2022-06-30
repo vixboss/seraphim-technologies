@@ -1,4 +1,5 @@
 import React from "react";
+import Tooltip from '@mui/material/Tooltip';
 
 import './cart-item.styles.scss';
 
@@ -9,7 +10,9 @@ const CartItem = ({item}) => {
         <div className='cart-item'>
             <img src= {imageUrl} alt='item'/>
             <div className='item-details'>
-                <span className='name'>{name}</span>
+                <Tooltip title={name}>
+                    <span className='name'>{name.dotSeparator()}</span>
+                </Tooltip>
                 <span className='price'>{quantity} x ${price}</span>
             </div>
         </div>

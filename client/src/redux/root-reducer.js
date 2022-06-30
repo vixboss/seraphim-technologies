@@ -11,6 +11,7 @@ import productReducer from './product/product.reducer';
 import merchandiseReducer from './merchandise/merchandise.reducer';
 import userPurchaseReducer from './user-purchase/user-purchase.reducer';
 import userPurchaseListReducer from './user-purchase-list/user-purchase-list.reducer';
+import discountReducer from './discount/discount.reducer';
 
 const persistConfig = {
     key: 'root',
@@ -27,6 +28,7 @@ const rootReducer = combineReducers({
     product: productReducer,
     merchandise: merchandiseReducer,
     userPurchase: userPurchaseReducer,
-    userPurchaseList: userPurchaseListReducer
+    userPurchaseList: userPurchaseListReducer,
+    discount:discountReducer
 });
 export default persistReducer(persistConfig, rootReducer);
