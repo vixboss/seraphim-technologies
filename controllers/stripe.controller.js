@@ -11,9 +11,13 @@ const stripePayment = async(req, res, next) => {
     const currentUser = req.body.currentUser;
     const cartItems = req.body.cartItems;
     const discountPriceForStripe = req.body.discountPriceForStripe;
-    try {
-        const coupon = await stripe.coupons.create({amount_off: discountPriceForStripe, currency: "usd", duration: 'once'});
-        const session = await stripe.checkout.sessions.create({
+    try { 
+        var coupon = '';
+        if(discountPriceForStripe > 0) {
+            coupon = await stripe.coupons.create({amount_off: discountPriceForStripe, currency: "usd", duration: 'once'});
+        }
+
+        const params = {
             payment_method_types: ["card"],
             mode: "payment",
             line_items: cartItems.map(item => {
@@ -30,13 +34,13 @@ const stripePayment = async(req, res, next) => {
                     quantity: item.quantity,
                 }
             }),
-            discounts: [{
-                coupon: coupon.id,
-              }],
             customer_email: currentUser.email,
             success_url:"https://webinardock.com/shop",
             cancel_url: "https://webinardock.com/checkout"
-       }); 
+        };
+
+        const stripeParams = coupon !== '' ? {...params, discounts: [{coupon: coupon.id}]} : params;
+        const session = await stripe.checkout.sessions.create(stripeParams); 
        res.status(200).json({ url: session.url });
     } catch (error) {
         res.status(400).send(error);

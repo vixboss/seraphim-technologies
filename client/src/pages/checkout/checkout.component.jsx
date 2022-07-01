@@ -74,7 +74,6 @@ const CheckoutPage = ({cartItems, total, history, discountGetByNameStart, discou
 
     
     useEffect(() => {
-        console.log(cartItems);
         if(cloneDiscount.discount !== null && cloneDiscount.discount !== "No Record(s) Found.") {
             const newDiscount = cloneDiscount.discount;
             const newValue = newDiscount[0].value;
