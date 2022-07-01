@@ -4,8 +4,7 @@ const INITIAL_STATE = {
     isFetching: false,
     responseData:[],
     discount: null,
-    error: null,
-    coupon: null
+    error: null
 }
 
 const discountReducer = (state = INITIAL_STATE, action) => {
@@ -16,17 +15,11 @@ const discountReducer = (state = INITIAL_STATE, action) => {
                 ...state,
                 isFetching: true
             }
+        case DiscountActionTypes.DISCOUNT_GET_BY_NAME_SUCCESS:
         case DiscountActionTypes.DISCOUNT_GET_SUCCESS:
             return {
                 ...state,
                 discount: action.payload,
-                isFetching: false,
-                error: null
-            }
-        case DiscountActionTypes.DISCOUNT_GET_BY_NAME_SUCCESS:
-            return {
-                ...state,
-                coupon: action.payload,
                 isFetching: false,
                 error: null
             }

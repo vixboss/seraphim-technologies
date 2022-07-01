@@ -179,7 +179,7 @@ export const srvTime = () => {
     xmlHttp.send('');
 
     var myTimezone = "Asia/Kolkata";
-    var myDatetimeFormat= "ddd MMM D yyyy hh:mm:ss";
+    var myDatetimeFormat= "ddd MMM D yyyy HH:mm:ss";
     return moment(xmlHttp.getResponseHeader("Date")).tz(myTimezone).format(myDatetimeFormat);
 }
 

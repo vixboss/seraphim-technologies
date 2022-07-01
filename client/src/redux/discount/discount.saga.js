@@ -127,7 +127,7 @@ export function* deleteDiscountStartSaga({payload}) {
 
 export function* discountByNameStartSaga({payload}) {
     try {
-        const discount = yield axios.get(`${host}/api/apply-discount`, {payload});
+        const discount = yield axios.post(`${host}/api/apply-discount`, {payload});
         yield put(getAllDiscountSuccess(discount.data));
     } catch (error) {
         let err = error.response.data;

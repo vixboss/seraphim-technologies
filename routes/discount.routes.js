@@ -14,5 +14,5 @@ router.post('/discount',verifyToken, addDiscount);
 router.get('/discount',verifyToken, getAllDiscount);
 router.get('/discount/:id',verifyToken, getDiscountById);
 router.delete('/discount/:id',verifyToken, deleteDiscountById);
-router.put('/discount/:id',verifyToken.apply, updateDiscountById);
+router.put('/discount/:id',verifyToken, updateDiscountById);
 module.exports = router;

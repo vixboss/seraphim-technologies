@@ -33,20 +33,20 @@ const ProductConfiguration = ({description, speakerName, date, duration, detailF
             <Row>
                 <Col md= {6}>
                     <Row>
-                        <Col md = {4}>
+                        <Col md = {4} xm = {6} xs = {6}>
                             <span className='heading-size'>{speakerName ? "Speaker Name:-" : ''}</span>
                         </Col>
-                        <Col md = {8}>
+                        <Col md = {8} xm = {6} xs = {6}>
                             <p style = {{ fontSize: '18px'}}>{speakerName}</p>
                         </Col>
                     </Row>
                 </Col>
                 <Col md= {6}>
                     <Row>
-                        <Col md = {4}>
+                        <Col md = {4} xm = {6} xs = {6}>
                             <span className='heading-size'>{industry ? "Industry:-" : ''}</span>
                         </Col>
-                        <Col md = {8}>
+                        <Col md = {8} xm = {6} xs = {6}>
                             <p style = {{ fontSize: '18px'}}>{industry}</p>
                         </Col>
                     </Row>
@@ -55,20 +55,20 @@ const ProductConfiguration = ({description, speakerName, date, duration, detailF
             <Row>
                 <Col md= {6}>
                     <Row>
-                        <Col md = {4}>
+                        <Col md = {4} xm = {6} xs = {6}>
                             <span className='heading-size'>{duration ? "Duration:-" : ''}</span>
                         </Col>
-                        <Col md = {8}>
+                        <Col md = {8} xm = {6} xs = {6}>
                             <p style = {{ fontSize: '18px'}}>{duration + ' minutes'}</p>
                         </Col>
                     </Row>
                 </Col>
                 <Col md= {6}>
                     <Row>
-                        <Col md = {4}>
+                        <Col md = {4} xm = {6} xs = {6}>
                             <span className='heading-size'>{date ? "Date:-" : ''}</span>
                         </Col>
-                        <Col md = {8}>
+                        <Col md = {8} xm = {6} xs = {6}>
                             <p style = {{ fontSize: '18px'}}>{date.convertToDate()}</p>
                         </Col>
                     </Row>

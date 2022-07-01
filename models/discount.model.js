@@ -96,7 +96,6 @@ class Discount {
             const type = body.discountType;
             const value = body.discountValue;
             const validity = body.discountValidity;
-
             const sql = `
                 UPDATE discount 
                 SET 

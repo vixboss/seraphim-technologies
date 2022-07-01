@@ -1,8 +1,17 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import {Row} from 'react-bootstrap';
+import {Row, Col} from 'react-bootstrap';
 import { withRouter } from 'react-router-dom';
+import Paper from '@mui/material/Paper';
+import Divider from '@mui/material/Divider';
+import Chip from '@mui/material/Chip';
+import { styled } from '@mui/material/styles';
+import Tooltip from '@mui/material/Tooltip';
+import IconButton from '@mui/material/IconButton';
+import DeleteIcon from '@mui/icons-material/Delete';
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert from '@mui/material/Alert';
 
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
@@ -14,13 +23,37 @@ import DialogTitle from '@mui/material/DialogTitle';
 
 import CheckoutItem from "../../components/checkout-item/checkout-item.component";
 import StripeCheckoutButton from "../../components/stripe-button/stripe-button.component";
+import {srvTime} from '../../factory';
 
+import { discountGetByNameStart } from './../../redux/discount/discount.action';
+import { selectAllDiscount } from './../../redux/discount/discount.selector';
 import { selectCartItems, selectCartTotal } from './../../redux/cart/cart.selector';
 
 import './checkout.styles.scss';
 
-const CheckoutPage = ({cartItems, total, history}) => {
+const Alert = React.forwardRef(function Alert(props, ref) {
+    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
+const CheckoutPage = ({cartItems, total, history, discountGetByNameStart, discount}) => {
+    const Root = styled('div')(({ theme }) => ({
+        width: '100%',
+        ...theme.typography.body2,
+        '& > :not(style) + :not(style)': {
+            marginTop: theme.spacing(8),
+        },
+    }));
+    const cloneDiscount = discount;
     const [open, setOpen] = useState(false);
+    const [couponCode, setCouponCode] = useState('');
+
+    const [coupon, setCoupon] = useState({
+        discount: '',
+        total: total,
+        value: 0,
+        appliedCoupon: '',
+        snack: '',
+        calculatedValue: 0
+    });
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -30,44 +63,98 @@ const CheckoutPage = ({cartItems, total, history}) => {
         setOpen(false);
     };
 
-    return (
-    // <div className='checkout-page page-border'>
-    //     <div className='checkout-header'>
-    //         <div className='header-block'>
-    //             <span>Speaker</span>
-    //         </div>
-    //         <div className='header-block'>
-    //             <span>Training</span>
-    //         </div>
-    //         <div className='header-block'>
-    //             <span>Product Name</span>
-    //         </div>
-    //         <div className='header-block'>
-    //             <span>Quantity</span>
-    //         </div>
-    //         <div className='header-block'>
-    //             <span>Price</span>
-    //         </div>
-    //         <div className='header-block'>
-    //             <span>Remove</span>
-    //         </div>
-    //     </div>
-    //     {
-    //         cartItems.map((cartItem, index) =>(
-    //             <CheckoutItem key={index} cartItem={cartItem}/>
-    //         ))
-    //     }
-    //     <div className='total'>
-    //         <span> TOTAL: ${total} </span>
-    //     </div>
-    //     <div className="test-warning">
-    //         *Please use the follwoing test credit card for the payments*
-    //         <br/>
-    //         4242 4242 4242 4242 - Exp: 01/24 -CVV: 123
-    //     </div>
-    //     <StripeCheckoutButton price={total} cartItems = {cartItems}/>
-    // </div>
+    const handleChange = (event) => {
+        const {value} = event.target;
+        setCouponCode(value);
+    }
 
+    const applyCoupon = () => {
+        discountGetByNameStart(couponCode);
+    }
+
+    
+    useEffect(() => {
+        console.log(cartItems);
+        if(cloneDiscount.discount !== null && cloneDiscount.discount !== "No Record(s) Found.") {
+            const newDiscount = cloneDiscount.discount;
+            const newValue = newDiscount[0].value;
+            const type = newDiscount[0].type;
+
+            var dbDate = new Date(newDiscount[0].createdAt);
+            dbDate.setHours(dbDate.getHours() + newDiscount[0].validity);
+            var currentServerDateAndTime = srvTime();
+            currentServerDateAndTime = new Date(currentServerDateAndTime);
+
+            if(currentServerDateAndTime <= dbDate) {
+                if(type === "$") {
+                    const discountedTotal = total ? (parseInt(total) - parseInt(newValue)) : coupon.total;
+                    setCoupon({...coupon, total: discountedTotal, appliedCoupon: newDiscount[0].name, value: newDiscount[0].value, snack: 'active', calculatedValue: newValue});
+                    handleSnackClick();
+                }
+                else{
+
+                    const valueInPercentage = (parseInt(total).toFixed(2) * (parseInt(newValue).toFixed(2)/100));
+
+                    const discountedPercentageTotal = total ? (total - valueInPercentage) : coupon.total;
+
+                    setCoupon({...coupon, total: discountedPercentageTotal, appliedCoupon: newDiscount[0].name, value: newDiscount[0].value, snack: 'active', calculatedValue: valueInPercentage});
+                    handleSnackClick();
+                }
+            }
+            else{
+
+                setCoupon({
+                    discount: '',
+                    total: total,
+                    value: 0,
+                    appliedCoupon: '',
+                    snack:'expired',
+                    calculatedValue: 0
+                });
+                cloneDiscount.discount = null;
+                handleSnackClick();
+            }
+        }else{
+            if(cloneDiscount.discount !== null){
+                setCoupon({
+                    discount: '',
+                    total: total,
+                    value: 0,
+                    appliedCoupon: '',
+                    snack:'notFound',
+                    calculatedValue: 0
+                });
+                handleSnackClick();
+                cloneDiscount.discount = null;
+
+            }
+        }
+    },[discount]);
+
+    const handleRemoveCouponCode = () => {
+        setCoupon({
+            discount: '',
+            total: total,
+            value: 0,
+            appliedCoupon: '',
+            snack: '',
+            calculatedValue: 0
+        });
+        cloneDiscount.discount = null;
+    }
+
+    const [snackOpen, setSnackOpen] = React.useState(false);
+
+    const handleSnackClick = () => {
+        setSnackOpen(true);
+    };
+
+    const handleSnackClose = (reason) => {
+        if (reason === 'clickaway') return;
+        setSnackOpen(false);
+    };
+
+    return (
     <Row className="page-border set-margin">
         <div className="continue-button">
             <span className="continue-button-span">
@@ -86,10 +173,131 @@ const CheckoutPage = ({cartItems, total, history}) => {
                 <CheckoutItem key={index} cartItem={cartItem}/>
             ))
         }
-        <Row className="total">
-            <span onClick={handleClickOpen}>Have a coupon code?</span>
-            <span> TOTAL: ${total} </span>            
-        </Row>
+        <Paper spacing = {2}
+            sx={{
+                p: 2,
+                margin: 'auto',
+                maxWidth: 800,
+                marginTop: '20px',
+                flexGrow: 1,
+                backgroundColor: (theme) =>
+                theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
+            }}
+        >
+            <Row style={{fontWeight: '600', fontSize: 'larger'}}>
+                <Col md={6} xs={6} xm={6} style={{color: 'grey'}}>
+                    <span>Total Amount</span>
+                </Col>
+                <Col md={6} xs={6} xm={6} align="right" style={{letterSpacing: '2px'}}>
+                    <span>${total.toFixed(2)}</span>
+                </Col>
+            </Row>
+            <Row style={{fontWeight: '600', fontSize: 'larger'}}>
+                <Col md={6} xs={6} xm={6} style={{color: 'grey'}}>
+                    <span>Discount {
+                        cloneDiscount.discount !== null && cloneDiscount.discount !== "No Record(s) Found." ? 
+                        (cloneDiscount.discount[0].type === "$" ? '- ($' + coupon.value + ')': '- (' + coupon.value + '%)') : ''
+                    }</span>
+                </Col>
+                <Col md={6} xs={6} xm={6} align="right" style={{letterSpacing: '2px', color: '#fc5185'}}>
+                    <span> - ${coupon.calculatedValue.toFixed(2)}</span>
+                </Col>
+            </Row>
+            <Root>
+                <Divider>
+                    <Chip label="TOTAL" />
+                </Divider>
+            </Root>
+            <Row>
+                <Col md={6} xs={6} xm={6} style={{fontWeight: '600', fontSize: 'x-large'}}>
+                    <span>Total</span>
+                </Col>
+                <Col md={6} xs={6} xm={6} align="right" style={{letterSpacing: '2px', fontWeight: '600', fontSize: 'x-large', color: '#2f1c6a'}}>
+                    <span>${coupon.total.toFixed(2)}</span>
+                </Col>
+            </Row>
+            <Row>
+                {
+                    coupon.appliedCoupon === '' ?
+                    <Col md={6} xs={8} xm={8} style={{fontWeight: '600', fontSize: 'x-large'}}>
+                        <span onClick={handleClickOpen} className = "coupon">Have a coupon code?</span>
+                    </Col>
+                    :
+                    <Col md={6} xs={12} xm={12} style={{fontWeight: '600', fontSize: 'larger'}}>
+                        <span onClick={handleClickOpen}>Coupon code &nbsp;</span>
+                        <span
+                            style={{
+                                color: 'white',
+                                backgroundColor: '#fc5185',
+                                borderRadius: '5px',
+                                paddingLeft: '10px',
+                                paddingRight: '10px'
+                            }}
+                        >{coupon.appliedCoupon}</span>
+                        <span>
+                            <Tooltip title="Remove Applied Coupon">
+                                <IconButton color="primary" aria-label="add to shopping cart" onClick = {
+                                    () => {
+                                        handleRemoveCouponCode()
+                                    }
+                                } className="icon-color">
+                                    <DeleteIcon/>
+                                </IconButton>
+                            </Tooltip>
+                        </span>
+                    </Col>
+                }
+            </Row>
+            <Row>
+                {
+                    coupon.snack === 'active' &&
+                    <Snackbar
+                        open={snackOpen}
+                        autoHideDuration={5000}
+                        onClose={handleSnackClose}
+                        style={{width: 'auto'}}
+                        className = "snack-alert"
+                    >
+                        <Alert onClose={handleSnackClose} severity="success" sx={{ width: '100%' }}>
+                            Coupon Applied.
+                        </Alert>
+                    </Snackbar> 
+                }
+            </Row>
+            <Row>
+                {
+                    coupon.snack === 'notFound' &&
+                    <Snackbar
+                        open={snackOpen}
+                        autoHideDuration={5000}
+                        onClose={handleSnackClose}
+                        style={{width: 'auto'}}
+                        className = "snack-alert"
+                    >
+                        <Alert onClose={handleSnackClose} severity="warning" sx={{ width: '100%' }}>
+                            Coupon not found.
+                        </Alert>
+                    </Snackbar> 
+                }
+            </Row>
+            <Row>
+                {
+                    coupon.snack === 'expired' &&
+                    <Snackbar
+                        open={snackOpen}
+                        autoHideDuration={5000}
+                        onClose={handleSnackClose}
+                        style={{width: 'auto'}}
+                        className = "snack-alert"
+                    >
+                        <Alert onClose={handleSnackClose} severity="error" sx={{ width: '100%' }}>
+                            Coupon has expired.
+                        </Alert>
+                    </Snackbar> 
+                }
+            </Row>
+        </Paper>
+        
         <Row className="test-warning">
             *Please use the follwoing test credit card for the payments*
             <br/>
@@ -97,7 +305,7 @@ const CheckoutPage = ({cartItems, total, history}) => {
         </Row>
         <div className="pay-button">
             <span className="pay-button-span">
-                <StripeCheckoutButton price={total} cartItems = {cartItems}/>
+                <StripeCheckoutButton discountPrice={coupon.calculatedValue.toFixed(2)} cartItems = {cartItems}/>
             </span>
         </div>
         <Dialog open={open} onClose={handleClose}>
@@ -109,19 +317,29 @@ const CheckoutPage = ({cartItems, total, history}) => {
                 label="Coupon Code"
                 type="text"
                 variant="standard"
+                name="couponCode"
+                value={couponCode}
+                onChange = {handleChange}
             />
             </DialogContent>
             <DialogActions>
                 <Button style={{color: '#6c757d'}} onClick={handleClose}>Cancel</Button>
-                <Button style={{color: '#6c757d'}} onClick={handleClose}>Apply</Button>
+                <Button style={{color: '#6c757d'}} onClick={() => {handleClose(); applyCoupon();}}>Apply</Button>
             </DialogActions>
         </Dialog>
     </Row>
 
 )}
+
+const mapDispatchToProps = dispatch => ({
+    discountGetByNameStart: (name) => dispatch(discountGetByNameStart(name))
+});
+
 const mapStateToProps = createStructuredSelector({
     cartItems: selectCartItems,
-    total: selectCartTotal
+    total: selectCartTotal,
+    discount: selectAllDiscount
+
 })
 
-export default withRouter(connect(mapStateToProps)(CheckoutPage));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(CheckoutPage));

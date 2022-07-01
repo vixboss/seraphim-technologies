@@ -10,7 +10,9 @@ const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 const stripePayment = async(req, res, next) => {
     const currentUser = req.body.currentUser;
     const cartItems = req.body.cartItems;
+    const discountPriceForStripe = req.body.discountPriceForStripe;
     try {
+        const coupon = await stripe.coupons.create({amount_off: discountPriceForStripe, currency: "usd", duration: 'once'});
         const session = await stripe.checkout.sessions.create({
             payment_method_types: ["card"],
             mode: "payment",
@@ -28,9 +30,9 @@ const stripePayment = async(req, res, next) => {
                     quantity: item.quantity,
                 }
             }),
-            // discounts:[{
-            //     coupon: item.discount
-            // }],
+            discounts: [{
+                coupon: coupon.id,
+              }],
             customer_email: currentUser.email,
             success_url:"https://webinardock.com/shop",
             cancel_url: "https://webinardock.com/checkout"
