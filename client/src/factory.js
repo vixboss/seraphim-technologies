@@ -41,7 +41,7 @@ export const currentDateAndTimeInEST = (date) => {
 // Convert Date to IST
 export const currentDateAndTimeInIST = (date) => {
     var myTimezone = "Asia/Kolkata";
-    var myDatetimeFormat= "ddd MMM D yyyy hh:mm:ss a";
+    var myDatetimeFormat= "ddd MMM D yyyy HH:mm:ss";
     var myDatetimeString = moment(date).tz(myTimezone).format(myDatetimeFormat);
     return (myDatetimeString);
 }
