@@ -47,7 +47,8 @@ const DiscountListComponent = ({allDiscount, deleteDiscount, updateDiscount}) =>
             dbDate.setHours(dbDate.getHours() + value.validity);
             var currentServerDateAndTime = srvTime();
             currentServerDateAndTime = new Date(currentServerDateAndTime);
-
+            console.log(dbDate);
+            console.log(currentServerDateAndTime);
             if(currentServerDateAndTime <= dbDate) {
                 return React.createElement("p",{style: {color: 'green'}}, "Active");
             }
