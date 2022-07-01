@@ -2,9 +2,16 @@
     width: 380px;
     display: flex;
     flex-direction: column;
+    margin-left: auto;
+    margin-right: auto;
 
     .title {
+        display: flex;
         margin: 10px 0px;
+
+        span {
+            display: flex;
+        }
     }
 
     .buttons{
