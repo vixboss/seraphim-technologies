@@ -42,7 +42,10 @@ const CheckoutPage = ({cartItems, total, history, discountGetByNameStart, discou
             marginTop: theme.spacing(8),
         },
     }));
+    
     const cloneDiscount = discount;
+    var [newTotal, setNewTotal] = useState(total);
+
     const [open, setOpen] = useState(false);
     const [couponCode, setCouponCode] = useState('');
 
@@ -72,8 +75,7 @@ const CheckoutPage = ({cartItems, total, history, discountGetByNameStart, discou
         discountGetByNameStart(couponCode);
     }
 
-    
-    useEffect(() => {
+    const discountCalculation = () => {
         if(cloneDiscount.discount !== null && cloneDiscount.discount !== "No Record(s) Found.") {
             const newDiscount = cloneDiscount.discount;
             const newValue = newDiscount[0].value;
@@ -125,8 +127,19 @@ const CheckoutPage = ({cartItems, total, history, discountGetByNameStart, discou
                 cloneDiscount.discount = null;
 
             }
+            else{
+                setCoupon({...coupon, total: total});
+            }
         }
-    },[discount]);
+    }
+
+    useEffect(() => {
+        setNewTotal(total);
+    }, [total]);
+    
+    useEffect(() => {
+        discountCalculation();
+    },[discount, newTotal]);
 
     const handleRemoveCouponCode = () => {
         setCoupon({
@@ -183,7 +196,7 @@ const CheckoutPage = ({cartItems, total, history, discountGetByNameStart, discou
         >
             <Row style={{fontWeight: '600', fontSize: 'larger'}}>
                 <Col md={6} xs={6} xm={6} style={{color: 'grey'}}>
-                    <span>Total Amount</span>
+                    <span>Sub Total</span>
                 </Col>
                 <Col md={6} xs={6} xm={6} align="right" style={{letterSpacing: '2px'}}>
                     <span>${total.toFixed(2)}</span>
