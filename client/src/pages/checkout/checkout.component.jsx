@@ -23,7 +23,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 
 import CheckoutItem from "../../components/checkout-item/checkout-item.component";
 import StripeCheckoutButton from "../../components/stripe-button/stripe-button.component";
-import {srvTime} from '../../factory';
+import {srvTime, currentDateAndTimeInISTWithotFormat} from '../../factory';
 
 import { discountGetByNameStart } from './../../redux/discount/discount.action';
 import { selectAllDiscount } from './../../redux/discount/discount.selector';
@@ -79,12 +79,10 @@ const CheckoutPage = ({cartItems, total, history, discountGetByNameStart, discou
             const newValue = newDiscount[0].value;
             const type = newDiscount[0].type;
 
-            var dbDate = new Date(newDiscount[0].createdAt);
-            dbDate.setHours(dbDate.getHours() + newDiscount[0].validity);
             var currentServerDateAndTime = srvTime();
-            currentServerDateAndTime = new Date(currentServerDateAndTime);
+            var comparedDateObject = currentDateAndTimeInISTWithotFormat(newDiscount[0].createdAt, newDiscount[0].validity, currentServerDateAndTime);
 
-            if(currentServerDateAndTime <= dbDate) {
+            if(comparedDateObject.status === "Active") {
                 if(type === "$") {
                     const discountedTotal = total ? (parseInt(total) - parseInt(newValue)) : coupon.total;
                     setCoupon({...coupon, total: discountedTotal, appliedCoupon: newDiscount[0].name, value: newDiscount[0].value, snack: 'active', calculatedValue: newValue});

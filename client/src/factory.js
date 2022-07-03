@@ -38,6 +38,22 @@ export const currentDateAndTimeInEST = (date) => {
     return (myDatetimeString);
 }
 
+// Date comparison and get date in IST on server.
+export const currentDateAndTimeInISTWithotFormat = (date, validity, srvTime) => {
+    var myTimezone = "Asia/Kolkata";
+    var myDatetimeFormat= "ddd MMM DD yyyy HH:mm:ss";
+    var myDatetimeString = moment(date).add(validity, 'hours').tz(myTimezone).format(myDatetimeFormat);
+    var mySrvTime = moment(srvTime).tz(myTimezone).format(myDatetimeFormat);
+    var status = moment(myDatetimeString).isAfter(mySrvTime) ? "Active" : "Expired";
+    var comparedObject = {
+        createdAt: moment(date).tz(myTimezone).format(myDatetimeFormat),
+        createdDateWithAddedValidity:myDatetimeString,
+        currentServerTime: srvTime,
+        status
+    };
+    return (comparedObject);
+}
+
 // Convert Date to IST
 export const currentDateAndTimeInIST = (date) => {
     var myTimezone = "Asia/Kolkata";

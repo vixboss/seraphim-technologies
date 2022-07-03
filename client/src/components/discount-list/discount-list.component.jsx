@@ -9,7 +9,7 @@ import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import FormInput from '../form-input/form-input.component.jsx';
-import {checkUndefined, srvTime, currentDateAndTimeInIST} from '../../factory';
+import {checkUndefined, srvTime, currentDateAndTimeInIST, currentDateAndTimeInISTWithotFormat} from '../../factory';
 import './discount-list.styles.scss';
 import { VapingRoomsRounded } from '@mui/icons-material';
 
@@ -36,20 +36,19 @@ const DiscountListComponent = ({allDiscount, deleteDiscount, updateDiscount}) =>
           minWidth: 120
         },
         { id: 'createdAt', label: 'Created_At', minWidth: 120, format: (value) => {
-            const date = currentDateAndTimeInIST(new Date(value));
+            const date = currentDateAndTimeInIST(value);
             return date;
         }},
         { id: 'validity', label: 'Validity', minWidth: 120, format: (value) => {
             return value > 1 ? value + ' hrs': value + ' hr';
         }},
         { id: 'status', label: 'Status', minWidth: 150, format: (value) => {
-            var dbDate = new Date(value.createdAt);
-            dbDate.setHours(dbDate.getHours() + value.validity);
             var currentServerDateAndTime = srvTime();
-            currentServerDateAndTime = new Date(currentServerDateAndTime);
-            console.log(dbDate);
-            console.log(currentServerDateAndTime);
-            if(currentServerDateAndTime <= dbDate) {
+            var comparedDateObject = currentDateAndTimeInISTWithotFormat(value.createdAt, value.validity, currentServerDateAndTime);
+            
+            console.log(comparedDateObject);
+            
+            if(comparedDateObject.status === "Active") {
                 return React.createElement("p",{style: {color: 'green'}}, "Active");
             }
             else{
@@ -146,7 +145,6 @@ const DiscountListComponent = ({allDiscount, deleteDiscount, updateDiscount}) =>
                                 return (
                                 <TableRow hover role="checkbox" tabIndex={-1} key={ind + 1}>
                                     {columns.map((column) => {
-                                    // const value = column.id === 'id' ? ind : row[column.id];
                                     let value;
                                         if(column.id === 'id'){
                                             value = ind;
