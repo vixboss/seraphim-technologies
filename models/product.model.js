@@ -1,7 +1,4 @@
 const db = require("../db");
-const multipleInsertQuery = require('../db.queries');
-const singleInsertQuery = require('../db.queries');
-const { findAll } = require("./merchandise.model");
 
 class Product {
     constructor(imageUrl, name, merchandise, description, detailFieldTxtArea, title, heading, date, duration, time, speakerName, createdAt, titleId){

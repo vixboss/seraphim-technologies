@@ -15,6 +15,21 @@ export const fetchCollectionsFailure = (errorMessage) => ({
     payload: errorMessage
 });
 
+export const searchCollectionsStart = (data) => ({
+    type: ShopActionTypes.SEARCH_COLLECTIONS_START,
+    payload: data
+})
+
+export const searchCollectionsSuccess = (collectionsMap) => ({
+    type:ShopActionTypes.SEARCH_COLLECTIONS_SUCCESS,
+    payload: collectionsMap
+});
+
+export const searchCollectionsFailure = (errorMessage) => ({
+    type:ShopActionTypes.SEARCH_COLLECTIONS_FAILURE,
+    payload: errorMessage
+});
+
 export const fetchItemDescription = (selectedItem) => ({
     type: ShopActionTypes.FETCH_COLLECTIONS_ITEM_DETAILS,
     payload: selectedItem
