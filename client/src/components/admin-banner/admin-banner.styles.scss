@@ -1,0 +1,32 @@
+.title-field {
+    width: 380px;
+    display: flex;
+    flex-direction: column;
+
+    .buttons{
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 30px;
+    }
+    @media screen and (max-width: 768px) {
+        padding-bottom: 20px;
+    }
+
+}
+
+@media only screen and (max-width: 480px){
+    .title-field {
+        width: auto;
+    }
+    #product-title-table {
+        width: -webkit-fill-available;
+    }
+
+    .title > div {
+        width: 45%;
+    }
+}
+
+.onHover:hover {
+    cursor: pointer;
+}

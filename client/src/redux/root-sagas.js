@@ -9,6 +9,7 @@ import { MerchandiseSaga } from './merchandise/merchandise.saga';
 import { UserPurchaseSaga } from "./user-purchase/user-purchase.sagas";
 import { UserPurchaseListSaga } from './user-purchase-list/user-purchase-list.saga';
 import { DiscountSaga } from './discount/discount.saga';
+import { BannerSaga } from './banner/banner.saga';
 
 export default function* rootSagas() {
     yield all([
@@ -20,6 +21,7 @@ export default function* rootSagas() {
        call(MerchandiseSaga),
        call(UserPurchaseSaga),
        call(UserPurchaseListSaga),
-       call(DiscountSaga)
+       call(DiscountSaga),
+       call(BannerSaga)
     ]);
 }

@@ -12,6 +12,8 @@ const userPurchaseRoutes = require('./routes/user-purchase.routes');
 const discountRoutes = require('./routes/discount.routes');
 const applyDiscountRoutes = require('./routes/apply-discount.routes');
 const productSearchRoutes = require('./routes/product-search.routes');
+const bannerRoutes = require('./routes/banner.routes');
+const productByNameRoutes = require('./routes/product-by-name.routes');
 
 if (process.env.NODE_ENV !== 'production') require('dotenv').config();
 
@@ -67,6 +69,8 @@ app.use('/api', userPurchaseRoutes);
 app.use('/api', discountRoutes);
 app.use('/api', applyDiscountRoutes);
 app.use('/api', productSearchRoutes);
+app.use('/api', bannerRoutes);
+app.use('/api', productByNameRoutes);
 
 /*********************************************************/
 

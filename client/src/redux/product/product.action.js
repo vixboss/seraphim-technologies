@@ -118,3 +118,18 @@ export const updateProductFailure = error => ({
     type: ProductActionType.PRODUCT_UPDATE_FAILURE,
     payload: error
 })
+
+export const getProductByNameStart = data => ({
+    type: ProductActionType.PRODUCT_GET_BY_NAME_START,
+    payload: data
+})
+
+export const getProductByNameSuccess = data => ({
+    type: ProductActionType.PRODUCT_GET_BY_NAME_SUCCESS,
+    payload: data
+})
+
+export const getProductByNameFailure = error => ({
+    type: ProductActionType.PRODUCT_GET_BY_NAME_FAILURE,
+    payload: error
+})

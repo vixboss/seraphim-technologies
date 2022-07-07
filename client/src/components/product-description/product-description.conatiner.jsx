@@ -2,12 +2,12 @@ import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
 import { compose } from "redux";
 
-import { selectIsCollectionsItemDetailFetching } from "../../redux/shop/shop.selector";
+import { selectIsProductTypeFetching } from '../../redux/product/product.selector';
 import WithSpinner from "../../components/with-spinner/with-spinner.component";
 import ProductDescription from "./product-description.component";
 
 const mapStateToProps = createStructuredSelector({
-    isLoading: selectIsCollectionsItemDetailFetching
+    isLoading: selectIsProductTypeFetching
 });
 
 const ProductDescriptionContainer= compose(

@@ -23,7 +23,9 @@ import {
         getProductByIdSuccess,
         getProductByIdFailure,
         updateProductSuccess,
-        updateProductFailure
+        updateProductFailure,
+        getProductByNameSuccess,
+        getProductByNameFailure,
     } from './product.action';
 
 const MySwal = withReactContent(Swal);
@@ -145,6 +147,26 @@ export function* getProductById({payload: {id}}){
             timer: 1500
         });
         yield put(getProductByIdFailure(error));
+        yield put(unAuthorized(error));
+    }
+}
+export function* getProductByName({payload}){
+    try {
+        var name = payload;
+        const productById = yield axios.post(`${host}/api/product-by-name`, {name});
+        if(productById.status === 200 || productById.status === 201){
+            yield put(getProductByNameSuccess(productById));
+        }
+    } catch (error) {
+        let err = error.response.data;
+        MySwal.fire({
+            position: 'top-end',
+            icon: 'error',
+            title: err,
+            showConfirmButton: false,
+            timer: 1500
+        });
+        yield put(getProductByNameFailure(error));
         yield put(unAuthorized(error));
     }
 }
@@ -287,6 +309,9 @@ export function* onProductgetById() {
     yield takeLatest(ProductActionType.PRODUCT_GET_BY_ID_START, getProductById )
 }
 
+export function* onProductgetByName() {
+    yield takeLatest(ProductActionType.PRODUCT_GET_BY_NAME_START, getProductByName )
+}
 export function* onProductUpdateStart() {
     yield takeLatest(ProductActionType.PRODUCT_UPDATE_START, updateProductStart)
 }
@@ -303,6 +328,7 @@ export function* ProductSaga(){
         call(onProductAddStart),
         call(onProductDeleteStart),
         call(onProductgetById), 
-        call(onProductUpdateStart)
+        call(onProductUpdateStart),
+        call(onProductgetByName)
     ]);
 }

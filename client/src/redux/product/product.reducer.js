@@ -6,7 +6,8 @@ const INITIAL_STATE = {
     error: null,
     isFetching: false,
     responseData:[],
-    productById:[]
+    productById:[],
+    productByName:[]
 }
 
 const productReducer = (state= INITIAL_STATE, action) => {
@@ -53,7 +54,23 @@ const productReducer = (state= INITIAL_STATE, action) => {
                 ...state,
                 error: action.payload
             }
-        
+        case ProductActionType.PRODUCT_GET_BY_NAME_START:
+            return{
+                ...state,
+                isFetching: true
+            }
+        case ProductActionType.PRODUCT_GET_BY_NAME_SUCCESS:
+            return{
+                ...state,
+                productByName: action.payload,
+                isFetching: false,
+                error: null
+            }
+        case ProductActionType.PRODUCT_GET_BY_NAME_FAILURE:
+            return{
+                ...state,
+                error: action.payload
+            }
         default:
             return state;
     }
