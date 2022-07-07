@@ -44,7 +44,10 @@ export function* getProductTitleStart() {
             showConfirmButton: false,
             timer: 1500
         });
-        yield put(unAuthorized(error));
+        yield put(addProductTitleFailure(error));
+        if(error.response.status === 401 || error.response.status === 403){
+            yield put(unAuthorized(error));
+        }
     }
 }
 
@@ -67,12 +70,15 @@ export function* addProductTitleStart({payload: {title}}) {
         MySwal.fire({
             position: 'top-end',
             icon: 'error',
-            title: err,
+            title: err.message,
             showConfirmButton: false,
             timer: 1500
-        });
+        }); 
+        
         yield put(addProductTitleFailure(error));
-        yield put(unAuthorized(error));
+        if(error.response.status === 401 || error.response.status === 403){
+            yield put(unAuthorized(error));
+        }
     }
 }
 
@@ -99,7 +105,10 @@ export function* addProductStart({payload: {title, items}}){
             timer: 1500
         });
         yield put(addProductFailure(error));
-        yield put(unAuthorized(error));
+        yield put(addProductTitleFailure(error));
+        if(error.response.status === 401 || error.response.status === 403){
+            yield put(unAuthorized(error));
+        }
     }
 }
 
@@ -127,7 +136,10 @@ export function* updateProductTitleStart({payload: {id, title}}) {
             timer: 1500
         });
         yield put(updateProductTitleFailure(error));
-        yield put(unAuthorized(error));
+        yield put(addProductTitleFailure(error));
+        if(error.response.status === 401 || error.response.status === 403){
+            yield put(unAuthorized(error));
+        }
     }
 }
 
@@ -147,7 +159,10 @@ export function* getProductById({payload: {id}}){
             timer: 1500
         });
         yield put(getProductByIdFailure(error));
-        yield put(unAuthorized(error));
+        yield put(addProductTitleFailure(error));
+        if(error.response.status === 401 || error.response.status === 403){
+            yield put(unAuthorized(error));
+        }
     }
 }
 export function* getProductByName({payload}){
@@ -167,7 +182,10 @@ export function* getProductByName({payload}){
             timer: 1500
         });
         yield put(getProductByNameFailure(error));
-        yield put(unAuthorized(error));
+        yield put(addProductTitleFailure(error));
+        if(error.response.status === 401 || error.response.status === 403){
+            yield put(unAuthorized(error));
+        }
     }
 }
 
@@ -196,7 +214,10 @@ export function* deleteProductTitleStart({payload}) {
             timer: 1500
         });
         yield put(deleteProductTitleFailure(error));
-        yield put(unAuthorized(error));
+        yield put(addProductTitleFailure(error));
+        if(error.response.status === 401 || error.response.status === 403){
+            yield put(unAuthorized(error));
+        }
     }
 }
 
@@ -224,7 +245,10 @@ export function* deleteProductStart({payload}) {
             timer: 1500
         });
         yield put(deleteProductFailure(error));
-        yield put(unAuthorized(error));
+        yield put(addProductTitleFailure(error));
+        if(error.response.status === 401 || error.response.status === 403){
+            yield put(unAuthorized(error));
+        }
     }
 }
 
@@ -270,7 +294,10 @@ export function* updateProductStart({payload}){
             timer: 1500
         });
         yield put(updateProductFailure(error));
-        yield put(unAuthorized(error));
+        yield put(addProductTitleFailure(error));
+        if(error.response.status === 401 || error.response.status === 403){
+            yield put(unAuthorized(error));
+        }
     }
 }
 

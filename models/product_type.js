@@ -71,6 +71,16 @@ class ProductType {
         let sql = `DELETE FROM productType WHERE id = ${id}`;
         return db.execute(sql);
     }
+
+    static checkDataExisting(title) {
+        console.log(title);
+        var checkProductTypeExistOfTitle = `
+            SELECT * FROM productType
+            WHERE title = '${title}'
+        `;
+        
+        return db.execute(checkProductTypeExistOfTitle);
+    }
 }
 
 module.exports = ProductType;

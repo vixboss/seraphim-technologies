@@ -133,8 +133,14 @@ const ProductType = require('../models/product_type');
 const addProductType = async(req, res, next) => {
     try {
         let  title = new ProductType(req.body.title);
-        title = await title.save();
-
+        var [data, _] = await ProductType.checkDataExisting(req.body.title);
+        console.log(data)
+        if(data.length === 0 ){
+            await title.save();  
+        }
+        else{
+            return res.status(400).json({message: "Product Type exist."});
+        }
         res.status(201).json({message: "Title Created"});
     } catch (error) {
         res.status(400).send(error.message);
