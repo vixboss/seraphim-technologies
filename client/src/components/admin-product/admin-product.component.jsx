@@ -30,7 +30,7 @@ import CustomButton from '../custom-button/custom-button.component';
 import { selectProductType } from '../../redux/product/product.selector';
 import { selectMerchandiseTitleAsArray } from '../../redux/merchandise/merchandise.selector';
 import { addProductStart, getProductByIdStart, updateProductStart } from './../../redux/product/product.action';
-import { changeObjectValueToKeyValue, uuidv4 } from '../../factory';
+import { changeObjectValueToKeyValue, uuidv4, srvTimeIST } from '../../factory';
 
 import './admin-product.styles.scss';
 
@@ -46,7 +46,6 @@ const AdminProduct = ({fetchCollectionsStart, updateProductStart, getProductById
     let min = d.getMinutes();
     let ss = d.getSeconds();
 
-    let createdAt = `${yyyy}-${mm}-${dd} ${hh}:${min}:${ss}`;
     const [productDetails, setProductDetails] = useState({
         id: uuidv4(),
         imageUrl : "",
@@ -62,7 +61,7 @@ const AdminProduct = ({fetchCollectionsStart, updateProductStart, getProductById
         duration: "",
         time: new Date(),
         speakerName:"",
-        createdAt: new Date(),
+        createdAt: srvTimeIST(),
         detailFieldTxtArea: "",
         description: ''
         // productDescription : {
@@ -240,7 +239,7 @@ const AdminProduct = ({fetchCollectionsStart, updateProductStart, getProductById
             duration: "",
             time:new Date(),
             speakerName:"",
-            createdAt: new Date(),
+            createdAt: srvTimeIST(),
             detailFieldTxtArea: "",
             description: ''
             // productDescription : {
@@ -273,6 +272,7 @@ const AdminProduct = ({fetchCollectionsStart, updateProductStart, getProductById
             const { data } = productById;
             const merchandiseObject = typeof data[0].merchandise !== "undefined" ? data[0].merchandise: merchandisePriceArray;
             setCheckUpdateId(true);
+            console.log("A");
             setProductDetails({
                 id: data[0].id,
                 imageUrl: data[0].imageUrl,
@@ -287,7 +287,7 @@ const AdminProduct = ({fetchCollectionsStart, updateProductStart, getProductById
                 status: data[0].status,
                 duration: data[0].duration,
                 time:data[0].time,
-                createdAt: new Date(),
+                createdAt: srvTimeIST(),
                 merchandise: merchandiseObject,
                 speakerName:data[0].speakerName,
                 detailFieldTxtArea: data[0].detailFieldTxtArea,

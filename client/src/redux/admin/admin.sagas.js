@@ -3,6 +3,7 @@ import { takeLatest, put, all, call } from 'redux-saga/effects';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import axios from 'axios';
+import CryptoJS from 'crypto-js';
 
 import AdminActionTypes from './admin.type';
 import { adminSignInSuccess, adminSignInFailure, adminSignOutSuccess, adminSignOutFailure } from './admin.action';
@@ -11,10 +12,17 @@ import { host } from '../../api.config';
 export function* adminSignInStart({payload: {email, password}}) {
     const MySwal = withReactContent(Swal);
     try{
+        
+        // Encode password to base64.
+        var textString = password; // Utf8-encoded string
+        var words = CryptoJS.enc.Utf8.parse(textString); // WordArray object
+        var base64 = CryptoJS.enc.Base64.stringify(words);
+        /***************************/
+
         // Hit api service with Axios.
         const adminResponse = yield axios.post(`${host}/api/admin`,{
             email: email.toString(),
-            password:password.toString()
+            password:base64
         });
 
         var doc = JSON.parse(adminResponse.config.data);

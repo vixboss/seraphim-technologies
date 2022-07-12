@@ -64,7 +64,7 @@ const Header = ({currentUser, hidden, signOutStart, history, match, searchCollec
             removeHighlightClass();
             $('.logo').next().children('a').addClass('active-nav');
         }
-        else if(path === 'shop'){
+        else if(path === 'shop' || path === 'payment' || path === 'checkout'){
             removeHighlightClass();
             $('.logo').next().next().children('a').addClass('active-nav');
         }

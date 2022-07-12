@@ -8,9 +8,12 @@ import { createStructuredSelector } from 'reselect';
 import { connect } from 'react-redux';
 import Button from '@mui/material/Button';
 import { host } from '../../api.config';
+import { ReactComponent as StripeLogo } from './../../assets/Stripe.svg';
 
 import { clearCart } from '../../redux/cart/cart.action';
 import { selectCurrentUser }  from '../../redux/user/user.selector';
+
+import './stripe-button.styles.scss';
 
 const MySwal = withReactContent(Swal);
 
@@ -107,15 +110,11 @@ const StripeCheckoutButton = ({discountPrice, history, clearCart, currentUser, c
                     Sign In for payment.
                 </Button>
             } */}
-            {
 
-                currentUser !== null ? <Button variant="contained" onClick={payment}>
-                <i className="fa fa-credit-card" aria-hidden="true"></i>    
-                &nbsp; Pay Now
-                </Button> : <Button variant="contained" onClick={() => history.push('/signin')}>
-                    Sign In for payment.
-                </Button>
-            }
+            <Button variant="contained" onClick={payment} className = 'button'>
+                <span style= {{ color: 'black', textTransform:'none', fontSize: '16px'}}>Pay with</span>
+                <StripeLogo height = {50} width = {80}/>
+            </Button>
         </>
         
 

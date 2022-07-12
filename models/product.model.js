@@ -122,6 +122,7 @@ class Product {
                         AND collections_merchandise.collection_id = ${collectionId}
                     RIGHT JOIN merchandise
                         ON merchandise.id = collections_merchandise.merchandise_id
+                    ORDER BY collections.createdAt DESC
                     `;
                     await db.query(merchandiseAndProductTypeSQL).then(response => {
                         productTypeArray.push(response[0][0].productType_id);

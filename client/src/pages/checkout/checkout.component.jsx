@@ -22,19 +22,20 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 
 import CheckoutItem from "../../components/checkout-item/checkout-item.component";
-import StripeCheckoutButton from "../../components/stripe-button/stripe-button.component";
+import PaymentOptionComponent from "../../components/payment-option/payment-option.component";
 import {srvTime, currentDateAndTimeInISTWithotFormat} from '../../factory';
 
 import { discountGetByNameStart } from './../../redux/discount/discount.action';
 import { selectAllDiscount } from './../../redux/discount/discount.selector';
 import { selectCartItems, selectCartTotal } from './../../redux/cart/cart.selector';
+import { selectCurrentUser }  from '../../redux/user/user.selector';
 
 import './checkout.styles.scss';
 
 const Alert = React.forwardRef(function Alert(props, ref) {
     return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
-const CheckoutPage = ({cartItems, total, history, discountGetByNameStart, discount}) => {
+const CheckoutPage = ({cartItems, total, history, currentUser, discountGetByNameStart, discount}) => {
     const Root = styled('div')(({ theme }) => ({
         width: '100%',
         ...theme.typography.body2,
@@ -315,7 +316,12 @@ const CheckoutPage = ({cartItems, total, history, discountGetByNameStart, discou
         </Row>
         <div className="pay-button">
             <span className="pay-button-span">
-                <StripeCheckoutButton discountPrice={coupon.calculatedValue.toFixed(2)} cartItems = {cartItems}/>
+            {
+                currentUser !== null ?  <PaymentOptionComponent discountPrice={coupon.calculatedValue.toFixed(2)} cartItems = {cartItems}/> :
+                <Button variant="contained" onClick={() => history.push('/signin')}>
+                    Sign In for payment.
+                </Button>
+            }
             </span>
         </div>
         <Dialog open={open} onClose={handleClose}>
@@ -348,7 +354,8 @@ const mapDispatchToProps = dispatch => ({
 const mapStateToProps = createStructuredSelector({
     cartItems: selectCartItems,
     total: selectCartTotal,
-    discount: selectAllDiscount
+    discount: selectAllDiscount,
+    currentUser: selectCurrentUser
 
 })
 

@@ -36,6 +36,11 @@ const ProductDescriptionPage = ({getProductByNameStart, selectProductByName}) =>
     // useEffect(() => {
     //     fetchItemDescription({category, product})
     // }, [collections]);
+    
+    useEffect(() => {
+        window.scrollTo(0,0);
+    }, []);
+
     return ( 
         <div className="product-description-page">
         {

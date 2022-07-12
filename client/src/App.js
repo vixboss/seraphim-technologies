@@ -2,6 +2,7 @@ import React , { useEffect } from 'react';
 import { Route, Switch, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
+import { PayPalScriptProvider } from '@paypal/react-paypal-js';
 
 import HomePage from './pages/homepage/homepage.component';
 import ShopPage from './pages/shop/shop.component';
@@ -22,6 +23,7 @@ import RefundAndCancellationPageComponent from './pages/refund-cancellation/refu
 import DiscountPage from './pages/discount/discount.component';
 import AdminBanner from './components/admin-banner/admin-banner.component';
 import AdminDashboard from './components/admin-dashboard/admin-dashboard.component';
+import PaymentPage from './pages/payment-page/payment-page.component';
 
 import { checkUserSession } from './redux/user/user.action';
 
@@ -47,39 +49,42 @@ const App = ({ checkUserSession, currentuser, currentAdmin }) => {
   address = address.split('/');
   
   return (
-    <div className="App">
-      <GlobalStyle />
-      {
-        address.indexOf('admin') === -1 ? <Header />: <AdminHeader/>
-      }
-      <Switch>
-        <Route exact path='/' component={HomePage}/>
-        <Route exact path= '/shop/:id/:ids' component= {ProductDescriptionPage}/>
-        <Route path='/shop' component = {ShopPage}/>
-        <Route exact path='/checkout' component = {CheckoutPage}/>
-        <Route exact path='/signin' 
-          render = {
-            () => currentuser ? <Redirect to='/' />: <SignInAndSignUpPage/>
-          }
-        />
-        <Route exact path = '/refund-cancellation' component={ RefundAndCancellationPageComponent }/>
-        <Route exact path = '/terms' component={ TermsAndConditionsPageComponent } />
-        <Route exact path = '/privacy-policy' component = { PrivacyPolicyPageComponent }/>
-        <Route path='/admin/panel' component= {AdminPanelPage}/>
-        <Route exact path = '/admin/title' component={AdminTitle}/>
-        <Route exact path = '/admin/product' component={AdminProduct}/>
-        <Route exact path = '/admin/banner' component={AdminBanner}/>
-        <Route exact path = '/admin/merchandise' component={MerchandiseComponent}/>
-        <Route exact path = '/admin/discount' component = {DiscountPage}/>
-        <Route exact path = '/admin/dashboard' component={AdminDashboard} />
-        <Route exact path='/admin'
-          render = {
-            () => currentAdmin ? <Redirect to='/admin/title'/> : <AdminLoginPage/>
-          }
-        />
-      </Switch>
-      <Footer />
-    </div>
+    <PayPalScriptProvider options={{'client-id': process.env.REACT_APP_PAYPAL_CLIENT_ID}}>
+      <div className="App">
+        <GlobalStyle />
+        {
+          address.indexOf('admin') === -1 ? <Header />: <AdminHeader/>
+        }
+        <Switch>
+          <Route exact path='/' component={HomePage}/>
+          <Route exact path= '/shop/:id/:ids' component= {ProductDescriptionPage}/>
+          <Route path='/shop' component = {ShopPage}/>
+          <Route exact path='/checkout' component = {CheckoutPage}/>
+          <Route exact path='/signin' 
+            render = {
+              () => currentuser ? <Redirect to='/' />: <SignInAndSignUpPage/>
+            }
+          />
+          <Route exact path = '/refund-cancellation' component={ RefundAndCancellationPageComponent }/>
+          <Route exact path = '/terms' component={ TermsAndConditionsPageComponent } />
+          <Route exact path = '/privacy-policy' component = { PrivacyPolicyPageComponent }/>
+          <Route path='/admin/panel' component= {AdminPanelPage}/>
+          <Route exact path = '/admin/title' component={AdminTitle}/>
+          <Route exact path = '/admin/product' component={AdminProduct}/>
+          <Route exact path = '/admin/banner' component={AdminBanner}/>
+          <Route exact path = '/admin/merchandise' component={MerchandiseComponent}/>
+          <Route exact path = '/admin/discount' component = {DiscountPage}/>
+          <Route exact path = '/admin/dashboard' component={AdminDashboard} />
+          <Route exact path = '/payment' component = {PaymentPage}/>
+          <Route exact path='/admin'
+            render = {
+              () => currentAdmin ? <Redirect to='/admin/title'/> : <AdminLoginPage/>
+            }
+          />
+        </Switch>
+        <Footer />
+      </div>
+    </PayPalScriptProvider>
   );
 }
 

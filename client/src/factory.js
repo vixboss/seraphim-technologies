@@ -35,6 +35,7 @@ export const currentDateAndTimeInEST = (date) => {
     var myTimezone = "America/New_York";
     var myDatetimeFormat= "ddd MMM D yyyy hh:mm:ss a z";
     var myDatetimeString = moment(date).tz(myTimezone).format(myDatetimeFormat);
+
     return (myDatetimeString);
 }
 
@@ -197,6 +198,63 @@ export const srvTime = () => {
     var myTimezone = "Asia/Kolkata";
     var myDatetimeFormat= "ddd MMM D yyyy HH:mm:ss";
     return moment(xmlHttp.getResponseHeader("Date")).tz(myTimezone).format(myDatetimeFormat);
+}
+export const srvTimeIST = () => {
+    
+    //FF, Opera, Safari, Chrome
+    var xmlHttp = new XMLHttpRequest();
+    
+    xmlHttp.open('HEAD',window.location.href.toString(),false);
+    xmlHttp.setRequestHeader("Content-Type", "text/html");
+    xmlHttp.send('');
+
+    var myTimezone = "Asia/Kolkata";
+    var myDatetimeFormat= "yyyy-MM-DD HH:mm:ss";
+    return moment(xmlHttp.getResponseHeader("Date")).tz(myTimezone).format(myDatetimeFormat);
+}
+
+export const srvTimeEst = () => {
+    //FF, Opera, Safari, Chrome
+    var xmlHttp = new XMLHttpRequest();
+    
+    xmlHttp.open('HEAD',window.location.href.toString(),false);
+    xmlHttp.setRequestHeader("Content-Type", "text/html");
+    xmlHttp.send('');
+
+    var myTimezone = "America/New_York";
+    var myDatetimeFormat= "ddd MMM D yyyy HH:mm:ss";
+    return moment(xmlHttp.getResponseHeader("Date")).tz(myTimezone).format(myDatetimeFormat);
+}
+
+export const convertDateAndTimeInEST = (date) => {
+    var myTimezone = "America/New_York";
+    var myDatetimeFormat= "ddd MMM D yyyy hh:mm:ss";
+    var myDatetimeString = moment(date).tz(myTimezone).format(myDatetimeFormat);
+    
+    return (myDatetimeString);
+}
+
+export const filterWebinar = (currDate, webinarDate, webinarTime, webinarDuration) => {
+    var status = '';
+    var currentDate = moment(currDate).format('yyyy-MM-DD');
+    var webDate = moment(webinarDate).format('yyyy-MM-DD');
+
+    var time = moment(webinarTime).add(webinarDuration, 'minutes').format('hh:mm:ss');
+
+    var webinarExpirationTime = moment(webDate).add(time).format('yyyy-MM-DD hh:mm:ss');
+    var currentDateNewFormat = moment(currDate).format('yyyy-MM-DD hh:mm:ss');
+
+    if(moment(webDate).isAfter(currentDate)) {
+        status = 'upcoming';
+    }
+    else if(moment(currentDate).isAfter(webDate)) {
+        status = 'recorded';
+    }   
+    else {
+        status = moment(webinarExpirationTime).isAfter(currentDateNewFormat) ? 'upcoming' : 'recorded';
+    }
+
+    return status;
 }
 
 Object.defineProperty(String.prototype, 'capitalizeFirstCharacter', {

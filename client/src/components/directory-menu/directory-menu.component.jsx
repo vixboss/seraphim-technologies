@@ -4,13 +4,12 @@ import { withRouter } from "react-router-dom";
 import { Row, Badge } from 'react-bootstrap';
 import { createStructuredSelector } from "reselect";
 import { Link } from 'react-router-dom';
-import moment from 'moment-timezone';
 import Chip from '@mui/material/Chip';
 
 import { selectCollectionsForPreview } from '../../redux/shop/shop.selector';
 import MenuCardContainer from "../menu-card/menu-card.container";
 import { fetchCollectionsStart } from '../../redux/shop/shop.actions';
-import { convertDate } from "../../factory";
+import { srvTimeEst, filterWebinar } from "../../factory";
 import './directory-menu.styles.scss';
 
 const DirectoryMenu = ({fetchCollectionsStart, collections, history}) => {
@@ -21,54 +20,28 @@ const DirectoryMenu = ({fetchCollectionsStart, collections, history}) => {
     const [upcomingItemArray, setUpcomingItemArray] = useState([]);
     useEffect(() => {
         var upcoming = [];
-        var recorded = []
-        var currentDate = convertDate(new Date());
+        var recorded = [];
+        var currentDate = srvTimeEst();
+
         collections.forEach((collection) => {
             const categoryId = collection.id;
             collection.items.forEach((item) => {
-                var date = new Date(item.date);
-                var dt = convertDate(date);
-                if(dt > currentDate){
-                    upcoming.push({...item, categoryId});
-                }
-                else if(dt < currentDate){
-                    recorded.push({...item, categoryId});
+                var arr = filterWebinar(currentDate, item.date, item.time, item.duration);
+                if(arr === 'recorded'){
+                    recorded.push({...item, categoryId})
                 }
                 else{
-                    var currDt = new Date().toString();
-
-                    var newDateObj = moment(item.time).add(item.duration, 'm');
-                    var newCurrentDateFormat = moment(currDt.convertToTime(), 'h:mm A').format("HH:mm");
-                    var newDateFormat = moment(newDateObj.toString().convertToTime(), 'h:mm A').format("HH:mm");
-
-                    if(newDateFormat > newCurrentDateFormat){
-                        upcoming.push({...item, categoryId});
-                    }
-                    else{
-                        recorded.push({...item, categoryId});
-                    }
+                    upcoming.push({...item, categoryId})
                 }
             });
         });
-        recorded = recorded.sort(function(a,b){
-            return a.createdAt.localeCompare(b.createdAt);
-        });
-        upcoming = upcoming.sort(function(a,b){
-            return a.createdAt.localeCompare(b.createdAt);
-        });
-
-        
 
         recorded = recorded.reverse();
         upcoming = upcoming.reverse();
 
-
-
         setRecordedItemArray(recorded.slice(0,4));
         setUpcomingItemArray(upcoming.slice(0,4));
 
-        // setRecordedItemArray(recorded, console.log(recordedItemArray));
-        // setUpcomingItemArray(upcoming, console.log(upcomingItemArray));
     }, [collections]);
 
     return(

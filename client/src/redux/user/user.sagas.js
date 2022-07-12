@@ -1,10 +1,14 @@
 import { takeLatest, put, all, call } from 'redux-saga/effects';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
+import bcrypt from 'bcryptjs';
 
 import UserActionTypes from './user.type';
 import { signInSuccess, signInFailure, signOutSuccess, signOutFailure, signUpSuccess, signUpFailure } from './user.action';
 import { auth, googleProvider, createUserProfileDocument, getCurrentUser } from '../../firebase/firebase.utils';
+
+// SALT should be created ONE TIME upon sign up
+const salt = bcrypt.genSaltSync(10);
 
 const MySwal = withReactContent(Swal);
 export function* getSnapshotFromUserAuth(userAuth, additionalData) {
@@ -44,7 +48,8 @@ export function* signInWithGoogle(){
 
 export function* signInWithEmail({payload: {email, password}}){
     try{
-        const { user } = yield auth.signInWithEmailAndPassword(email, password);
+        const hashedPassword = bcrypt.hashSync(password, salt);
+        const { user } = yield auth.signInWithEmailAndPassword(email, hashedPassword);
         yield getSnapshotFromUserAuth(user);
     } catch(error){
         yield put(signInFailure(error));
@@ -71,9 +76,20 @@ export function* isUserAuthenticated() {
 
 export function* signUp({payload: {email, password, displayName}}) {
     try{
-        const {user} = yield auth.createUserWithEmailAndPassword(email, password);
+        const hashedPassword = bcrypt.hashSync(password, salt);
+        const {user} = yield auth.createUserWithEmailAndPassword(email, hashedPassword);
+        yield user.updateProfile({
+            displayName: displayName
+        });
         yield put(signUpSuccess({user: user, additionalData: displayName}))
     } catch(error) {
+        MySwal.fire({
+            position: 'top-end',
+            icon: 'error',
+            title: error.message,
+            showConfirmButton: false,
+            timer: 1500
+        });
         yield put(signUpFailure(error));
     }
 }
