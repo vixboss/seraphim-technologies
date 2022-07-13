@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
+import { Link } from 'react-router-dom';
 
 import './sign-in.styles.scss';
 
@@ -72,6 +73,9 @@ const SignIn = ({ emailSignInStart, googleSignInStart }) => {
                     </CustomButton>
                 </div>
             </form>
+            <p className="forgot-password">
+                <Link to= '/forgot-password'>Forgot Password?</Link>
+            </p>
         </div>
     )
     

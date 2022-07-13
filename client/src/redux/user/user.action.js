@@ -50,3 +50,33 @@ export const signUpFailure = error => ({
     type: UserActionTypes.SIGN_UP_FAILURE,
     payload: error
 });
+
+export const passwordResetWithEmailStart = (email) => ({
+    type: UserActionTypes.PASSWORD_RESET_WITH_EMAIL_START,
+    payload: email
+});
+
+export const passwordResetWithEmailSuccess = (email) => ({
+    type: UserActionTypes.PASSWORD_RESET_WITH_EMAIL_SUCCESS,
+    payload: email
+});
+
+export const passwordResetWithEmailFailure = error => ({
+    type: UserActionTypes.PASSWORD_RESET_WITH_EMAIL_FAILURE,
+    payload: error
+});
+
+export const passwordResetStart = (payload) => ({
+    type: UserActionTypes.PASSWORD_RESET_START,
+    payload: payload
+});
+
+export const passwordResetSuccess = (payload) => ({
+    type: UserActionTypes.PASSWORD_RESET_SUCCESS,
+    payload: payload
+});
+
+export const passwordResetFailure = error => ({
+    type: UserActionTypes.PASSWORD_RESET_FAILURE,
+    payload: error
+});

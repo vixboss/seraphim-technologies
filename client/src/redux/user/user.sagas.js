@@ -1,14 +1,23 @@
 import { takeLatest, put, all, call } from 'redux-saga/effects';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
-import bcrypt from 'bcryptjs';
+import CryptoJS from 'crypto-js';
+
 
 import UserActionTypes from './user.type';
-import { signInSuccess, signInFailure, signOutSuccess, signOutFailure, signUpSuccess, signUpFailure } from './user.action';
+import { 
+    signInSuccess, 
+    signInFailure, 
+    signOutSuccess, 
+    signOutFailure, 
+    signUpSuccess, 
+    signUpFailure, 
+    passwordResetWithEmailSuccess, 
+    passwordResetWithEmailFailure,
+    passwordResetSuccess,
+    passwordResetFailure 
+} from './user.action';
 import { auth, googleProvider, createUserProfileDocument, getCurrentUser } from '../../firebase/firebase.utils';
-
-// SALT should be created ONE TIME upon sign up
-const salt = bcrypt.genSaltSync(10);
 
 const MySwal = withReactContent(Swal);
 export function* getSnapshotFromUserAuth(userAuth, additionalData) {
@@ -48,8 +57,13 @@ export function* signInWithGoogle(){
 
 export function* signInWithEmail({payload: {email, password}}){
     try{
-        const hashedPassword = bcrypt.hashSync(password, salt);
-        const { user } = yield auth.signInWithEmailAndPassword(email, hashedPassword);
+        // Encode password to base64.
+        var textString = password; // Utf8-encoded string
+        var words = CryptoJS.enc.Utf8.parse(textString); // WordArray object
+        var base64Password = CryptoJS.enc.Base64.stringify(words);
+        /***************************/
+        
+        const { user } = yield auth.signInWithEmailAndPassword(email, base64Password);
         yield getSnapshotFromUserAuth(user);
     } catch(error){
         yield put(signInFailure(error));
@@ -74,10 +88,76 @@ export function* isUserAuthenticated() {
     }
 }
 
+export function* passwordResetWithEmailStartSaga({payload}) {
+    try {
+        const user = yield auth.sendPasswordResetEmail(payload);
+        yield passwordResetWithEmailSuccess(user);
+
+        MySwal.fire({
+            position: 'top-end',
+            icon: 'success',
+            title: 'Email Sent Successfully.',
+            showConfirmButton: false,
+            timer: 2000
+        });
+
+        setTimeout(() => {
+            window.location.href = window.location.origin + '/signin';
+        }, 3000);
+        
+    } catch (error) {
+        MySwal.fire({
+            position: 'top-end',
+            icon: 'error',
+            title: error.message,
+            showConfirmButton: false,
+            timer: 1500
+        });
+        yield put(passwordResetWithEmailFailure(error));
+    }
+}
+export function* passwordResetStartSaga ({payload}) {
+    try {
+        const {oobCode, password}= payload;
+
+        // Encode password to base64.
+        var textString = password; // Utf8-encoded string
+        var words = CryptoJS.enc.Utf8.parse(textString); // WordArray object
+        var base64Password = CryptoJS.enc.Base64.stringify(words);
+        /***************************/
+
+        yield auth.confirmPasswordReset(oobCode, base64Password);
+        MySwal.fire({
+            position: 'top-end',
+            icon: 'success',
+            title: 'Password Reset Successfully.',
+            showConfirmButton: false,
+            timer: 2000
+        });
+        setTimeout(() => {
+            window.location.href = window.location.origin + '/signin';
+        }, 3000);
+    } catch (error) {
+        MySwal.fire({
+            position: 'top-end',
+            icon: 'error',
+            title: error.message,
+            showConfirmButton: false,
+            timer: 1500
+        });
+        yield put(passwordResetFailure(error));
+    }
+}
+
 export function* signUp({payload: {email, password, displayName}}) {
     try{
-        const hashedPassword = bcrypt.hashSync(password, salt);
-        const {user} = yield auth.createUserWithEmailAndPassword(email, hashedPassword);
+        // Encode password to base64.
+        var textString = password; // Utf8-encoded string
+        var words = CryptoJS.enc.Utf8.parse(textString); // WordArray object
+        var base64Password = CryptoJS.enc.Base64.stringify(words);
+        /***************************/
+
+        const {user} = yield auth.createUserWithEmailAndPassword(email, base64Password);
         yield user.updateProfile({
             displayName: displayName
         });
@@ -123,6 +203,13 @@ export function* onSignUpSuccess() {
 
 }
 
+export function* onPasswordResetWithEmailStart() {
+    yield takeLatest(UserActionTypes.PASSWORD_RESET_WITH_EMAIL_START, passwordResetWithEmailStartSaga)
+}
+export function* onPasswordResetStart() {
+    yield takeLatest(UserActionTypes.PASSWORD_RESET_START, passwordResetStartSaga)
+}
+
 export function* userSagas(){
     yield all([
         call(onGoogleSignInStart), 
@@ -130,6 +217,8 @@ export function* userSagas(){
         call(onCheckUserSession), 
         call(onSignOutStart),
         call(onSignUpStart),
-        call(onSignUpSuccess)
+        call(onSignUpSuccess),
+        call(onPasswordResetWithEmailStart),
+        call(onPasswordResetStart)
     ]);
 }

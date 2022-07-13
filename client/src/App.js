@@ -24,6 +24,8 @@ import DiscountPage from './pages/discount/discount.component';
 import AdminBanner from './components/admin-banner/admin-banner.component';
 import AdminDashboard from './components/admin-dashboard/admin-dashboard.component';
 import PaymentPage from './pages/payment-page/payment-page.component';
+import ForgotPasswordComponent from './components/forgot-password/forgot-password.component';
+import ResetPasswordComponent from './components/reset-password/reset-password.component';
 
 import { checkUserSession } from './redux/user/user.action';
 
@@ -76,6 +78,9 @@ const App = ({ checkUserSession, currentuser, currentAdmin }) => {
           <Route exact path = '/admin/discount' component = {DiscountPage}/>
           <Route exact path = '/admin/dashboard' component={AdminDashboard} />
           <Route exact path = '/payment' component = {PaymentPage}/>
+          <Route exact path = '/forgot-password' component = {ForgotPasswordComponent}/>
+          <Route exact path = '/reset-password' component = {ResetPasswordComponent}/>
+
           <Route exact path='/admin'
             render = {
               () => currentAdmin ? <Redirect to='/admin/title'/> : <AdminLoginPage/>

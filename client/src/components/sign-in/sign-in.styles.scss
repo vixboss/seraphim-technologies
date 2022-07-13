@@ -13,6 +13,16 @@
             display: flex;
         }
     }
+    .forgot-password {
+        text-align: center;
+        a {
+            color: grey;
+            font-weight: 600;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    }
 
     .buttons{
         display: flex;
