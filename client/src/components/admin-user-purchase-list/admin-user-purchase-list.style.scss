@@ -11,7 +11,17 @@
 }
 
 .search-input {
+    margin-left: auto;
     div {
         margin: 0;
     }
+}
+
+.user-Purchase-list {
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+
+.delivery-status-icon:hover {
+    cursor: pointer;
 }

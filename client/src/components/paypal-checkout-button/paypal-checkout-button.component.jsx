@@ -1,17 +1,20 @@
 import React, {useEffect, useState} from 'react';
 import { withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
 import { PayPalScriptProvider, PayPalButtons } from '@paypal/react-paypal-js';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 
+import { addUserPurchaseStart } from '../../redux/user-purchase/user-purchase.action';
+
 const MySwal = withReactContent(Swal);
-const PaypalCheckoutButton = ({discountPrice, cartItems, history}) => {
+const PaypalCheckoutButton = ({discountPrice, cartItems, history, addUserPurchaseStart}) => {
     const [paidFor, setPaidFor] = useState(false);
     const [error, setError] = useState(null);
-    console.log(history);
-    const handleApprove = (orderID) => {
+    const handleApprove = (order) => {
         // Call backend function to fulfill order.
-
+        addUserPurchaseStart({...order, merchant: 'Paypal'});
+        
         // If response is success.
         setPaidFor(true);
         history.push('/shop');
@@ -88,9 +91,7 @@ const PaypalCheckoutButton = ({discountPrice, cartItems, history}) => {
                 }}
                 onApprove = {async(data, actions) => {
                     const order = await actions.order.capture();
-                    // console.log("order", order);
-
-                    handleApprove(data.orderID);
+                    handleApprove(order);
                 }}
                 onCancel = {() => {
                     // Back to Cart
@@ -105,4 +106,8 @@ const PaypalCheckoutButton = ({discountPrice, cartItems, history}) => {
     )
 }
 
-export default withRouter(PaypalCheckoutButton);
+const mapDispatchToProps = dispatch => ({
+    addUserPurchaseStart: (purchase) => dispatch(addUserPurchaseStart(purchase))
+})
+
+export default withRouter(connect(null, mapDispatchToProps)(PaypalCheckoutButton));

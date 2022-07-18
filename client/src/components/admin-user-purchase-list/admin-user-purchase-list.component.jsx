@@ -1,51 +1,180 @@
-import React, {useState} from "react";
-// import { Table } from 'react-bootstrap';
-import { Row, Col } from 'react-bootstrap';
-import Paper from '@mui/material/Paper';
+import * as React from 'react';
+import { connect } from 'react-redux';
+
+import Box from '@mui/material/Box';
+import Collapse from '@mui/material/Collapse';
+import IconButton from '@mui/material/IconButton';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
-import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
+import Typography from '@mui/material/Typography';
+import Paper from '@mui/material/Paper';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import Tooltip from '@mui/material/Tooltip';
+import TablePagination from '@mui/material/TablePagination';
+import {Row, Col} from 'react-bootstrap';
+
 import FormInput from '../form-input/form-input.component.jsx';
+
+import { convertDateAndTimeInEST } from './../../factory.js';
+
+import { updateUserPurchaseDeliveryStatusStart } from '../../redux/user-purchase/user-purchase.action';
 
 import './admin-user-purchase-list.style.scss';
 
-const columns = [
-    { id: 's_no', label: '#', minWidth: 20 },
-    {
-      id: 'email',
-      label: 'Email',
-      minWidth: 100,
-      align: 'left',
-    },
-    {
-      id: 'description',
-      label: 'Product',
-      minWidth: 170,
-      align: 'left',
-    },
-    {
-      id: 'quantity',
-      label: 'Qty',
-      align: 'center',
-      minWidth: 20
-    },
-    { id: 'amount_total', label: 'Price', minWidth: 50, format : (value) => '$'+(parseInt(value) / 100) },
-    { id: 'date', label: 'Date', minWidth: 120 },
-    { id: 'time', label: 'Time', minWidth: 150 },
-    { id: 'status', label: 'Status', minWidth: 120, format: (value) => (value === 'Active' ? "Un-delivered": "Delivered")},
+const RowsOfTable = (props) => {
+  const { row, handleDeliveryStatus } = props;
 
-];
+  const [open, setOpen] = React.useState(false);
 
-const AdminUserPurchaseList = ({data}) => {
-    console.log(data);
-    const [rows, setRows] = useState(data);
+  return (
+    <React.Fragment>
+      <TableRow sx={{ '& > *': { borderBottom: 'unset' } }}>
+        <TableCell>
+          <IconButton
+            aria-label="expand row"
+            size="small"
+            onClick={() => setOpen(!open)}
+          >
+            {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+          </IconButton>
+        </TableCell>
+        <TableCell component="th" scope="row">
+          {row.name}
+        </TableCell>
+        <TableCell >{row.email}</TableCell>
+        <TableCell >{row.order_id}</TableCell>
+        <TableCell >{convertDateAndTimeInEST(row.createdAt)}</TableCell>
+        <TableCell align="right">{row.total_amount}</TableCell>
+        <TableCell align="right">{row.gross_amount}</TableCell>
+        <TableCell align="right">{row.discount}</TableCell>
+        <TableCell >{row.merchant}</TableCell>
+        <TableCell style={row.status === 'Delivered' ? {color: 'green'}: {color: 'red'}}>{row.status}</TableCell>
+      </TableRow>
+      <TableRow>
+        <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
+          <Collapse in={open} timeout="auto" unmountOnExit>
+            <Box sx={{ margin: 1 }}>
+              <Typography variant="h6" gutterBottom component="div">
+                Purchased Product
+              </Typography>
+              <Table size="small" aria-label="purchases">
+                <TableHead>
+                  <TableRow>
+                    <TableCell style={{fontWeight: '600'}}>S_No</TableCell>
+                    <TableCell style={{fontWeight: '600'}}>Date</TableCell>
+                    <TableCell style={{fontWeight: '600'}}>Product</TableCell>
+                    <TableCell style={{fontWeight: '600'}}>Quantity</TableCell>
+                    <TableCell style={{fontWeight: '600'}}>Unit Amount($)</TableCell>
+                    <TableCell style={{fontWeight: '600'}}>Total Amount($)</TableCell>
+                    <TableCell style={{fontWeight: '600'}}>Delivery Status</TableCell>
+                    <TableCell style={{fontWeight: '600'}}>Action</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {
+                    typeof row !== "undefined" ? 
+                    row.items.map((itemRow, ind) => (
+                    <TableRow key={'itemRow_' + ind}>
+                        <TableCell>{ind + 1}</TableCell>
+                        <TableCell component="th" scope="row">
+                            {convertDateAndTimeInEST(itemRow.createdAt)}
+                        </TableCell>
+                        <TableCell>{itemRow.description}</TableCell>
+                        <TableCell align="right">{itemRow.quantity}</TableCell>
+                        <TableCell align="right">{itemRow.unit_amount}</TableCell>
+                        <TableCell align="right">
+                            {(itemRow.quantity * itemRow.unit_amount).toFixed(2)}
+                        </TableCell>
+                        <TableCell align='right' style={!!itemRow.deliveryStatus.data[0] ? {color: 'green'} : {color: 'red'}}>
+                        {
+                            !!itemRow.deliveryStatus.data[0] ? 'Delivered' : 'Un-Delivered'
+                        }
+                        </TableCell>
+                        <TableCell>
+                          <Tooltip title="Update Delivery Status">
+                            <i 
+                              className="fa fa-truck delivery-status-icon" 
+                              aria-hidden="true" 
+                              style={{fontSize: '24px'}} 
+                              onClick = {() => handleDeliveryStatus(itemRow.orderId)}
+                            ></i>
+                          </Tooltip>
+                        </TableCell>
+                    </TableRow>
+                  )) : ''
+                }
+                </TableBody>
+              </Table>
+            </Box>
+          </Collapse>
+        </TableCell>
+      </TableRow>
+    </React.Fragment>
+  );
+}
 
-    const [page, setPage] = useState(0);
-    const [rowsPerPage, setRowsPerPage] = useState(10);
+const AdminUserPurchaseList = ({data, updateUserPurchaseDeliveryStatusStart}) => {
+    const createData = (name, email, gross_amount, merchant, order_id, total_amount, items, discount, createdAt, status) => {
+        return {
+          name,
+          email,
+          order_id,
+          gross_amount,
+          total_amount,
+          discount,
+          merchant,
+          createdAt,
+          status,
+          items
+        };
+      }
+    const [rows, setRows] = React.useState([]);
+
+    const handleDeliveryStatus = (productId) => {
+      updateUserPurchaseDeliveryStatusStart({id: productId, status: 1});
+    }
+
+    const [newData, setNewData] = React.useState();
+    React.useEffect(() => {
+      console.log(data);
+      if(data !== ''){
+          var newArr = [];
+            data.map((userData) => {
+                const discount = (userData.total_amount - userData.gross_amount).toFixed(2);
+                var status = 'Delivered';
+                userData.items.map((item) => {
+                    if(item.deliveryStatus.data[0] === 0){
+                        status = 'Un-Delivered';
+                    }
+                });
+                    newArr.push(
+                        createData(
+                            userData.name, 
+                            userData.email, 
+                            userData.gross_amount, 
+                            userData.merchant, 
+                            userData.order_id, 
+                            userData.total_amount, 
+                            userData.items, 
+                            discount,
+                            userData.createdAt,
+                            status
+                        )
+                    )
+            });
+            setRows(newArr);
+            setNewData(newArr);
+        }
+    }, [data]);
+
+    // For Pagination
+    const [page, setPage] = React.useState(0);
+    const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
     // To change Pages
     const handleChangePage = (event, newPage) => {
@@ -58,101 +187,89 @@ const AdminUserPurchaseList = ({data}) => {
         setPage(0);
     };
 
-    const [search, setSearch] = useState('');
+    const [search, setSearch] = React.useState('');
     const handleSearch = (event) => {
         const {value} = event.target;
         setSearch(value);
         if(value !== ""){
-            setRows(data.filter((productList) => {
-                return Object.values(productList)
+            setRows(newData.filter((data) => {
+                return Object.values(data)
                     .join(" ")
                     .toLowerCase()
                     .includes(value.toLowerCase());
             })); 
         }
         else {
-            setRows(data);
+            setRows(newData);
         }
     }
-    return(
-        <Row md = {8} xs = {8}>
-            <Paper sx={{ width: '100%', overflow: 'hidden' }} id= 'user-list-paper'>
-                <Row>
-                    <Col md={10}>
-                        <h1>User Purchase List</h1>
-                    </Col>
-                    <Col md = {2} className="search-input">
-                        <FormInput
-                            name="search"
-                            label="Search"
-                            value={search}
-                            onChange={handleSearch}
-                            autoComplete="off"
-                        />
-                    </Col>
-                </Row>
-                <TableContainer sx={{ maxHeight: 500 }}>
-                    <Table stickyHeader aria-label="sticky table">
-                        <TableHead>
-                            <TableRow>
-                            {columns.map((column) => (
-                                <TableCell
-                                key={column.id}
-                                align={column.align}
-                                style={{ minWidth: column.minWidth, fontWeight: 800 }}
-                                >
-                                {column.label}
-                                </TableCell>
-                            ))}
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {
-                                rows.length !== 0 ?
-                                rows
-                                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                                .map((row) => {
-                                return (
-                                <TableRow hover role="checkbox" tabIndex={-1} key={row.s_no}>
-                                    {columns.map((column) => {
-                                    const value = row[column.id];
-                                    
-                                    return (
-                                        <TableCell key={column.id} align={column.align}
-                                        style = {value === 'Active' ? {color: 'red'}:{color: ''}}
-                                        >
-                                            {
-                                                column.format
-                                                ? column.format(value)
-                                                : value
-                                            }
-                                        </TableCell>
-                                    )
-                                    })}
-                                </TableRow>
-                                );
-                            }) :
-                            <TableRow>
-                                <TableCell colSpan={8}>
-                                    No Record(s) Found.
-                                </TableCell>
-                            </TableRow>
-                            }
-                        </TableBody>
-                    </Table>
-                </TableContainer>
-                <TablePagination
-                rowsPerPageOptions={[10, 25, 100]}
-                component="div"
-                count={rows.length}
-                rowsPerPage={rowsPerPage}
-                page={page}
-                onPageChange={handleChangePage}
-                onRowsPerPageChange={handleChangeRowsPerPage}
-                />
-            </Paper>
+    
+    return (
+      <>
+        <Row>
+          <Col xs= {6} xm = {6} md = {6}>
+            <h2 style={{margin: '25px 0px'}}>User Purchase List</h2>
+          </Col>
+          <Col md = {2} xs= {6} xm = {6} className="search-input">
+              <FormInput
+                  name="search"
+                  label="Search"
+                  value={search}
+                  onChange={handleSearch}
+                  autoComplete="off"
+              />
+          </Col>
         </Row>
-    )
+
+        <Row>
+          <TableContainer component={Paper} className="user-Purchase-list">
+              <Table aria-label="collapsible table">
+                  <TableHead>
+                      <TableRow>
+                          <TableCell />
+                          <TableCell style={{fontWeight: '600'}}>Payer</TableCell>
+                          <TableCell style={{fontWeight: '600'}}>Email</TableCell>
+                          <TableCell style={{fontWeight: '600'}}>Order ID</TableCell>
+                          <TableCell style={{fontWeight: '600'}}>Purchase Date</TableCell>
+                          <TableCell style={{fontWeight: '600'}}>Total Amount($)</TableCell>
+                          <TableCell style={{fontWeight: '600'}}>Amount Payable($)</TableCell>
+                          <TableCell style={{fontWeight: '600'}}>Discount($)</TableCell>
+                          <TableCell style={{fontWeight: '600'}}>Merchant</TableCell>
+                          <TableCell style={{fontWeight: '600'}}>Status</TableCell>
+                      </TableRow>
+                  </TableHead>
+                  <TableBody>
+                      {
+
+                          rows.length > 0 ?
+                          rows
+                          .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                          .map((row) => (
+                              <RowsOfTable key={row.order_id} row={row} handleDeliveryStatus = {handleDeliveryStatus}/>
+                          )) 
+                          : 
+                          <TableRow>
+                            <TableCell colSpan={10} align='center'>No Record(s) Found.</TableCell>
+                          </TableRow>
+                      } 
+                  </TableBody>
+              </Table>
+              <TablePagination
+                  rowsPerPageOptions={[ 5, 10, 25, 100]}
+                  component="div"
+                  count={rows !== null ? rows.length : 0}
+                  rowsPerPage={rowsPerPage}
+                  page={page}
+                  onPageChange={handleChangePage}
+                  onRowsPerPageChange={handleChangeRowsPerPage}
+                  />
+          </TableContainer>
+        </Row>
+      </>
+    );
 }
 
-export default AdminUserPurchaseList;
+const mapDispatchToProps = dispatch => ({
+  updateUserPurchaseDeliveryStatusStart: (data) => dispatch(updateUserPurchaseDeliveryStatusStart(data))
+})
+export default connect(null, mapDispatchToProps)(AdminUserPurchaseList);

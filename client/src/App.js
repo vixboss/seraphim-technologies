@@ -83,7 +83,7 @@ const App = ({ checkUserSession, currentuser, currentAdmin }) => {
 
           <Route exact path='/admin'
             render = {
-              () => currentAdmin ? <Redirect to='/admin/title'/> : <AdminLoginPage/>
+              () => currentAdmin ? <Redirect to='/admin/dashboard'/> : <AdminLoginPage/>
             }
           />
         </Switch>

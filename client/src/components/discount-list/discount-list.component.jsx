@@ -46,8 +46,6 @@ const DiscountListComponent = ({allDiscount, deleteDiscount, updateDiscount}) =>
             var currentServerDateAndTime = srvTime();
             var comparedDateObject = currentDateAndTimeInISTWithotFormat(value.createdAt, value.validity, currentServerDateAndTime);
             
-            console.log(comparedDateObject);
-            
             if(comparedDateObject.status === "Active") {
                 return React.createElement("p",{style: {color: 'green'}}, "Active");
             }

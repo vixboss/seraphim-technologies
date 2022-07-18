@@ -6,6 +6,7 @@ const nodemailer = require('nodemailer');
 // const fb = require('firebase-admin');
 
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+const UserPurchase = require('../models/user-purchase.model');
 
 const stripePayment = async(req, res, next) => {
     const currentUser = req.body.currentUser;
@@ -122,14 +123,20 @@ const checkoutCompletedSuccessful = async (req, res, next) => {
             expand: [ "line_items" ]
         });
     
-        // Get the customer email
-        const email = event.data.object.customer_email;
-    
         // Get the Items
-        const items = session.line_items;
+        const orderJson = {
+            id: session.id,
+            name: session.customer_details.name,
+            email:session.customer_details.email,
+            phone: session.customer_details.phone,
+            gross_amount: (session.amount_subtotal/100).toFixed(2),
+            total_amount: (session.amount_total/100).toFixed(2),
+            items:session.line_items.data,
+            merchant: 'Stripe'
+        };
     
         // To save customer products
-        await savePurchasedProduct(email, items);
+        await savePurchasedProduct(orderJson);
     }
 }
 
@@ -172,11 +179,22 @@ const checkoutCompletedSuccessful = async (req, res, next) => {
 //     // }
 // }
 
-const savePurchasedProduct = async(email, items) => {
+const savePurchasedProduct = async(order) => {
     try {
-        const userEmail = email;
-        const data = items.data;
-        console.log(data);
+        const deliveryStatus = 0;
+        let userPurchase = new UserPurchase(
+            order.name,
+            order.email,
+            order.phone,
+            order.id,
+            order.gross_amount,
+            order.total_amount,
+            order.items,
+            deliveryStatus,
+            order.merchant
+        );
+
+        await userPurchase.save();
         
     } catch (error) {
         console.error(error.message);

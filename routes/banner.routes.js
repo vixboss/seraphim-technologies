@@ -10,10 +10,10 @@ const {
 
 const router = express.Router();
 
-router.post('/banner', addBanner);
+router.post('/banner', verifyToken, addBanner);
 router.get('/banner', getAllBanner);
-router.get('/banner/:id', getBannerById);
-router.put('/banner/:id', updateBanner);
-router.delete('/banner/:id', deleteBannerById);
+router.get('/banner/:id', verifyToken, getBannerById);
+router.put('/banner/:id', verifyToken, updateBanner);
+router.delete('/banner/:id',verifyToken, deleteBannerById);
 
 module.exports = router;
