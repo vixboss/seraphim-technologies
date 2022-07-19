@@ -7,7 +7,7 @@ import { createStructuredSelector } from "reselect";
 import {getProductByNameStart} from './../../redux/product/product.action';
 // import { selectCollectionForProductDescription, selectCollections } from './../../redux/shop/shop.selector';
 import { selectProductByName } from './../../redux/product/product.selector';
-import ProductDescriptionContainer  from './../../components/product-description/product-description.conatiner';
+import ProductDescriptionContainer  from '../../components/product-description/product-description.container';
 
 import './product-description-page.styles.scss';
 
@@ -47,8 +47,7 @@ const ProductDescriptionPage = ({getProductByNameStart, selectProductByName}) =>
             // typeof(collectionItemDetails) !== "undefined" && objLength !== 0 ?
             //     <ProductDescriptionContainer id={collectionItemDetails[0].id} collectionItem = {collectionItemDetails[0]}/> : <ProductDescriptionContainer id={itemDetails.id} collectionItem = {itemDetails}/>
 
-            typeof(selectProductByName.data) !== "undefined" && selectProductByName.data.length !== 0 ?
-                <ProductDescriptionContainer id={selectProductByName.data[0].id} collectionItem = {selectProductByName.data[0]}/> : null
+                <ProductDescriptionContainer/> 
             
         }
         </div>

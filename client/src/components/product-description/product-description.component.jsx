@@ -1,35 +1,40 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import { withRouter } from 'react-router-dom';
 import Grid from '@mui/material/Grid';
 
+import { connect } from "react-redux";
+import { createStructuredSelector } from "reselect";
+
+import { selectProductByName } from './../../redux/product/product.selector';
 import ProductConfiguration from "../product-configuration/product-configuration.component";
 import ProductDescriptionLeftColumn from '../product-description-left-column/product-description-left-column.component';
 
 import './product-description.styles.scss';
 
-const ProductDescription = ({collectionItem, history, match }) => {
-    const {id, name, description, heading, speakerName, date, duration, detailFieldTxtArea} = collectionItem;
+const ProductDescription = ({history, match, selectProductByName }) => {
+    useEffect(() => {
+        window.scrollTo(0,0);
+    }, []);
+
+    const [collectionItem, setCollectionItem] = useState({
+        id: '', 
+        name: '',
+        description: '',
+        speakerName: '',
+        date: '',
+        duration: '',
+        detailFieldTxtArea: '' 
+    });
+
+    useEffect(() => {
+        if(typeof selectProductByName.length === "undefined" && selectProductByName.length !== 0){
+            setCollectionItem(selectProductByName.data[0]);
+        }
+    }, [selectProductByName]);
+
+    const {id, name, description, speakerName, date, duration, detailFieldTxtArea } = collectionItem;
+
     return (
-        // <div className="product-description-page">
-        //     {/* Left Column / Headphones Image */}
-        //     <div className="left-column">
-        //         <ProductDescriptionLeftColumn id= {id} item = {collectionItem}/>
-        //     </div>
-
-        //     {/* Right Column */}
-        //     <div className="right-column">
-
-        //         {/* Product Description */}
-        //         <div className="product-description">
-        //             <span>{match.params.id.toUpperCase()}</span>
-        //             <h1>{name}</h1>
-        //             <p>{heading}</p>
-        //         </div>
-
-        //         {/* Product Configuration */}
-        //         <ProductConfiguration productConfiguration={productDescription}/>
-        //     </div>
-        // </div>
             <Grid className="box-padding" container spacing={3}>
                 <Grid item md={4}>
                     <ProductDescriptionLeftColumn id= {id} item = {collectionItem} name = {name} date = {date}/>
@@ -51,4 +56,8 @@ const ProductDescription = ({collectionItem, history, match }) => {
     )
 };
 
-export default withRouter(ProductDescription);
+const mapStateToProps = createStructuredSelector({
+    selectProductByName: selectProductByName
+});
+
+export default withRouter(connect(mapStateToProps)(ProductDescription));

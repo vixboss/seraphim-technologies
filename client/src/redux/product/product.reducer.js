@@ -69,6 +69,7 @@ const productReducer = (state= INITIAL_STATE, action) => {
         case ProductActionType.PRODUCT_GET_BY_NAME_FAILURE:
             return{
                 ...state,
+                isFetching: false,
                 error: action.payload
             }
         default:

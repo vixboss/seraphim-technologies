@@ -26,6 +26,7 @@ import AdminDashboard from './components/admin-dashboard/admin-dashboard.compone
 import PaymentPage from './pages/payment-page/payment-page.component';
 import ForgotPasswordComponent from './components/forgot-password/forgot-password.component';
 import ResetPasswordComponent from './components/reset-password/reset-password.component';
+import ErrorPage from './pages/error-page/error-page.component';
 
 import { checkUserSession } from './redux/user/user.action';
 
@@ -86,6 +87,7 @@ const App = ({ checkUserSession, currentuser, currentAdmin }) => {
               () => currentAdmin ? <Redirect to='/admin/dashboard'/> : <AdminLoginPage/>
             }
           />
+          <Route exact path='/*' component = {ErrorPage} />
         </Switch>
         <Footer />
       </div>

@@ -170,7 +170,13 @@ export function* getProductByName({payload}){
         var name = payload;
         const productById = yield axios.post(`${host}/api/product-by-name`, {name});
         if(productById.status === 200 || productById.status === 201){
-            yield put(getProductByNameSuccess(productById));
+            if(productById.data && Object.keys(productById.data).length === 0 && Object.getPrototypeOf(productById.data) === Object.prototype){
+                window.location.href = window.location.origin + '/error';
+            }
+            else{
+                yield put(getProductByNameSuccess(productById));
+            }
+
         }
     } catch (error) {
         let err = error.response.data;

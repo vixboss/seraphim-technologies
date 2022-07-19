@@ -25,6 +25,7 @@ import { convertDateAndTimeInEST } from './../../factory.js';
 import { updateUserPurchaseDeliveryStatusStart } from '../../redux/user-purchase/user-purchase.action';
 
 import './admin-user-purchase-list.style.scss';
+import { SignalCellularNullTwoTone } from '@mui/icons-material';
 
 const RowsOfTable = (props) => {
   const { row, handleDeliveryStatus } = props;
@@ -33,7 +34,9 @@ const RowsOfTable = (props) => {
 
   return (
     <React.Fragment>
-      <TableRow sx={{ '& > *': { borderBottom: 'unset' } }}>
+      <TableRow sx={{ '& > *': { borderBottom: 'unset' } }} style={row.status === 'Delivered' ? {
+        background: 'rgb(110,249,66)',
+        background: 'linear-gradient(90deg, rgba(110,249,66,0.47942927170868344) 100%, rgba(2,0,36,1) 100%, rgba(0,212,255,1) 100%)'}: null}>
         <TableCell>
           <IconButton
             aria-label="expand row"
@@ -53,7 +56,7 @@ const RowsOfTable = (props) => {
         <TableCell align="right">{row.gross_amount}</TableCell>
         <TableCell align="right">{row.discount}</TableCell>
         <TableCell >{row.merchant}</TableCell>
-        <TableCell style={row.status === 'Delivered' ? {color: 'green'}: {color: 'red'}}>{row.status}</TableCell>
+        <TableCell style={row.status === 'Delivered' ? {color: 'orange'}: {color: 'red'}}>{row.status}</TableCell>
       </TableRow>
       <TableRow>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
@@ -72,7 +75,11 @@ const RowsOfTable = (props) => {
                     <TableCell style={{fontWeight: '600'}}>Unit Amount($)</TableCell>
                     <TableCell style={{fontWeight: '600'}}>Total Amount($)</TableCell>
                     <TableCell style={{fontWeight: '600'}}>Delivery Status</TableCell>
-                    <TableCell style={{fontWeight: '600'}}>Action</TableCell>
+                    {
+                      row.status !== 'Delivered' ? 
+                      <TableCell style={{fontWeight: '600'}}>Action</TableCell>
+                      : null
+                    }
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -95,16 +102,20 @@ const RowsOfTable = (props) => {
                             !!itemRow.deliveryStatus.data[0] ? 'Delivered' : 'Un-Delivered'
                         }
                         </TableCell>
-                        <TableCell>
-                          <Tooltip title="Update Delivery Status">
-                            <i 
-                              className="fa fa-truck delivery-status-icon" 
-                              aria-hidden="true" 
-                              style={{fontSize: '24px'}} 
-                              onClick = {() => handleDeliveryStatus(itemRow.orderId)}
-                            ></i>
-                          </Tooltip>
-                        </TableCell>
+                        {
+                          !itemRow.deliveryStatus.data[0] ? 
+                          <TableCell>
+                            <Tooltip title="Update Delivery Status">
+                              <i 
+                                className="fa fa-truck delivery-status-icon" 
+                                aria-hidden="true" 
+                                style={{fontSize: '24px'}} 
+                                onClick = {() => handleDeliveryStatus(itemRow.orderId)}
+                              ></i>
+                            </Tooltip>
+                          </TableCell>
+                          : null
+                        }
                     </TableRow>
                   )) : ''
                 }
