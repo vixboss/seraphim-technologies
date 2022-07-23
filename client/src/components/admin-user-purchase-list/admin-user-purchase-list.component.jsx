@@ -16,16 +16,23 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import Tooltip from '@mui/material/Tooltip';
 import TablePagination from '@mui/material/TablePagination';
+import Button from '@mui/material/Button';
+import SearchIcon from '@mui/icons-material/Search';
 import {Row, Col} from 'react-bootstrap';
+import Divider from '@mui/material/Divider';
+import Chip from '@mui/material/Chip';
+import { styled } from '@mui/material/styles';
+
 
 import FormInput from '../form-input/form-input.component.jsx';
+import AdvancedSearch from '../advanced-search/advanced-search.component';
+import ExportUserPurchaseExcel from '../user-purchase-export-to-excel/user-purchase-export-to-excel.component.jsx';
 
 import { convertDateAndTimeInEST } from './../../factory.js';
 
 import { updateUserPurchaseDeliveryStatusStart } from '../../redux/user-purchase/user-purchase.action';
 
 import './admin-user-purchase-list.style.scss';
-import { SignalCellularNullTwoTone } from '@mui/icons-material';
 
 const RowsOfTable = (props) => {
   const { row, handleDeliveryStatus } = props;
@@ -56,7 +63,7 @@ const RowsOfTable = (props) => {
         <TableCell align="right">{row.gross_amount}</TableCell>
         <TableCell align="right">{row.discount}</TableCell>
         <TableCell >{row.merchant}</TableCell>
-        <TableCell style={row.status === 'Delivered' ? {color: 'orange'}: {color: 'red'}}>{row.status}</TableCell>
+        <TableCell style={row.status === 'Delivered' ? {color: 'blue'}: {color: 'red'}}>{row.status}</TableCell>
       </TableRow>
       <TableRow>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
@@ -130,7 +137,7 @@ const RowsOfTable = (props) => {
 }
 
 const AdminUserPurchaseList = ({data, updateUserPurchaseDeliveryStatusStart}) => {
-    const createData = (name, email, gross_amount, merchant, order_id, total_amount, items, discount, createdAt, status) => {
+    const createData = (name, email, gross_amount, merchant, order_id, total_amount, items, discount, createdAt, status, itemLength) => {
         return {
           name,
           email,
@@ -141,7 +148,8 @@ const AdminUserPurchaseList = ({data, updateUserPurchaseDeliveryStatusStart}) =>
           merchant,
           createdAt,
           status,
-          items
+          items,
+          itemLength
         };
       }
     const [rows, setRows] = React.useState([]);
@@ -150,9 +158,16 @@ const AdminUserPurchaseList = ({data, updateUserPurchaseDeliveryStatusStart}) =>
       updateUserPurchaseDeliveryStatusStart({id: productId, status: 1});
     }
 
+    const Root = styled('div')(({ theme }) => ({
+      width: '100%',
+      ...theme.typography.body2,
+      '& > :not(style) + :not(style)': {
+          marginTop: theme.spacing(8),
+      },
+  }));
+
     const [newData, setNewData] = React.useState();
     React.useEffect(() => {
-      console.log(data);
       if(data !== ''){
           var newArr = [];
             data.map((userData) => {
@@ -174,7 +189,8 @@ const AdminUserPurchaseList = ({data, updateUserPurchaseDeliveryStatusStart}) =>
                             userData.items, 
                             discount,
                             userData.createdAt,
-                            status
+                            status,
+                            userData.items.length
                         )
                     )
             });
@@ -215,26 +231,50 @@ const AdminUserPurchaseList = ({data, updateUserPurchaseDeliveryStatusStart}) =>
         }
     }
     
+    const [openSearch, setOpenSearch] = React.useState(false);
+    const handleAdvancedSearch = () => {
+      setOpenSearch(true);
+    }
+
+    const closeAdvancedSearch = () => {
+      setOpenSearch(false);
+    }
+
+    // Excel Sheet Export 
+  
+
     return (
       <>
-        <Row>
-          <Col xs= {6} xm = {6} md = {6}>
-            <h2 style={{margin: '25px 0px'}}>User Purchase List</h2>
-          </Col>
-          <Col md = {2} xs= {6} xm = {6} className="search-input">
-              <FormInput
-                  name="search"
-                  label="Search"
-                  value={search}
-                  onChange={handleSearch}
-                  autoComplete="off"
-              />
+        <Row style={{marginTop: '25px'}}>
+          <Col>
+            <h2>User Purchase List</h2>
           </Col>
         </Row>
-
+        <Row>
+              <Col md = {10} xs= {10} xm = {10} className="search-input" style={{display: 'flex'}}>
+                <Tooltip title="Search">
+                  <Button 
+                    variant="outlined" 
+                    color="success" 
+                    startIcon={<SearchIcon />} 
+                    onClick = {handleAdvancedSearch}
+                    style={{marginLeft: 'auto'}}
+                  >
+                    Search
+                  </Button>
+                </Tooltip>
+                  {
+                    openSearch && <AdvancedSearch openDialog = {openSearch} closeAdvancedSearch = {closeAdvancedSearch}/>
+                  }
+              </Col>
+              <Col md = {2} xs= {2} xm = {2} style={{display: 'flex'}}>
+                <Divider orientation="vertical" flexItem style={{height: '45px', marginLeft: 'auto'}}/>
+                  <ExportUserPurchaseExcel data = {rows}/>
+              </Col>
+        </Row>
         <Row>
           <TableContainer component={Paper} className="user-Purchase-list">
-              <Table aria-label="collapsible table">
+              <Table aria-label="collapsible table" id="user-purchase">
                   <TableHead>
                       <TableRow>
                           <TableCell />

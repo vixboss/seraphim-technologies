@@ -180,11 +180,112 @@ class UserPurchase {
                     orderId = ${id}
             `;
             const [rows] = await db.query(updateSQL);
-            console.log(rows);
             return rows;
         } catch (error) {
             return error;
         }
+    }
+    static async searchUserPurchase(data) {
+        try{
+            const id = data.orderId;
+            const description = data.productName;
+            const email = data.email;
+            const payerName = data.payerName;
+            const newFromDate = data.fromDate;
+            const newToDate = data.toDate;
+
+            if((data.fromDate === '' && data.toDate !== '') || (data.fromDate !== '' && data.toDate == '')){
+                return {message: "Enter Both Dates For Searching."};
+            }
+            const sql = (data.fromDate !== '' && data.toDate !== '') ? `
+            SELECT 
+                DISTINCT
+                payer.name,
+                payer.email,
+                payer.phone,
+                payer.order_id,
+                payer.total_amount,
+                payer.gross_amount,
+                payer.merchant,
+                payer.createdAt
+            FROM payer 
+            INNER JOIN orders ON
+                payer.id = orders.payerId
+            INNER JOIN orderDelivery ON	
+                orderDelivery.orderId = orders.id
+            WHERE 
+                    payer.order_id LIKE '%${id}%'
+                AND 
+                    payer.name LIKE '%${payerName}%'
+                AND
+                    payer.email LIKE '%${email}%'
+                AND
+                    orders.description LIKE '%${description}%'
+                AND 
+                	(payer.createdAt BETWEEN '${newFromDate}' AND '${newToDate}')
+            ORDER BY orderDelivery.createdAt DESC
+            `
+            : 
+            `
+            SELECT 
+                DISTINCT
+                payer.name,
+                payer.email,
+                payer.phone,
+                payer.order_id,
+                payer.total_amount,
+                payer.gross_amount,
+                payer.merchant,
+                payer.createdAt
+            FROM payer 
+            INNER JOIN orders ON
+                payer.id = orders.payerId
+            INNER JOIN orderDelivery ON	
+                orderDelivery.orderId = orders.id
+            WHERE 
+                    payer.order_id LIKE '%${id}%'
+                AND 
+                    payer.name LIKE '%${payerName}%'
+                AND
+                    payer.email LIKE '%${email}%'
+                AND
+                    orders.description LIKE '%${description}%'
+            ORDER BY orderDelivery.createdAt DESC
+            `;
+
+            const [rows] = await db.query(sql);
+            // return rows;
+            var newRow = [];
+            if(rows) {
+                await Promise.all(
+                    rows.map(async (row) => {
+    
+                        const orderSQL = `
+                            SELECT 
+                                orders.description,
+                                orders.unit_amount,
+                                orders.quantity,
+                                orderDelivery.deliveryStatus,
+                                orderDelivery.createdAt,
+                                orderDelivery.orderId
+                            FROM payer 
+                            INNER JOIN orders
+                                ON payer.id = orders.payerId
+                            INNER JOIN orderDelivery
+                                ON orderDelivery.orderId = orders.id
+                            WHERE payer.order_id = '${row.order_id}'
+                            AND orders.description LIKE '%${description}%'
+                        `;
+                        const [rows] = await db.query(orderSQL);
+                        newRow.push({...row, items: rows });
+                    })
+                );
+            }
+            return newRow;
+        }
+        catch(error) {
+            return error;
+        } 
     }
 }
 

@@ -135,10 +135,26 @@ const updateDelivery = async(req, res, next) => {
     }
 }
 
+const searchPurchase = async (req, res, next) => {
+    try {
+        const data = await UserPurchase.searchUserPurchase(req.body);
+        if(data.message){
+            res.status(400).send(data.message);
+        }
+        else{
+            res.status(200).send(data);
+        }
+    } catch (error) {
+        res.status(400).send(error.message);
+    }
+}
+
+
 module.exports = {
     // getAllPurchasedProduct,
     // getAllCurrentUserPurchase
     insertUserPurchase,
     getUserPurchase,
-    updateDelivery
+    updateDelivery,
+    searchPurchase
 }

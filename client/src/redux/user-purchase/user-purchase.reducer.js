@@ -9,11 +9,13 @@ const INITIAL_STATE = {
 
 const userPurchaseReducer = (state = INITIAL_STATE, action) => {
     switch(action.type) {
+        case UserPurchaseActionType.SEARCH_USER_PURCHASE_START:
         case UserPurchaseActionType.GET_USER_PURCHASE_START:
             return {
                 ...state,
                 isFetching: true
             }
+        case UserPurchaseActionType.SEARCH_USER_PURCHASE_SUCCESS:
         case UserPurchaseActionType.GET_USER_PURCHASE_SUCCESS:
             return {
                 ...state,
@@ -21,6 +23,7 @@ const userPurchaseReducer = (state = INITIAL_STATE, action) => {
                 error: false,
                 userPurchase: action.payload
             }
+        case UserPurchaseActionType.ADD_USER_PURCHASE_FAILURE:
         case UserPurchaseActionType.GET_USER_PURCHASE_FAILURE: 
             return {
                 ...state,

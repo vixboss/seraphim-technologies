@@ -236,17 +236,31 @@ class Product {
             const [rows] = await db.query(sql);
             if(rows) {
                 merchandise.map((merchand) => {
-                    const merchandiseSQL = `
-                        UPDATE
-                            collections_merchandise
-                        SET
-                            price = '${merchand.price}'
-                        WHERE
-                            collections_merchandise.collection_id = ${collection_id}
-                            AND
-                            collections_merchandise.merchandise_id = ${merchand.id}
-                    `;
-                    db.query(merchandiseSQL);
+                    if(merchand.productType_id !== null) {
+                        const merchandiseSQL = `
+                            UPDATE
+                                collections_merchandise
+                            SET
+                                price = '${merchand.price}'
+                            WHERE
+                                collections_merchandise.collection_id = ${collection_id}
+                                AND
+                                collections_merchandise.merchandise_id = ${merchand.id}
+                        `;
+                        db.query(merchandiseSQL);
+                    }
+                    else {
+                        var values = [];
+                        if(merchand.price !== ''){
+                            values.push([merchand.price, collection_id, merchand.id]);
+                        }
+                        
+                        var merchandiseSql = "INSERT INTO collections_merchandise (price, collection_id, merchandise_id) VALUES ?";
+                        db.query(merchandiseSql, [values], function(err) {
+                            if (err) throw err;
+                            db.end();
+                        });
+                    }
                 });
 
                 const productTypeSQL = `

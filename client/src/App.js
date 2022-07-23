@@ -50,6 +50,37 @@ const App = ({ checkUserSession, currentuser, currentAdmin }) => {
   
   var address = window.location.pathname;
   address = address.split('/');
+
+  // Logout on Inactive user.
+  document.addEventListener("mousemove", () =>{ 
+    localStorage.setItem('lastActvity', new Date())
+  });
+  document.addEventListener("click", () =>{ 
+    localStorage.setItem('lastActvity', new Date())
+  });
+  document.addEventListener("wheel", () =>{ 
+    localStorage.setItem('lastActvity', new Date())
+  });
+
+  let timeInterval = setInterval(() => {
+    let lastAcivity = localStorage.getItem('lastActvity')
+    var diffMs = Math.abs(new Date(lastAcivity) - new Date()); // milliseconds between now & last activity
+    var seconds = Math.floor((diffMs/1000));
+    var minute = Math.floor((seconds/60));
+    var currentUrl = window.location.href;
+    var checkCurrentUrl = currentUrl.includes('admin');
+    var redirectLocation = window.location.origin + '/admin';
+
+    if(minute === 15){
+      clearInterval(timeInterval)
+      //code for logout or anything...
+      if(checkCurrentUrl){
+        localStorage.clear();
+        window.location.href = redirectLocation;
+      }
+    }
+  
+  },1000)
   
   return (
     <PayPalScriptProvider options={{'client-id': process.env.REACT_APP_PAYPAL_CLIENT_ID}}>

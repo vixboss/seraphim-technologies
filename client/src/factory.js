@@ -63,6 +63,20 @@ export const currentDateAndTimeInIST = (date) => {
     return (myDatetimeString);
 }
 
+export const currentDateInIST = (date) => {
+    var myTimezone = "Asia/Kolkata";
+    var myDatetimeFormat= "MM/DD/yyyy";
+    var myDatetimeString = moment(date).tz(myTimezone).format(myDatetimeFormat);
+    return (myDatetimeString);
+}
+
+export const currentDateInISTWithTime = (date) => {
+    var myTimezone = "Asia/Kolkata";
+    var myDatetimeFormat= "yyyy-MM-DD HH:mm:ss";
+    var myDatetimeString = moment(date).tz(myTimezone).format(myDatetimeFormat);
+    return (myDatetimeString);
+}
+
 export const unixTimeStampToDate = (date) => {
     var myDatetimeFormat= "ddd MMM D yyyy hh:mm:ss a z";
     return moment(date).format(myDatetimeFormat);
@@ -234,6 +248,21 @@ export const convertDateAndTimeInEST = (date) => {
     return (myDatetimeString);
 }
 
+export const convertDateInEST = (date) => {
+    var myTimezone = "America/New_York";
+    var myDatetimeFormat= "ddd MMM D yyyy";
+    var myDatetimeString = moment(date).tz(myTimezone).format(myDatetimeFormat);
+    
+    return (myDatetimeString);
+}
+
+export const convertTimeInEST = (date) => {
+    var myTimezone = "America/New_York";
+    var myDatetimeFormat= "hh:mm:ss";
+    var myDatetimeString = moment(date).tz(myTimezone).format(myDatetimeFormat);
+    
+    return (myDatetimeString);
+}
 export const filterWebinar = (currDate, webinarDate, webinarTime, webinarDuration) => {
     var status = '';
     var currentDate = moment(currDate).format('yyyy-MM-DD');

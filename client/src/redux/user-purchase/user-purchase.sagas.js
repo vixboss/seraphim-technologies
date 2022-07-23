@@ -12,7 +12,9 @@ import {
     addUserPurchaseSuccess,
     addUserPurchaseFailure,
     updateUserPurchaseDeliveryStatusFailure,
-    updateUserPurchaseDeliveryStatusSuccess
+    updateUserPurchaseDeliveryStatusSuccess,
+    searchUserPurchaseSuccess,
+    searchUserPurchaseFailure
 } from './user-purchase.action';
 
 const MySwal = withReactContent(Swal);
@@ -24,6 +26,27 @@ export function* getUserPurchaseStart() {
     } catch (error) {
         let err = error.response.data;
         yield put(getAllUserPurchaseFailure(error));
+
+        MySwal.fire({
+            position: 'top-end',
+            icon: 'error',
+            title: err,
+            showConfirmButton: false,
+            timer: 1500
+        });
+        yield put(unAuthorized(error));
+    }
+}
+
+export function* searchUserPurchaseStart({payload}){
+    try {
+        const userPurchase = yield axios.post(`${host}/api/search-user-purchase`, payload);
+        if(userPurchase.status === 200 || userPurchase.status === 201){
+            yield put(searchUserPurchaseSuccess(userPurchase.data));
+        }
+    } catch (error) {
+        let err = error.response.data;
+        yield put(searchUserPurchaseFailure(error));
 
         MySwal.fire({
             position: 'top-end',
@@ -86,10 +109,16 @@ export function* onUserPurchaseAddStart () {
 export function* onUserPurchaseDeliveryStatusUpdateStart () {
     yield takeLatest(UserPurchaseActionType.UPDATE_USER_PURCHASE_DELIVERY_STATUS_START, updateUserPurchaseDeliveryStatusStart);
 }
+
+export function* onUserPurchaseSearchStart () {
+    yield takeLatest(UserPurchaseActionType.SEARCH_USER_PURCHASE_START, searchUserPurchaseStart);
+}
+
 export function* UserPurchaseSaga() {
     yield all([
         call(onUserPurchaseGetStart),
         call(onUserPurchaseAddStart),
-        call(onUserPurchaseDeliveryStatusUpdateStart)
+        call(onUserPurchaseDeliveryStatusUpdateStart),
+        call(onUserPurchaseSearchStart)
     ]);
 }

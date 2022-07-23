@@ -271,6 +271,13 @@ const AdminProduct = ({fetchCollectionsStart, updateProductStart, getProductById
         if(productById.status === 200 || productById.status === 201){
             const { data } = productById;
             const merchandiseObject = typeof data[0].merchandise !== "undefined" ? data[0].merchandise: merchandisePriceArray;
+            
+            // merchandiseObject.map((obj) => {
+            //     if(obj.productType_id === null){
+            //         obj.productType_id = data[0].productType_id;
+            //     }
+            // });
+
             setCheckUpdateId(true);
             console.log("A");
             setProductDetails({
@@ -307,7 +314,6 @@ const AdminProduct = ({fetchCollectionsStart, updateProductStart, getProductById
             //     })
             // );
             setMerchandise(merchandiseObject);
-
             arrayObj.length > 0 ? setDetailField(arrayObj) : setDetailField([{detailType: '', detailTypeField: ''}]);
         }
     },[productById]);
@@ -392,6 +398,7 @@ const AdminProduct = ({fetchCollectionsStart, updateProductStart, getProductById
             }
         });
         setMerchandise(list);
+        console.log(merchandise);
         setProductDetails({...productDetails, merchandise: list});
     }
 
