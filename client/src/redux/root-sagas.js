@@ -10,6 +10,7 @@ import { UserPurchaseSaga } from "./user-purchase/user-purchase.sagas";
 import { UserPurchaseListSaga } from './user-purchase-list/user-purchase-list.saga';
 import { DiscountSaga } from './discount/discount.saga';
 import { BannerSaga } from './banner/banner.saga';
+import { PaypalNotificationMailSaga } from './paypalPaymentNitificationMail/paypalPaymentNitificationMail.saga';
 
 export default function* rootSagas() {
     yield all([
@@ -22,6 +23,7 @@ export default function* rootSagas() {
        call(UserPurchaseSaga),
        call(UserPurchaseListSaga),
        call(DiscountSaga),
-       call(BannerSaga)
+       call(BannerSaga),
+       call(PaypalNotificationMailSaga)
     ]);
 }

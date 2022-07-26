@@ -7,7 +7,7 @@ const { insertUserPurchase, getUserPurchase, updateDelivery, searchPurchase } = 
 // router.get('/user-purchase', verifyToken, getAllPurchasedProduct);
 // router.get('/current-user-purchase', verifyToken, getAllCurrentUserPurchase);
 
-router.post('/user-purchase',verifyToken, insertUserPurchase);
+router.post('/user-purchase', insertUserPurchase);
 router.get('/user-purchase',verifyToken, getUserPurchase);
 router.post('/search-user-purchase', searchPurchase);
 router.put('/user-purchase-delivery-status/:id',verifyToken, updateDelivery);

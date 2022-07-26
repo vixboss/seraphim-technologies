@@ -6,15 +6,16 @@ import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 
 import { addUserPurchaseStart } from '../../redux/user-purchase/user-purchase.action';
+import { paypalPaymentNitificationMailStart } from '../../redux/paypalPaymentNitificationMail/paypalPaymentNitificationMail.action';
 
 const MySwal = withReactContent(Swal);
-const PaypalCheckoutButton = ({discountPrice, cartItems, history, addUserPurchaseStart}) => {
+const PaypalCheckoutButton = ({discountPrice, cartItems, history, addUserPurchaseStart, paypalPaymentNotification}) => {
     const [paidFor, setPaidFor] = useState(false);
     const [error, setError] = useState(null);
     const handleApprove = (order) => {
         // Call backend function to fulfill order.
         addUserPurchaseStart({...order, merchant: 'Paypal'});
-        
+        paypalPaymentNotification(order);
         // If response is success.
         setPaidFor(true);
         history.push('/shop');
@@ -107,7 +108,8 @@ const PaypalCheckoutButton = ({discountPrice, cartItems, history, addUserPurchas
 }
 
 const mapDispatchToProps = dispatch => ({
-    addUserPurchaseStart: (purchase) => dispatch(addUserPurchaseStart(purchase))
+    addUserPurchaseStart: (purchase) => dispatch(addUserPurchaseStart(purchase)),
+    paypalPaymentNotification: (data) => dispatch(paypalPaymentNitificationMailStart(data))
 })
 
 export default withRouter(connect(null, mapDispatchToProps)(PaypalCheckoutButton));

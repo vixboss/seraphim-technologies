@@ -14,6 +14,7 @@ const applyDiscountRoutes = require('./routes/apply-discount.routes');
 const productSearchRoutes = require('./routes/product-search.routes');
 const bannerRoutes = require('./routes/banner.routes');
 const productByNameRoutes = require('./routes/product-by-name.routes');
+const paypalPaymentNotificationMailRoutes = require('./routes/paypalPaymentNotificationMail.routes');
 
 if (process.env.NODE_ENV !== 'production') require('dotenv').config();
 
@@ -71,6 +72,7 @@ app.use('/api', applyDiscountRoutes);
 app.use('/api', productSearchRoutes);
 app.use('/api', bannerRoutes);
 app.use('/api', productByNameRoutes);
+app.use('/api', paypalPaymentNotificationMailRoutes);
 
 /*********************************************************/
 

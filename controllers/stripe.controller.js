@@ -1,6 +1,7 @@
 require('dotenv').config();
 const bodyParser = require('body-parser');
 const nodemailer = require('nodemailer');
+const { mail, notificationMail } = require('./../factory');
 // const firebase = require('../db');
 // const firestore = firebase.firestore();
 // const fb = require('firebase-admin');
@@ -48,60 +49,26 @@ const stripePayment = async(req, res, next) => {
     }
 }
 
-function mail(email, receipt) {
-    var transporter = nodemailer.createTransport({
-        host : process.env.ADMIN_HOST,
-        port: process.env.ADMIN_PORT,
-        secure: true,
-        auth: {
-            user: process.env.ADMIN_EMAIL,
-            pass: process.env.ADMIN_PASSWORD
-        }
-    });
-
-    var mailOptions = {
-        from: process.env.ADMIN_EMAIL,
-        to: email, 
-        subject:'Webinar Dock Product Purchase.',
-        text:`Thanks for the Purchase of product.`,
-        html:`
-            <form>
-                <p>
-                    Thanks for the Purchase of product. Please get your receipt by clicking link below.
-                    <br><br>
-                    Thank You 
-                    <br>
-                    Webinar Dock Team.
-                </p>
-                <a href=${receipt}>Get Your Receipt!</a>
-            </form>`
-    };
-
-    transporter.sendMail(mailOptions, (error, info) => {
-        if(error){
-            console.log(error);
-        }
-        else{
-            console.log('Email Sent: '+ info.response);
-        }
-    });
-}
-
 const stripePaymentSuccessful = (req, res, next) => {
     const event = req.body;
-    // console.log(event.data.object);
     const billing_details = event.data.object.charges.data[0].billing_details;
     const email = billing_details.email;
     const name = billing_details.name;
     const address = billing_details.address;
+    const price = (event.data.object.amount_received/100).toFixed(2)
     const receipt = event.data.object.charges.data[0].receipt_url;
-
+    
     // On payment goes success.
 
     switch(event.type){
         case 'payment_intent.succeeded': {
             // const email = event['data']['object']['receipt_email'];
             mail(email, receipt);
+            notificationMail(process.env.NOTIFICATION_EMAIL, {
+                email,
+                name,
+                price
+            });
             console.log(`Payment Intent was successful for ${email}!`);
             break;
         }
