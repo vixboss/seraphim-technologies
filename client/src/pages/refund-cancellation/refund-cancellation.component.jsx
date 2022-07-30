@@ -1,10 +1,14 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { Link } from 'react-router-dom';
 import { Container, Row } from 'react-bootstrap';
 
 import './refund-cancellation.styles.scss';
 
 const RefundAndCancellationPageComponent = () => {
+     
+    useEffect(() => {
+        window.scrollTo(0,0);
+    }, []);
     return (
        <Container>
             <Row md = {8} xs = {8}>

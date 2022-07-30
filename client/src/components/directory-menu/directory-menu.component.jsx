@@ -5,6 +5,7 @@ import { Row, Badge } from 'react-bootstrap';
 import { createStructuredSelector } from "reselect";
 import { Link } from 'react-router-dom';
 import Chip from '@mui/material/Chip';
+import Moment from 'moment';
 
 import { selectCollectionsForPreview } from '../../redux/shop/shop.selector';
 import MenuCardContainer from "../menu-card/menu-card.container";
@@ -36,8 +37,8 @@ const DirectoryMenu = ({fetchCollectionsStart, collections, history}) => {
             });
         });
 
-        recorded = recorded.reverse();
-        upcoming = upcoming.reverse();
+        upcoming = upcoming.sort((a,b) => new Moment(a.date).format('X') - new Moment(b.date).format('X'));
+        recorded = recorded.sort((a,b) => new Moment(a.date).format('X') - new Moment(b.date).format('X')).reverse();
 
         setRecordedItemArray(recorded.slice(0,4));
         setUpcomingItemArray(upcoming.slice(0,4));
@@ -55,7 +56,7 @@ const DirectoryMenu = ({fetchCollectionsStart, collections, history}) => {
             {
                 upcomingItemArray.length > 0 &&
                 <Row className = "clickable-button">
-                    <Chip label="View More..." onClick = {() => history.push('/shop')}/>
+                    <Chip label="View More..." onClick = {() => history.push({pathname:'/shop',state: {type: 'upcoming'}})}/>
                 </Row>
             }
             <h3 className="recorded-webinars onHover home-page-border">
@@ -71,7 +72,7 @@ const DirectoryMenu = ({fetchCollectionsStart, collections, history}) => {
             {
                 recordedItemArray.length > 0 &&
                 <Row className = "clickable-button">
-                    <Chip label="View More..." onClick = {() => history.push('/shop')}/>
+                    <Chip label="View More..." onClick = {() => history.push({pathname: '/shop', state: {type: 'recorded'}})}/>
                 </Row>
             }
         </>

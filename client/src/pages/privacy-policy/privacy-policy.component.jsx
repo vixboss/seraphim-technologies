@@ -1,10 +1,14 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { Link } from 'react-router-dom';
 import { Container, Row } from 'react-bootstrap';
 
 import './privacy-policy.styles.scss';
 
 const PrivacyPolicyPageComponent = () => {
+     
+    useEffect(() => {
+        window.scrollTo(0,0);
+    }, []);
     return (
        <Container>
             <Row md = {8} xs = {8}>

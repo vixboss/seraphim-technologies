@@ -36,7 +36,11 @@ const Footer = () => {
                             <h4 style={{color: '#1aa5d8', paddingTop: '20px'}}>About Us</h4>
                             <Row>
                                 <span>Speaker</span>
-                                <span>Faq</span>
+                                <span>
+                                    <Link to = '/faq'>
+                                        Faq
+                                    </Link>
+                                </span>
                                 <span>Unsubscribe</span>
                             </Row>
                         </Col>
@@ -45,7 +49,11 @@ const Footer = () => {
                             <Row>
                                 <span>Speaker Opportunity</span>
                                 <span>Suggest A Topic</span>
-                                <span>Subscribe Now</span>
+                                <span>
+                                    <Link to='/subscribe'>
+                                        Subscribe Now
+                                    </Link>
+                                </span>
                             </Row>
                         </Col>
                         <Col xs={6} sm={3} md={3}>

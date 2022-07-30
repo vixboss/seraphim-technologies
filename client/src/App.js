@@ -27,6 +27,10 @@ import PaymentPage from './pages/payment-page/payment-page.component';
 import ForgotPasswordComponent from './components/forgot-password/forgot-password.component';
 import ResetPasswordComponent from './components/reset-password/reset-password.component';
 import ErrorPage from './pages/error-page/error-page.component';
+import SubscribePage from './pages/subscribepage/subscribepage.component';
+import AboutAndContactPage from './pages/about-and-contact/about-and-contact.component';
+import ContactComponent from './components/contact/contact.component';
+import FaqPage from './pages/faq/faq.component';
 
 import { checkUserSession } from './redux/user/user.action';
 
@@ -37,6 +41,10 @@ import { selectCollectionsForPreview } from './redux/shop/shop.selector';
 import { selectCurrentAdmin } from './redux/admin/admin.selector';
 
 const App = ({ checkUserSession, currentuser, currentAdmin }) => {
+   
+  useEffect(() => {
+      window.scrollTo(0,0);
+  }, []);
   
   useEffect(() => {
     checkUserSession();
@@ -112,6 +120,10 @@ const App = ({ checkUserSession, currentuser, currentAdmin }) => {
           <Route exact path = '/payment' component = {PaymentPage}/>
           <Route exact path = '/forgot-password' component = {ForgotPasswordComponent}/>
           <Route exact path = '/reset-password' component = {ResetPasswordComponent}/>
+          <Route exact path = '/subscribe' component = {SubscribePage}/>
+          <Route exact path = '/about' component = {AboutAndContactPage}/>
+          <Route exact path = '/contact' component = {AboutAndContactPage}/>
+          <Route exact path = '/faq' component = {FaqPage}/>
 
           <Route exact path='/admin'
             render = {

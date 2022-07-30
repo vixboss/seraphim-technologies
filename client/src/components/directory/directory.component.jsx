@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 
@@ -10,7 +10,12 @@ import { selectDirectorySections } from '../../redux/directory/directory.selecto
 
 import './directory.styles.scss';
 
-const Directory  = ({sections}) => (
+const Directory  = ({sections}) => {
+     
+    useEffect(() => {
+        window.scrollTo(0,0);
+    }, []);
+    return (
     
         // <div className='directory-menu'>
         //     {
@@ -25,7 +30,8 @@ const Directory  = ({sections}) => (
             <DirectoryMenu/>
             <BannerComponent/>
         </div>
-);
+    )
+};
 
 const mapStateToProps = createStructuredSelector({
     sections: selectDirectorySections

@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
+import Moment from 'moment';
 
 import Box from '@mui/material/Box';
 import Collapse from '@mui/material/Collapse';
@@ -169,6 +170,7 @@ const AdminUserPurchaseList = ({data, updateUserPurchaseDeliveryStatusStart}) =>
     const [newData, setNewData] = React.useState();
     React.useEffect(() => {
       if(data !== ''){
+          data = data.sort((a,b) => new Moment(a.createdAt).format('X') - new Moment(b.createdAt).format('X')).reverse();
           var newArr = [];
             data.map((userData) => {
                 const discount = (userData.total_amount - userData.gross_amount).toFixed(2);
@@ -295,8 +297,8 @@ const AdminUserPurchaseList = ({data, updateUserPurchaseDeliveryStatusStart}) =>
                           rows.length > 0 ?
                           rows
                           .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                          .map((row) => (
-                              <RowsOfTable key={row.order_id} row={row} handleDeliveryStatus = {handleDeliveryStatus}/>
+                          .map((row, index) => (
+                              <RowsOfTable key={row.order_id+'_'+index} row={row} handleDeliveryStatus = {handleDeliveryStatus}/>
                           )) 
                           : 
                           <TableRow>
