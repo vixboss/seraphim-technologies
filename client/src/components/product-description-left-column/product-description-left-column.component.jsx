@@ -315,7 +315,7 @@ const ProductDescriptionLeftColumn = ({id, item, addItem, name, date, history}) 
                     {
                         <Row className='align'>
                             <Col className="border-align-inside-box">
-                                <ul style={{ listStyleType: 'none', paddingLeft: 0 }}>
+                                <ul style={{ listStyleType: 'none', paddingLeft: '10px' }}>
                                     <li>
                                         <span>*</span>
                                         For more than 6 attendee mail us at cs@webinardock.com

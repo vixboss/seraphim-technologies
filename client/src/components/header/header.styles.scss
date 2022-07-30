@@ -256,7 +256,7 @@ nav ul li a {
     color: white;
     text-decoration: none;
     line-height: 70px;
-    font-size: 20px;
+    font-size: 18px;
     padding: 8px 15px;
     text-transform: uppercase;
 }
@@ -337,7 +337,7 @@ nav ul ul ul li {
 }
 
 @media all and (max-width: 968px) {
-    ul {
+    .header-ul {
         margin-bottom: 30px;
     }
 
@@ -401,7 +401,7 @@ nav ul ul ul li {
         display: block;
         color: white;
         text-transform: uppercase;
-        font-size: 20px;
+        font-size: 18px;
         padding: 0 25px;
         line-height: 70px;
         cursor: pointer;
