@@ -19,7 +19,7 @@ const FaqPage = () => {
             <Row xs={8} xm={8} className="faq-container" style= {{textAlign: 'justify'}}>
                 <div className='faq-hdr'>What training products does WebinarDock offer?</div>
                 <div>
-                    <ul>
+                    <ul style={{paddingLeft: '2rem'}}>
                         <li><strong>1. Live Webinar</strong>
                             <p>Live webinar is a session wherein the audience or the attendees can put up questions and interact with the speaker towards the end in real time. The session generally lasts for 60-90 minutes.</p>
                         </li>

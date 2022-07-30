@@ -318,7 +318,7 @@ nav ul ul ul li {
     font-size: 15px;
 }
 
-.show,.icon, input {
+.show,.icon, #btn, #btn-1, #btn-2, #btn-3 {
     display: none;
 }
 
@@ -427,7 +427,7 @@ nav ul ul ul li {
         box-shadow: none;
     }
 
-    .show + a, ul {
+    .show + a, .header-ul {
         display: none;
     }
 

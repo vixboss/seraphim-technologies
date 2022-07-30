@@ -33,3 +33,13 @@ li {
 strong {
     font-weight: 800;
 }
+
+.detail-field-style > ul {
+    padding-left: 2rem;
+    ul {
+        padding-left: 3rem;
+        ul {
+            padding-left: 4rem;
+        }
+    }
+}

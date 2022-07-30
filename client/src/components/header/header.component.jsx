@@ -142,7 +142,7 @@ const Header = ({currentUser, hidden, signOutStart, history, match, searchCollec
     
     return (
         <div className="header-div">
-            <nav>
+            <nav className = 'header-nav'>
                 <div className="logo">
                     <Link to="/"><SvgWD height={80} width={80}/></Link>   
                 </div>
@@ -150,11 +150,11 @@ const Header = ({currentUser, hidden, signOutStart, history, match, searchCollec
                     <span className="fa fa-bars"></span>
                 </label>
                 <input type="checkbox" id="btn"/>
-                <ul>
-                    <li>
+                <ul className="header-ul">
+                    <li className="header-ul-li" >
                         <Link to="/" className="link">Home</Link>
                     </li>
-                    <li onMouseLeave = {() => setHover(false)}>
+                    <li className="header-ul-li" onMouseLeave = {() => setHover(false)}>
                         <label htmlFor="btn-1" className="show">Shop +</label>
                         <Link className="link" to="#" onMouseEnter={() => setHover(true)}>Shop 
                         {
@@ -162,11 +162,11 @@ const Header = ({currentUser, hidden, signOutStart, history, match, searchCollec
                         }
                         </Link>
                         <input type="checkbox" id="btn-1"/>
-                        <ul>
-                            <li>
+                        <ul className="header-ul">
+                            <li className="header-ul-li-ul-li">
                                 <Link to="/shop/healthcare" className="link">Healthcare</Link>
                             </li>
-                            <li>
+                            <li className="header-ul-li-ul-li">
                                 <Link to="/shop" className="link">Fragments</Link>
                             </li>
                             {/*<li>
@@ -174,7 +174,7 @@ const Header = ({currentUser, hidden, signOutStart, history, match, searchCollec
                             </li>*/}
                         </ul>
                     </li>
-                    <li onMouseLeave = {() => setHoverContact(false)}>
+                    <li className="header-ul-li" onMouseLeave = {() => setHoverContact(false)}>
                         <label htmlFor="btn-2" className="show">Contact +</label>{}
                         <Link to="#" className="link" onMouseEnter={() => setHoverContact(true)}>Contact
                         {
@@ -182,24 +182,24 @@ const Header = ({currentUser, hidden, signOutStart, history, match, searchCollec
                         }
                         </Link>
                         <input type="checkbox" id="btn-2"/>
-                        <ul>
-                            <li>
+                        <ul className="header-ul">
+                            <li className="header-ul-li-ul-li">
                                 <Link to="/about" className="link">About us</Link>
                             </li>
-                            <li>
+                            <li className="header-ul-li-ul-li">
                                 <Link to="/contact" className="link">Contact us</Link>
                             </li>
-                            <li>
+                            <li className="header-ul-li-ul-li">
                                 <label htmlFor="btn-3" className="show more">More +</label>
                                 <Link to="#" className="link">More
                                     <span className="fa fa-plus"></span>
                                 </Link>
                                 <input type="checkbox" id="btn-3"/>
-                                <ul>
-                                    <li>
+                                <ul className="header-ul">
+                                    <li className="header-ul-li-ul-li-ul-li">
                                         <Link to="/faq" className="link">FAQ</Link>
                                     </li>
-                                    <li>
+                                    <li className="header-ul-li-ul-li-ul-li">
                                         <Link to="/subscribe" className="link">Subscribe</Link>
                                     </li>
                                     {/*<li>
@@ -214,7 +214,7 @@ const Header = ({currentUser, hidden, signOutStart, history, match, searchCollec
                     </li>*/}
                     {
                         currentUser ?
-                            <li className="item item-highlight">
+                            <li className="item item-highlight header-ul-li">
                                 <Link className="link" to='/' onClick={signOutStart}>SIGN OUT</Link>
                             </li>
                             :
@@ -222,11 +222,11 @@ const Header = ({currentUser, hidden, signOutStart, history, match, searchCollec
                                 <Link className="link" to='/signin'>SIGN IN</Link>
                             </li>
                     }
-                    <li className="item cart-list">
+                    <li className="item cart-list header-ul-li">
                         <CartIcon className="cart"/>
                     </li>
                     {
-                        showSearch && <li className="item cart-list mrg-btm-10">
+                        showSearch && <li className="item cart-list mrg-btm-10 header-ul-li">
                             <Tooltip title="Search">
                                 <i className="fa fa-search fa-2xl nav-search-icon icons" aria-hidden="true" style={{color: '#ffffff'}} onClick={handleClickOpen}></i>
                             </Tooltip>
@@ -235,11 +235,11 @@ const Header = ({currentUser, hidden, signOutStart, history, match, searchCollec
                     {   
                         currentUser && 
                         <>  
-                            <li className="item mrg-btm-10" style={{color: '#DCDCDC'}}>
+                            <li className="item mrg-btm-10 header-ul-li" style={{color: '#DCDCDC'}}>
                                 <Divider className = "divider-height" style={{height: hrHeight}} orientation="vertical" variant="middle"></Divider>
                             </li>
                         
-                            <li className="item user-name-display">
+                            <li className="item user-name-display header-ul-li">
                                 <p style={{'marginBottom': '0'}}>Hi,</p>
                                 <p>{currentUser.displayName}</p>
                             </li>
