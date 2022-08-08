@@ -2,6 +2,7 @@
 // const firebase = require('../db');
 // const firestore = firebase.firestore();
 
+const mongoose = require('mongoose');
 const Merchandise = require('../models/merchandise.model');
 
 // const addMerchandiseTitle = async(req, res, next) => {
@@ -122,11 +123,79 @@ const Merchandise = require('../models/merchandise.model');
 
 // ************************* From MYSQL DB *****************************
 
+// const addMerchandiseTitle = async(req, res, next) => {
+//     try {
+//         let  title = new Merchandise(req.body.title);
+//         title = await title.save();
+
+//         res.status(201).json({message: "Merchandise Created"});
+//     } catch (error) {
+//         res.status(400).send(error.message);
+//     }
+// }
+
+// const getAllMerchandise = async(req, res, next) => {
+//     try {
+//         const [merchandiseTitleArray, _] = await Merchandise.findAll();
+//         res.status(200).json({merchandiseTitleArray});
+//     } catch (error) {
+//         res.status(400).send(error.message);
+//     }
+// }
+
+// const updateMerchandise = async(req, res, next) => {
+//     try {
+//         let id = req.params.id;
+//         let title = req.body.title;
+//         await Merchandise.update(id, title);
+
+//         res.status(200).json({message: 'Merchandise updated successfully.'});
+//     } catch (error) {
+//         res.status(400).send(error.message);
+//     }
+// }
+
+// const deleteMerchandiseById = async(req, res, next) => {
+//     try {
+//         let id = req.params.id;
+//         await Merchandise.remove(id);
+
+//         res.status(200).json({message: 'Merchandise Title Removed Successfully.'});
+//     } catch (error) {
+//         res.status(400).send(error.message);
+//     }
+// }
+// ******************************************************************
+
+// ************** FROM MONGODB **************************************
+
+const currentDate = () => {
+    let d = new Date();
+    let yyyy = d.getFullYear();
+    let mm = d.getMonth() + 1;
+    let dd = d.getDate();
+
+    let hh = d.getHours();
+    let min = d.getMinutes();
+    let ss = d.getSeconds();
+
+    return `${yyyy}-${mm}-${dd} ${hh}:${min}:${ss}`;
+}
+
 const addMerchandiseTitle = async(req, res, next) => {
     try {
-        let  title = new Merchandise(req.body.title);
-        title = await title.save();
-
+        let title = new Merchandise({
+            _id: new mongoose.Types.ObjectId(),
+            title: req.body.title,
+            createdAt: currentDate()
+        });
+        var data = await Merchandise.find({title: req.body.title});
+        if(data.length === 0){
+            await title.save();  
+        }
+        else {
+            return res.status(400).json({message: "Merchandise Exist"});
+        }
         res.status(201).json({message: "Merchandise Created"});
     } catch (error) {
         res.status(400).send(error.message);
@@ -135,7 +204,7 @@ const addMerchandiseTitle = async(req, res, next) => {
 
 const getAllMerchandise = async(req, res, next) => {
     try {
-        const [merchandiseTitleArray, _] = await Merchandise.findAll();
+        const merchandiseTitleArray = await Merchandise.find();
         res.status(200).json({merchandiseTitleArray});
     } catch (error) {
         res.status(400).send(error.message);
@@ -146,7 +215,12 @@ const updateMerchandise = async(req, res, next) => {
     try {
         let id = req.params.id;
         let title = req.body.title;
-        await Merchandise.update(id, title);
+        await Merchandise.findByIdAndUpdate({
+            _id: id
+        },{
+            title: title,
+            createdAt: currentDate()
+        });
 
         res.status(200).json({message: 'Merchandise updated successfully.'});
     } catch (error) {
@@ -157,13 +231,14 @@ const updateMerchandise = async(req, res, next) => {
 const deleteMerchandiseById = async(req, res, next) => {
     try {
         let id = req.params.id;
-        await Merchandise.remove(id);
+        await Merchandise.remove({_id: id});
 
         res.status(200).json({message: 'Merchandise Title Removed Successfully.'});
     } catch (error) {
         res.status(400).send(error.message);
     }
 }
+// ******************************************************************
 
 module.exports = {
     addMerchandiseTitle,

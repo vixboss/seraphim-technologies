@@ -14,6 +14,7 @@ const PaypalCheckoutButton = ({discountPrice, cartItems, history, addUserPurchas
     const [error, setError] = useState(null);
     const handleApprove = (order) => {
         // Call backend function to fulfill order.
+        console.log(order);
         addUserPurchaseStart({...order, merchant: 'Paypal'});
         paypalPaymentNotification(order);
         // If response is success.
@@ -55,7 +56,11 @@ const PaypalCheckoutButton = ({discountPrice, cartItems, history, addUserPurchas
     },[]);
 
     return(
-        <PayPalScriptProvider>
+        <PayPalScriptProvider options={{
+            'locale': "en_US",
+            'client-id': process.env.REACT_APP_PAYPAL_CLIENT_ID
+            // 'client-id': 'AbUEC6cFw-iMOSOYP2JGb3weKh1kebGbwGQFPuMJT2fHHcjivYQwZaiDsmGOkVNOvmICq0KOWtdrXurS'
+        }}>
             <PayPalButtons
                 style = {{
                     label: 'pay'
@@ -79,7 +84,7 @@ const PaypalCheckoutButton = ({discountPrice, cartItems, history, addUserPurchas
                              },
                              items: cartItems.map((item) => {
                                 return{
-                                    name: item.name + '(' + item.mode + ')',
+                                    name: (item.name).slice(0,90) + '... (' + item.mode + ')',
                                     unit_amount: {
                                         "currency_code": "USD",
                                         "value": item.price

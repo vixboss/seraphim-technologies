@@ -75,13 +75,13 @@ const ExportUserPurchaseExcel = ({data}) => {
                     G: item.quantity,
                     H: item.unit_amount,
                     I: (item.quantity * item.unit_amount).toFixed(2),
-                    J: row.total_amount,
-                    K: (row.total_amount - row.gross_amount).toFixed(2),
-                    L: row.gross_amount,
+                    J: row.gross_amount,
+                    K: (row.gross_amount - row.total_amount).toFixed(2),
+                    L: row.total_amount,
                     M: item.createdAt !== row.createdAt ? convertDateInEST(item.createdAt) : '',
                     N: item.createdAt !== row.createdAt ? convertTimeInEST(item.createdAt) : '',
                     O: row.merchant,
-                    P: !!item.deliveryStatus.data[0] ? 'Delivered' : 'Un-Delivered'
+                    P: !!item.deliveryStatus ? 'Delivered' : 'Un-Delivered'
                 });
             });
         });

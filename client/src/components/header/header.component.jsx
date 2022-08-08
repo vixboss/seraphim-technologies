@@ -167,6 +167,9 @@ const Header = ({currentUser, hidden, signOutStart, history, match, searchCollec
                                 <Link to="/shop/healthcare" className="link">Healthcare</Link>
                             </li>
                             <li className="header-ul-li-ul-li">
+                                <Link to="/shop/human%20resource" className="link">Human Resource</Link>
+                            </li>
+                            <li className="header-ul-li-ul-li">
                                 <Link to="/shop" className="link">Fragments</Link>
                             </li>
                             {/*<li>

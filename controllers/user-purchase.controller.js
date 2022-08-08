@@ -4,6 +4,7 @@
 // const firestore = firebase.firestore();
 // const fb = require('firebase-admin');
 // const moment = require('moment-timezone');
+const mongoose = require('mongoose');
 const UserPurchase = require('../models/user-purchase.model');
 
 // const getAllPurchasedProduct = async ( req, res, next ) => {
@@ -92,24 +93,104 @@ const UserPurchase = require('../models/user-purchase.model');
     // }
 // }
 
+// *************************** Mysql DB *****************************************
+// const insertUserPurchase = async(req, res, next) => {
+//     try {
+//         const body = req.body;
+//         const name = body.payer.name.given_name +' '+ body.payer.name.surname;
+//         const deliveryStatus = 0;
+//         let userPurchase = new UserPurchase(
+//             name,
+//             body.payer.email_address,
+//             body.payer.phone.phone_number.national_number,
+//             body.id,
+//             body.purchase_units[0].amount.breakdown.item_total.value,
+//             body.purchase_units[0].amount.value,
+//             body.purchase_units[0].items,
+//             deliveryStatus,
+//             body.merchant
+//         );
+
+//         await userPurchase.save();
+//         res.status(201).json({message: "User Purchase Added Successfully."});
+//     } catch (error) {
+//         res.status(400).send(error.message);
+//     }
+// }
+
+// const getUserPurchase = async (req, res, next) => {
+//     try {
+//         const data = await UserPurchase.getAllUserPurchase();
+//         res.status(200).send(data);
+//     } catch (error) {
+//         res.status(400).send(error.message);
+//     }
+// }
+
+// const updateDelivery = async(req, res, next) => {
+//     try {
+//         await UserPurchase.updateDeliveryStatus(req.body);
+//         res.status(200).send("Delivery Status Updated.");
+//     } catch (error) {
+//         res.status(400).send(error.message);
+//     }
+// }
+
+// const searchPurchase = async (req, res, next) => {
+//     try {
+//         const data = await UserPurchase.searchUserPurchase(req.body);
+//         if(data.message){
+//             res.status(400).send(data.message);
+//         }
+//         else{
+//             res.status(200).send(data);
+//         }
+//     } catch (error) {
+//         res.status(400).send(error.message);
+//     }
+// }
+
+// **************************** MongoDB ***************************
+const currentDate = () => {
+    let d = new Date();
+    let yyyy = d.getFullYear();
+    let mm = d.getMonth() + 1;
+    let dd = d.getDate();
+
+    let hh = d.getHours();
+    let min = d.getMinutes();
+    let ss = d.getSeconds();
+
+    return `${yyyy}-${mm}-${dd} ${hh}:${min}:${ss}`;
+}
 
 const insertUserPurchase = async(req, res, next) => {
     try {
         const body = req.body;
         const name = body.payer.name.given_name +' '+ body.payer.name.surname;
-        const deliveryStatus = 0;
-        let userPurchase = new UserPurchase(
-            name,
-            body.payer.email_address,
-            body.payer.phone.phone_number.national_number,
-            body.id,
-            body.purchase_units[0].amount.breakdown.item_total.value,
-            body.purchase_units[0].amount.value,
-            body.purchase_units[0].items,
-            deliveryStatus,
-            body.merchant
-        );
-
+        
+        var newItems = [];
+        body.purchase_units[0].items.map((item) => {
+            var obj = {
+                description: item.name,
+                unit_amount: item.unit_amount.value,
+                quantity: item.quantity,
+                createdAt: body.create_time,
+                deliveryStatus: false
+            }
+            newItems.push(obj);
+        });
+        let userPurchase = new UserPurchase({
+            _id: new mongoose.Types.ObjectId(),
+            name : name,
+            email : body.payer.email_address,
+            order_id : body.id,
+            gross_amount : body.purchase_units[0].amount.breakdown.item_total.value,
+            total_amount : body.purchase_units[0].amount.value,
+            merchant : body.merchant,
+            items: newItems,
+            createdAt : currentDate()
+        });
         await userPurchase.save();
         res.status(201).json({message: "User Purchase Added Successfully."});
     } catch (error) {
@@ -119,7 +200,7 @@ const insertUserPurchase = async(req, res, next) => {
 
 const getUserPurchase = async (req, res, next) => {
     try {
-        const data = await UserPurchase.getAllUserPurchase();
+        const data = await UserPurchase.find();
         res.status(200).send(data);
     } catch (error) {
         res.status(400).send(error.message);
@@ -128,7 +209,17 @@ const getUserPurchase = async (req, res, next) => {
 
 const updateDelivery = async(req, res, next) => {
     try {
-        await UserPurchase.updateDeliveryStatus(req.body);
+        const doc =  await UserPurchase.findOneAndUpdate(
+            {
+                'items': {$elemMatch: {_id: req.body.id}}
+            }, 
+            {
+                $set: { "items.$.deliveryStatus": req.body.status }
+            },
+            { 
+                new: true
+            }
+        );
         res.status(200).send("Delivery Status Updated.");
     } catch (error) {
         res.status(400).send(error.message);
@@ -137,7 +228,55 @@ const updateDelivery = async(req, res, next) => {
 
 const searchPurchase = async (req, res, next) => {
     try {
-        const data = await UserPurchase.searchUserPurchase(req.body);
+        const searchData = req.body;
+
+        const id = searchData.orderId;
+        const description = searchData.productName;
+        const email = searchData.email;
+        const payerName = searchData.payerName;
+        const newFromDate = searchData.fromDate;
+        const newToDate = searchData.toDate;
+
+        console.log(req.body);
+        const data = await UserPurchase.find({
+            $and:[
+                {
+                    name: { 
+                        $regex: payerName,
+                        $options: "i" 
+                    }
+                },
+                {
+                    email: {
+                        $regex: email,
+                        $options: "i" 
+                    }
+                },
+                {
+                    order_id: {
+                        $regex: id,
+                        $options: "i" 
+                    }
+                },
+                {
+                    items: {
+                        $elemMatch: {
+                            description: {
+                                $regex: description,
+                                $options: "i" 
+                            }
+                        }
+                    }
+                },
+                {
+                    createdAt:{
+                        $gte: new Date(newFromDate),
+                        $lte: new Date(newToDate)
+                    }
+                }
+            ]
+        });
+
         if(data.message){
             res.status(400).send(data.message);
         }
@@ -148,7 +287,6 @@ const searchPurchase = async (req, res, next) => {
         res.status(400).send(error.message);
     }
 }
-
 
 module.exports = {
     // getAllPurchasedProduct,

@@ -5,6 +5,7 @@
 
 // module.exports = db;
 
+// MySql Database connection.
 require('dotenv').config();
 const mysql = require('mysql2');
  

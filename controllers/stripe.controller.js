@@ -8,6 +8,7 @@ const { mail, notificationMail } = require('./../factory');
 
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 const UserPurchase = require('../models/user-purchase.model');
+const mongoose = require('mongoose');
 
 const stripePayment = async(req, res, next) => {
     const currentUser = req.body.currentUser;
@@ -146,20 +147,44 @@ const checkoutCompletedSuccessful = async (req, res, next) => {
 //     // }
 // }
 
+const currentDate = () => {
+    let d = new Date();
+    let yyyy = d.getFullYear();
+    let mm = d.getMonth() + 1;
+    let dd = d.getDate();
+
+    let hh = d.getHours();
+    let min = d.getMinutes();
+    let ss = d.getSeconds();
+
+    return `${yyyy}-${mm}-${dd} ${hh}:${min}:${ss}`;
+}
+
 const savePurchasedProduct = async(order) => {
     try {
-        const deliveryStatus = 0;
-        let userPurchase = new UserPurchase(
-            order.name,
-            order.email,
-            order.phone,
-            order.id,
-            order.gross_amount,
-            order.total_amount,
-            order.items,
-            deliveryStatus,
-            order.merchant
-        );
+        var newItems = [];
+        order.items.map((item) => {
+            var obj = {
+                description: item.description,
+                unit_amount: (item.price.unit_amount/100).toFixed(2),
+                quantity: item.quantity,
+                createdAt: currentDate(),
+                deliveryStatus: false
+            }
+            newItems.push(obj);
+        });
+
+        let userPurchase = new UserPurchase({
+            _id: new mongoose.Types.ObjectId(),
+            name : order.name,
+            email : order.email,
+            order_id : order.id,
+            gross_amount : order.gross_amount,
+            total_amount : order.total_amount,
+            merchant : order.merchant,
+            items: newItems,
+            createdAt : currentDate()
+        });
 
         await userPurchase.save();
         

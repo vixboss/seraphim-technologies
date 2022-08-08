@@ -31,6 +31,8 @@ import SubscribePage from './pages/subscribepage/subscribepage.component';
 import AboutAndContactPage from './pages/about-and-contact/about-and-contact.component';
 import ContactComponent from './components/contact/contact.component';
 import FaqPage from './pages/faq/faq.component';
+import SpeakersPage from './pages/speakers/speakers.page';
+import AdminSpeaker from './components/admin-speaker/admin-speaker.component';
 
 import { checkUserSession } from './redux/user/user.action';
 
@@ -89,9 +91,8 @@ const App = ({ checkUserSession, currentuser, currentAdmin }) => {
     }
   
   },1000)
-  
   return (
-    <PayPalScriptProvider options={{'client-id': process.env.REACT_APP_PAYPAL_CLIENT_ID}}>
+    // <PayPalScriptProvider options={{'client-id': process.env.REACT_APP_PAYPAL_CLIENT_ID}}>
       <div className="App">
         <GlobalStyle />
         {
@@ -117,6 +118,7 @@ const App = ({ checkUserSession, currentuser, currentAdmin }) => {
           <Route exact path = '/admin/merchandise' component={MerchandiseComponent}/>
           <Route exact path = '/admin/discount' component = {DiscountPage}/>
           <Route exact path = '/admin/dashboard' component={AdminDashboard} />
+          <Route exact path = '/admin/speaker' component={AdminSpeaker} />
           <Route exact path = '/payment' component = {PaymentPage}/>
           <Route exact path = '/forgot-password' component = {ForgotPasswordComponent}/>
           <Route exact path = '/reset-password' component = {ResetPasswordComponent}/>
@@ -124,6 +126,7 @@ const App = ({ checkUserSession, currentuser, currentAdmin }) => {
           <Route exact path = '/about' component = {AboutAndContactPage}/>
           <Route exact path = '/contact' component = {AboutAndContactPage}/>
           <Route exact path = '/faq' component = {FaqPage}/>
+          <Route exact path = '/speakers' component = {SpeakersPage}/>
 
           <Route exact path='/admin'
             render = {
@@ -134,7 +137,7 @@ const App = ({ checkUserSession, currentuser, currentAdmin }) => {
         </Switch>
         <Footer />
       </div>
-    </PayPalScriptProvider>
+    // </PayPalScriptProvider>
   );
 }
 

@@ -4,6 +4,7 @@
 
 // const mysql = require('../db');
 
+const mongoose = require('mongoose');
 const ProductType = require('../models/product_type');
 
 // const addProductType = async (req, res, next) => {
@@ -130,10 +131,93 @@ const ProductType = require('../models/product_type');
 //     }
 // }
 
+// ******************* Mysql Query ***************************
+// const addProductType = async(req, res, next) => {
+//     try {
+//         let  title = new ProductType(req.body.title);
+//         var [data, _] = await ProductType.checkDataExisting(req.body.title);
+//         console.log(data)
+//         if(data.length === 0 ){
+//             await title.save();  
+//         }
+//         else{
+//             return res.status(400).json({message: "Product Type exist."});
+//         }
+//         res.status(201).json({message: "Title Created"});
+//     } catch (error) {
+//         res.status(400).send(error.message);
+//     }
+// }
+
+// const getAllProductType = async(req, res, next) => {
+//     try {
+//         const [productTypeArray, _] = await ProductType.findAll();
+//         res.status(200).json({productTypeArray});
+//     } catch (error) {
+//         res.status(400).send(error.message);
+//     }
+// }
+
+// const getProductTypeById = async(req, res, next) => {
+//     try {
+//         let id = req.params.id;
+//         const [titleById, _] = await ProductType.findById(id);
+        
+//         res.status(200).json({data: titleById[0]});
+//     } catch (error) {
+//         res.status(400).send(error.message);
+        
+//     }
+// }
+
+// const deleteProductTypeById = async(req, res, next) => {
+//     try {
+//         let id = req.params.id;
+//         await ProductType.remove(id);
+
+//         res.status(200).json({message: 'Product Title Removed Successfully.'});
+//     } catch (error) {
+//         res.status(400).send(error.message);
+//     }
+// }
+
+// const updateProductType = async(req, res, next) => {
+//     try {
+//         let id = req.params.id;
+//         let title = req.body.title;
+//         await ProductType.update(id, title);
+
+//         res.status(200).json({message: 'Product updated successfully.'});
+//     } catch (error) {
+//         res.status(400).send(error.message);
+//     }
+// }
+
+// ********************************************************************
+
+// *************************MongoDB Query **************************
+
+const currentDate = () => {
+    let d = new Date();
+    let yyyy = d.getFullYear();
+    let mm = d.getMonth() + 1;
+    let dd = d.getDate();
+
+    let hh = d.getHours();
+    let min = d.getMinutes();
+    let ss = d.getSeconds();
+
+    return `${yyyy}-${mm}-${dd} ${hh}:${min}:${ss}`;
+}
+
 const addProductType = async(req, res, next) => {
     try {
-        let  title = new ProductType(req.body.title);
-        var [data, _] = await ProductType.checkDataExisting(req.body.title);
+        let title = new ProductType({
+            _id: new mongoose.Types.ObjectId(),
+            title: req.body.title,
+            createdAt: currentDate()
+        });
+        var data = await ProductType.find({title: req.body.title});
         console.log(data)
         if(data.length === 0 ){
             await title.save();  
@@ -149,7 +233,7 @@ const addProductType = async(req, res, next) => {
 
 const getAllProductType = async(req, res, next) => {
     try {
-        const [productTypeArray, _] = await ProductType.findAll();
+        const productTypeArray = await ProductType.find();
         res.status(200).json({productTypeArray});
     } catch (error) {
         res.status(400).send(error.message);
@@ -159,7 +243,7 @@ const getAllProductType = async(req, res, next) => {
 const getProductTypeById = async(req, res, next) => {
     try {
         let id = req.params.id;
-        const [titleById, _] = await ProductType.findById(id);
+        const titleById = await ProductType.findById(id);
         
         res.status(200).json({data: titleById[0]});
     } catch (error) {
@@ -168,22 +252,17 @@ const getProductTypeById = async(req, res, next) => {
     }
 }
 
-const deleteProductTypeById = async(req, res, next) => {
-    try {
-        let id = req.params.id;
-        await ProductType.remove(id);
-
-        res.status(200).json({message: 'Product Title Removed Successfully.'});
-    } catch (error) {
-        res.status(400).send(error.message);
-    }
-}
-
 const updateProductType = async(req, res, next) => {
     try {
+        console.log(req.params);
         let id = req.params.id;
         let title = req.body.title;
-        await ProductType.update(id, title);
+        await ProductType.findByIdAndUpdate({
+            _id: id
+        },{
+            title: req.body.title,
+            createdAt: currentDate()
+        });
 
         res.status(200).json({message: 'Product updated successfully.'});
     } catch (error) {
@@ -191,6 +270,18 @@ const updateProductType = async(req, res, next) => {
     }
 }
 
+const deleteProductTypeById = async(req, res, next) => {
+    try {
+        let id = req.params.id;
+        await ProductType.remove({_id: id});
+
+        res.status(200).json({message: 'Product Title Removed Successfully.'});
+    } catch (error) {
+        res.status(400).send(error.message);
+    }
+}
+
+// *****************************************************************
 module.exports = {
     addProductType,
     getAllProductType,

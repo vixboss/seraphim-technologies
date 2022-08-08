@@ -2,8 +2,10 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
+const morgan = require('morgan');
+const mongoose = require('mongoose');
 // const cors = require('cors');
-const productTypeRoutes = require('./routes/product_type-routes');
+const productTypeRoutes = require('./routes/product_type.routes');
 const adminRoutes = require('./routes/admin.routes');
 const productRoutes = require('./routes/product.routes');
 const stripeRoutes = require('./routes/stripe.routes');
@@ -15,6 +17,17 @@ const productSearchRoutes = require('./routes/product-search.routes');
 const bannerRoutes = require('./routes/banner.routes');
 const productByNameRoutes = require('./routes/product-by-name.routes');
 const paypalPaymentNotificationMailRoutes = require('./routes/paypalPaymentNotificationMail.routes');
+const speakerRoutes = require('./routes/speakers.routes');
+
+// ************ MongoDB Connection ************* //
+mongoose.connect(`mongodb+srv://vikrant:${process.env.MONGODB_ATLAS_PW}@cluster0.lkqob.mongodb.net/webinardock?retryWrites=true&w=majority`)
+  .then(() => {
+    console.log("MongoDB Connection Successful");
+  })
+  .catch(err => {
+    console.log(err);
+  });
+// ********************************************** //
 
 if (process.env.NODE_ENV !== 'production') require('dotenv').config();
 
@@ -25,6 +38,7 @@ const port = process.env.PORT || 5000;
 
 app.use(express.json());
 // app.use(cors());
+app.use(morgan('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -72,6 +86,7 @@ app.use('/api', applyDiscountRoutes);
 app.use('/api', productSearchRoutes);
 app.use('/api', bannerRoutes);
 app.use('/api', productByNameRoutes);
+app.use('/api', speakerRoutes);
 app.use('/api', paypalPaymentNotificationMailRoutes);
 
 /*********************************************************/

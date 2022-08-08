@@ -40,14 +40,14 @@ const AdminTitle = ({productType, getAllProductTitleStart, addProductTitleStart,
     }
 
     const updateTitle = (type) => {
-        const {id, title} = type
-        setProductTitle({'id': id, 'title': title});
+        const {_id, title} = type
+        setProductTitle({'id': _id, 'title': title});
         setButtonName('Update');
     }
 
     const deleteProductTitle = (type) => {
-        const {id} = type;
-        deleteProductTitleStart(id);
+        const {_id} = type;
+        deleteProductTitleStart(_id);
     }
 
     useEffect(() => {

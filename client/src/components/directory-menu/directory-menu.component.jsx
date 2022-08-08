@@ -36,7 +36,7 @@ const DirectoryMenu = ({fetchCollectionsStart, collections, history}) => {
                 }
             });
         });
-
+        
         upcoming = upcoming.sort((a,b) => new Moment(a.date).format('X') - new Moment(b.date).format('X'));
         recorded = recorded.sort((a,b) => new Moment(a.date).format('X') - new Moment(b.date).format('X')).reverse();
 

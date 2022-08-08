@@ -24,15 +24,17 @@ const MySwal = withReactContent(Swal);
 export function* addDiscountStartSaga({payload}) {
     try {
         const discount = yield axios.post(`${host}/api/discount`, {payload});
-        yield put(addDiscountSuccess(discount.data));
-        yield getDiscountStartSaga();
-        MySwal.fire({
-            position: 'top-end',
-            icon: 'success',
-            title: 'Discount Added Successfully.',
-            showConfirmButton: false,
-            timer: 1500
-        });
+        if(discount.status === 200 || discount.status === 201){
+            yield put(addDiscountSuccess(discount.data));
+            yield getDiscountStartSaga();
+            MySwal.fire({
+                position: 'top-end',
+                icon: 'success',
+                title: 'Discount Added Successfully.',
+                showConfirmButton: false,
+                timer: 1500
+            });
+        }
     } catch (error) {
         let err = error.response.data;
         MySwal.fire({
@@ -97,7 +99,7 @@ export function* updateDiscountStartSaga({payload}) {
 
 export function* deleteDiscountStartSaga({payload}) {
     try {
-        const id = payload.id;
+        const id = payload._id;
         const discount = yield axios.delete(`${host}/api/discount/${id}`);
         if(discount.status === 200 || discount.status === 201){
             yield put(deleteDiscountSuccess(discount.data));

@@ -18,7 +18,7 @@ const Item = styled(Paper)(({ theme }) => ({
     lineHeight: '60px',
     padding: '20px'
   }));
-  const lightTheme = createTheme({ palette: { mode: 'light' } });
+const lightTheme = createTheme({ palette: { mode: 'light' } });
 
 const SubscribeComponent = () => {
     useEffect(() => {

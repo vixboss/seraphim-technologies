@@ -255,6 +255,7 @@ const AdminProduct = ({fetchCollectionsStart, updateProductStart, getProductById
     }
 
     const getProductById = (id) => {
+        console.log(id);
         getProductByIdStart(id);
     }
     const responseDataMethod = () => {
@@ -279,9 +280,8 @@ const AdminProduct = ({fetchCollectionsStart, updateProductStart, getProductById
             // });
 
             setCheckUpdateId(true);
-            console.log("A");
             setProductDetails({
-                id: data[0].id,
+                id: data[0]._id,
                 imageUrl: data[0].imageUrl,
                 name: data[0].name,
                 title: {
@@ -329,7 +329,7 @@ const AdminProduct = ({fetchCollectionsStart, updateProductStart, getProductById
         setProductType(selectProductType);
         selectMerchandiseTitleAsArray.map((merchandise) => {
             arr.push({
-                id: merchandise.id,
+                id: merchandise._id,
                 name : merchandise.title,
                 price: null
             });

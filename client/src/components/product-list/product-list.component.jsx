@@ -243,8 +243,8 @@ const ProductList = ({ collection, updateProduct, responseData, deleteProductSta
                                             <td> {collections.speakerName} </td>
                                             <td> {collections.title.capitalizeFirstCharacter()} </td>
                                             <td> {collections.name} </td>
-                                            <td><i className="fa fa-pencil-square-o fa-lg onHover" aria-hidden="true" onClick={() => updateProduct(collections.id)}></i></td>
-                                            <td><i className="fa fa-times fa-lg onHover" aria-hidden="true" onClick={() => handleRemove(collections.id)}></i></td>
+                                            <td><i className="fa fa-pencil-square-o fa-lg onHover" aria-hidden="true" onClick={() => updateProduct(collections._id)}></i></td>
+                                            <td><i className="fa fa-times fa-lg onHover" aria-hidden="true" onClick={() => handleRemove(collections._id)}></i></td>
                                         </tr>
                                     )
                                 })
@@ -262,8 +262,8 @@ const ProductList = ({ collection, updateProduct, responseData, deleteProductSta
                                                 <td> {collections.speakerName} </td>
                                                 <td> {collections.title.capitalizeFirstCharacter()} </td>
                                                 <td> {collections.name} </td>
-                                                <td><i className="fa fa-pencil-square-o fa-lg onHover" aria-hidden="true" onClick={() => updateProduct(collections.id)}></i></td>
-                                                <td><i className="fa fa-times fa-lg onHover" aria-hidden="true" onClick={() => handleRemove(collections.id)}></i></td>
+                                                <td><i className="fa fa-pencil-square-o fa-lg onHover" aria-hidden="true" onClick={() => updateProduct(collections._id)}></i></td>
+                                                <td><i className="fa fa-times fa-lg onHover" aria-hidden="true" onClick={() => handleRemove(collections._id)}></i></td>
                                             </tr>
                                         )
                                     })

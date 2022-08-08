@@ -266,6 +266,7 @@ nav ul li a:hover {
     // color: cyan;
     box-shadow: 0 0 5px #1ad2d8, 0 0 5px #1ad8d8;
     color:#1ad1d8;
+    border-radius: 5px;
 
 }
 nav ul ul {
@@ -290,7 +291,7 @@ nav ul li:hover > ul {
 nav ul ul li {
     position: relative;
     margin: 0px;
-    width: 130px;
+    width: 150px;
     float: none;
     display: list-item;
     border-bottom: 1px solid rgba(0,0,0,0.3);
@@ -310,7 +311,7 @@ nav ul ul li a:hover {
 nav ul ul ul li {
     position: relative;
     top: -70px;
-    left: 130px;
+    left: 150px;
 }
 
 .fa-plus {
@@ -402,7 +403,7 @@ nav ul ul ul li {
         color: white;
         text-transform: uppercase;
         font-size: 18px;
-        padding: 0 25px;
+        padding: 0 15px;
         line-height: 70px;
         cursor: pointer;
     }

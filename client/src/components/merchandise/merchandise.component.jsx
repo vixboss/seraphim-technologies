@@ -46,14 +46,14 @@ const MerchandiseComponent = ({getAllMerchandiseTitleStart, addMerchandiseTitleS
     }
 
     const updateTitle = (type) => {
-        const {id, title} = type
-        setMerchandiseTitle({'id': id, 'title': title});
+        const {_id, title} = type
+        setMerchandiseTitle({'id': _id, 'title': title});
         setButtonName('Update');
     }
 
     const deleteMerchandiseTitle = (type) => {
-        const {id} = type;
-        deleteMerchandiseTitleStart(id);
+        const {_id} = type;
+        deleteMerchandiseTitleStart(_id);
     }
 
     useEffect(() => {

@@ -4,6 +4,7 @@
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const CryptoJS = require('crypto-js');
+const mongoose = require('mongoose');
 
 const Admin = require('../models/admin.model');
 
@@ -46,9 +47,47 @@ const compareHash = (password, hashed) => {
 //     }
 // }
 
+// MySql Database Query.
+// const getAdmin = async(req, res, next) => {
+//     try {
+        
+//         // Decode password to string (UTF-8).
+//         var base64 = req.body.password;
+//         var words = CryptoJS.enc.Base64.parse(base64);
+//         var password = CryptoJS.enc.Utf8.stringify(words); 
+//         /*********************************/
+        
+//         const email = req.body.email;
+//         const hashPassword = generateHash(req.body.password);
+
+//         let [data, _] = await Admin.findAll();
+//         if(data.length === 0){
+//             await Admin.addAdmin(email, hashPassword);
+//         }
+//         else {
+//             const adminData = await Admin.getAdminData(email);
+//             if(adminData.length === 1){
+//                 const comparedPassword = compareHash(password, adminData[0].password);
+//                 if(comparedPassword){
+//                     jwt.sign({admin: data[0]}, 'secretkey', (err, token) => {
+//                         res.status(200).json({token});
+//                     });
+//                 }
+//                 else{
+//                     res.status(400).send({message: "Password doesn't match"});
+//                 }
+//             }
+//             else {
+//                 res.status(400).send({message: "Email or Password Incorrect."});
+//             }
+//         }
+//     } catch (error) {
+//         res.status(400).send(error.message);
+//     }
+// }
+
 const getAdmin = async(req, res, next) => {
     try {
-        
         // Decode password to string (UTF-8).
         var base64 = req.body.password;
         var words = CryptoJS.enc.Base64.parse(base64);
@@ -56,14 +95,27 @@ const getAdmin = async(req, res, next) => {
         /*********************************/
         
         const email = req.body.email;
-        const hashPassword = generateHash(req.body.password);
+        const hashPassword = generateHash(password);
 
-        let [data, _] = await Admin.findAll();
+        let data = await Admin.find();
         if(data.length === 0){
-            await Admin.addAdmin(email, hashPassword);
+            const admin = new Admin({
+                _id: new mongoose.Types.ObjectId(),
+                email: email,
+                password: hashPassword
+            });
+            await admin.save()
+            .then(() => {
+                jwt.sign({admin: data[0]}, 'secretkey', (err, token) => {
+                    res.status(200).json({token});
+                });
+            })
+            .catch(error => {
+                console.error(error);
+            });
         }
         else {
-            const adminData = await Admin.getAdminData(email);
+            const adminData = await Admin.find({email: email});
             if(adminData.length === 1){
                 const comparedPassword = compareHash(password, adminData[0].password);
                 if(comparedPassword){

@@ -60,8 +60,8 @@ const RowsOfTable = (props) => {
         <TableCell >{row.email}</TableCell>
         <TableCell >{row.order_id}</TableCell>
         <TableCell >{convertDateAndTimeInEST(row.createdAt)}</TableCell>
-        <TableCell align="right">{row.total_amount}</TableCell>
         <TableCell align="right">{row.gross_amount}</TableCell>
+        <TableCell align="right">{row.total_amount}</TableCell>
         <TableCell align="right">{row.discount}</TableCell>
         <TableCell >{row.merchant}</TableCell>
         <TableCell style={row.status === 'Delivered' ? {color: 'blue'}: {color: 'red'}}>{row.status}</TableCell>
@@ -105,20 +105,20 @@ const RowsOfTable = (props) => {
                         <TableCell align="right">
                             {(itemRow.quantity * itemRow.unit_amount).toFixed(2)}
                         </TableCell>
-                        <TableCell align='right' style={!!itemRow.deliveryStatus.data[0] ? {color: 'green'} : {color: 'red'}}>
+                        <TableCell align='right' style={!!itemRow.deliveryStatus ? {color: 'green'} : {color: 'red'}}>
                         {
-                            !!itemRow.deliveryStatus.data[0] ? 'Delivered' : 'Un-Delivered'
+                            !!itemRow.deliveryStatus ? 'Delivered' : 'Un-Delivered'
                         }
                         </TableCell>
                         {
-                          !itemRow.deliveryStatus.data[0] ? 
+                          !itemRow.deliveryStatus ? 
                           <TableCell>
                             <Tooltip title="Update Delivery Status">
                               <i 
                                 className="fa fa-truck delivery-status-icon" 
                                 aria-hidden="true" 
                                 style={{fontSize: '24px'}} 
-                                onClick = {() => handleDeliveryStatus(itemRow.orderId)}
+                                onClick = {() => handleDeliveryStatus(itemRow._id)}
                               ></i>
                             </Tooltip>
                           </TableCell>
@@ -156,7 +156,7 @@ const AdminUserPurchaseList = ({data, updateUserPurchaseDeliveryStatusStart}) =>
     const [rows, setRows] = React.useState([]);
 
     const handleDeliveryStatus = (productId) => {
-      updateUserPurchaseDeliveryStatusStart({id: productId, status: 1});
+      updateUserPurchaseDeliveryStatusStart({id: productId, status: true});
     }
 
     const Root = styled('div')(({ theme }) => ({
@@ -173,10 +173,10 @@ const AdminUserPurchaseList = ({data, updateUserPurchaseDeliveryStatusStart}) =>
           data = data.sort((a,b) => new Moment(a.createdAt).format('X') - new Moment(b.createdAt).format('X')).reverse();
           var newArr = [];
             data.map((userData) => {
-                const discount = (userData.total_amount - userData.gross_amount).toFixed(2);
+                const discount = (userData.gross_amount - userData.total_amount).toFixed(2);
                 var status = 'Delivered';
                 userData.items.map((item) => {
-                    if(item.deliveryStatus.data[0] === 0){
+                    if(item.deliveryStatus === false){
                         status = 'Un-Delivered';
                     }
                 });

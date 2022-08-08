@@ -81,7 +81,7 @@ const DiscountComponent = ({getAllDiscountStart, addDiscountStart, allDiscount, 
 
     const updateDiscount = (value) => { 
         setDiscount({
-            discountId: value.id,
+            discountId: value._id,
             discountName: value.name,
             discountType: value.type,
             discountValue: value.value.toString(),

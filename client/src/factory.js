@@ -268,10 +268,10 @@ export const filterWebinar = (currDate, webinarDate, webinarTime, webinarDuratio
     var currentDate = moment(currDate).format('yyyy-MM-DD');
     var webDate = moment(webinarDate).format('yyyy-MM-DD');
 
-    var time = moment(webinarTime).add(webinarDuration, 'minutes').format('hh:mm:ss');
+    var time = moment(webinarTime).add(webinarDuration, 'minutes').format('HH:mm:ss');
 
-    var webinarExpirationTime = moment(webDate).add(time).format('yyyy-MM-DD hh:mm:ss');
-    var currentDateNewFormat = moment(currDate).format('yyyy-MM-DD hh:mm:ss');
+    var webinarExpirationTime = moment(webDate).add(time).format('yyyy-MM-DD HH:mm:ss');
+    var currentDateNewFormat = moment(currDate).format('yyyy-MM-DD HH:mm:ss');
 
     if(moment(webDate).isAfter(currentDate)) {
         status = 'upcoming';
