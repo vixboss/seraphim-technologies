@@ -2,8 +2,10 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
+var expressStaticGzip = require("express-static-gzip");
 const morgan = require('morgan');
 const mongoose = require('mongoose');
+
 // const cors = require('cors');
 const productTypeRoutes = require('./routes/product_type.routes');
 const adminRoutes = require('./routes/admin.routes');
@@ -92,6 +94,12 @@ app.use('/api', paypalPaymentNotificationMailRoutes);
 /*********************************************************/
 
 if (process.env.NODE_ENV === 'production') {
+  app.use(
+    expressStaticGzip(path.join(__dirname, 'client/build'), {
+    // enableBrotli: true, // only if you have brotli files too
+    }),
+  );
+
   app.use(express.static(path.join(__dirname, 'client/build')));
 
   app.get('*', function(req, res) {
