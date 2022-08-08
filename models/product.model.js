@@ -365,4 +365,5 @@ const productSchema = new mongoose.Schema({
     }
 });
 
+productSchema.index({'name': 'text'});
 module.exports = new mongoose.model('Product', productSchema);
