@@ -18,7 +18,8 @@ const DiscountComponent = ({getAllDiscountStart, addDiscountStart, allDiscount, 
         discountName: '',
         discountType: 'Select Type',
         discountValue: '',
-        discountValidity: ''
+        discountValidity: '',
+        discountCategory: 'Select Category'
     });
     const [buttonName, setButtonName] = useState('submit');
     const [discountCriteria, setDiscountCriteria] = useState([
@@ -27,6 +28,14 @@ const DiscountComponent = ({getAllDiscountStart, addDiscountStart, allDiscount, 
         },
         {
             type: '%'
+        }
+    ]);
+    const [discountCategoryCriteria, setDiscountCategoryCriteria] = useState([
+        {
+            category: 'Normal'
+        },
+        {
+            category: 'Special'
         }
     ]);
 
@@ -51,7 +60,8 @@ const DiscountComponent = ({getAllDiscountStart, addDiscountStart, allDiscount, 
             discountName: '',
             discountType: 'Select Type',
             discountValue: '',
-            discountValidity: ''
+            discountValidity: '',
+            discountCategory: 'Select Category'
         });
         setDiscountCriteria(
             [
@@ -63,12 +73,27 @@ const DiscountComponent = ({getAllDiscountStart, addDiscountStart, allDiscount, 
                 }
             ]
         );
+        setDiscountCategoryCriteria(
+            [
+                {
+                    category: 'Normal'
+                },
+                {
+                    category: 'Special'
+                }
+            ]
+        );
         setButtonName('Submit');
     }
 
     const typeDropdownChange = (e) => {
         const value = e.target.innerHTML.toLowerCase();
         setDiscount({...discount, discountType: value});
+    }
+
+    const categoryDropdownChange = (e) => {
+        const value = e.target.innerHTML.toLowerCase();
+        setDiscount({...discount, discountCategory: value});
     }
 
     useEffect(() => {
@@ -84,6 +109,7 @@ const DiscountComponent = ({getAllDiscountStart, addDiscountStart, allDiscount, 
             discountId: value._id,
             discountName: value.name,
             discountType: value.type,
+            discountCategory: value.category,
             discountValue: value.value.toString(),
             discountValidity: value.validity.toString()
         });
@@ -157,6 +183,28 @@ const DiscountComponent = ({getAllDiscountStart, addDiscountStart, allDiscount, 
                                 </DropdownButton>
                             </Col>
                             <Col className="discount" md= {3} xm = {3} xs = {3}>
+                                <DropdownButton 
+                                    id="dropdown-basic-button" 
+                                    title= {discount.discountCategory} 
+                                    className="center-item"
+                                    required
+                                >
+                                {
+                                    discountCategoryCriteria.map((discount, index) => {
+                                        return(
+                                            <Dropdown.Item key={index}
+                                                onClick = {(e) => categoryDropdownChange(e)}
+                                            >
+                                            {discount.category}
+                                            </Dropdown.Item>
+                                        )
+                                    })
+                                }
+                                </DropdownButton>
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col className="discount" md= {4} xm = {4} xs = {4}>
                                 <FormInput
                                     type="input"
                                     name="discountValidity"
@@ -165,7 +213,7 @@ const DiscountComponent = ({getAllDiscountStart, addDiscountStart, allDiscount, 
                                     label="Exp. time in Hrs."
                                     onKeyPress={(event) => {
                                         if (!/[0-9]/.test(event.key)) {
-                                          event.preventDefault();
+                                        event.preventDefault();
                                         }
                                     }}
                                     onPaste={(e)=>{

@@ -81,15 +81,59 @@ const CheckoutPage = ({cartItems, total, history, currentUser, discountGetByName
             const newDiscount = cloneDiscount.discount;
             const newValue = newDiscount[0].value;
             const type = newDiscount[0].type;
+            const category = newDiscount[0].category;
 
             var currentServerDateAndTime = srvTime();
             var comparedDateObject = currentDateAndTimeInISTWithotFormat(newDiscount[0].createdAt, newDiscount[0].validity, currentServerDateAndTime);
 
+            // Method to calculate the Discount in Dollar.
+            const calculateDiscountInDollar = () => {
+                const discountedTotal = total ? (parseInt(total) - parseInt(newValue)) : coupon.total;
+                setCoupon({...coupon, total: discountedTotal, appliedCoupon: newDiscount[0].name, value: newDiscount[0].value, snack: 'active', calculatedValue: newValue});
+                handleSnackClick();
+            };
+
             if(comparedDateObject.status === "Active") {
                 if(type === "$") {
-                    const discountedTotal = total ? (parseInt(total) - parseInt(newValue)) : coupon.total;
-                    setCoupon({...coupon, total: discountedTotal, appliedCoupon: newDiscount[0].name, value: newDiscount[0].value, snack: 'active', calculatedValue: newValue});
-                    handleSnackClick();
+                    if(category === 'special'){
+                        if(parseInt(newValue) <= 100){
+                            if(parseInt(total) >= 500){
+                                calculateDiscountInDollar();
+                            }
+                            else{
+                                setCoupon({
+                                    discount: '',
+                                    total: total,
+                                    value: 0,
+                                    appliedCoupon: '',
+                                    snack:'notApplicable',
+                                    calculatedValue: 0
+                                });
+                                cloneDiscount.discount = null;
+                                handleSnackClick();
+                            }
+                        }
+                        else if(parseInt(newValue) <= 200){
+                            if(parseInt(total) >= 1000){
+                                calculateDiscountInDollar();
+                            }
+                            else{
+                                setCoupon({
+                                    discount: '',
+                                    total: total,
+                                    value: 0,
+                                    appliedCoupon: '',
+                                    snack:'notApplicable',
+                                    calculatedValue: 0
+                                });
+                                cloneDiscount.discount = null;
+                                handleSnackClick();
+                            }
+                        }
+                    }
+                    else{
+                        calculateDiscountInDollar();
+                    }
                 }
                 else{
 
@@ -303,6 +347,22 @@ const CheckoutPage = ({cartItems, total, history, currentUser, discountGetByName
                     >
                         <Alert onClose={handleSnackClose} severity="error" sx={{ width: '100%' }}>
                             Coupon has expired.
+                        </Alert>
+                    </Snackbar> 
+                }
+            </Row>
+            <Row>
+                {
+                    coupon.snack === 'notApplicable' &&
+                    <Snackbar
+                        open={snackOpen}
+                        autoHideDuration={5000}
+                        onClose={handleSnackClose}
+                        style={{width: 'auto'}}
+                        className = "snack-alert"
+                    >
+                        <Alert onClose={handleSnackClose} severity="error" sx={{ width: '100%' }}>
+                            Coupon is not applicable.
                         </Alert>
                     </Snackbar> 
                 }

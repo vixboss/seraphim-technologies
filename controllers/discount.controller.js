@@ -94,6 +94,7 @@ const addDiscount = async (req, res, next) => {
             name : item.discountName,
             type : item.discountType,
             value : item.discountValue,
+            category : item.discountCategory,
             validity : item.discountValidity,
             createdAt : currentDate(),
             status : 'Active'
@@ -149,6 +150,7 @@ const updateDiscountById = async(req, res, next) => {
             name : item.discountName,
             type : item.discountType,
             value : item.discountValue,
+            category : item.discountCategory,
             validity : item.discountValidity,
             createdAt : currentDate(),
             status : 'Active'

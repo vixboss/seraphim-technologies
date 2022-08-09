@@ -24,6 +24,15 @@ const DiscountListComponent = ({allDiscount, deleteDiscount, updateDiscount}) =>
           align: 'left',
         },
         {
+            id: 'category',
+            label: 'Category',
+            minWidth: 100,
+            align: 'left',
+            format: (value) => {
+                return value === 'special' ? React.createElement("span",{style: {color: 'blue'}}, value.charAt(0).toUpperCase() + value.slice(1)): value.charAt(0).toUpperCase() + value.slice(1);
+            }
+          },
+        {
           id: 'type',
           label: 'Type',
           minWidth: 20,
@@ -33,7 +42,7 @@ const DiscountListComponent = ({allDiscount, deleteDiscount, updateDiscount}) =>
           id: 'value',
           label: 'Value',
           align: 'center',
-          minWidth: 120
+          minWidth: 50
         },
         { id: 'createdAt', label: 'Created_At', minWidth: 120, format: (value) => {
             const date = currentDateAndTimeInIST(value);
@@ -47,10 +56,10 @@ const DiscountListComponent = ({allDiscount, deleteDiscount, updateDiscount}) =>
             var comparedDateObject = currentDateAndTimeInISTWithotFormat(value.createdAt, value.validity, currentServerDateAndTime);
             
             if(comparedDateObject.status === "Active") {
-                return React.createElement("p",{style: {color: 'green'}}, "Active");
+                return React.createElement("span",{style: {color: 'green'}}, "Active");
             }
             else{
-                return React.createElement("p", {style: {color: 'red'}}, "Expired");
+                return React.createElement("span", {style: {color: 'red'}}, "Expired");
             }
         } },
         { id: 'action', label: 'Action', minWidth: 50, format : (value) => {
@@ -102,7 +111,7 @@ const DiscountListComponent = ({allDiscount, deleteDiscount, updateDiscount}) =>
     },[allDiscount]);
 
     return(
-        <Row md = {8} xs = {8}>
+        <Row md = {8} xs = {8} style={{paddingBottom: '30px'}}>
             <Paper sx={{ width: '100%', overflow: 'hidden' }} id= 'discount-list-paper'>
                 <Row>
                     <Col md = {2} className="search-input">
