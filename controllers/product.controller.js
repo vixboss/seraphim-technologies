@@ -274,6 +274,7 @@ const getAllProduct = async (req, res, next) => {
 
 const getProductById = async(req, res, next) => {
     try {
+        console.log(req.params);
         var data = await Product.findById(req.params.id).exec();
         res.status(201).send([data]);
     } catch (error) {
@@ -283,7 +284,6 @@ const getProductById = async(req, res, next) => {
 
 const updateProduct = async(req, res, next) => {
     try {
-        console.log(req.body);
         const item = req.body.items[0];
         await Product.findByIdAndUpdate({
             _id: req.params.id

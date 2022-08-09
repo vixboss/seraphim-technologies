@@ -5,13 +5,13 @@ import Grid from '@mui/material/Grid';
 import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
 
-import { selectProductByName } from './../../redux/product/product.selector';
+import { selectProductByName, selectProductById } from './../../redux/product/product.selector';
 import ProductConfiguration from "../product-configuration/product-configuration.component";
 import ProductDescriptionLeftColumn from '../product-description-left-column/product-description-left-column.component';
 
 import './product-description.styles.scss';
 
-const ProductDescription = ({history, match, selectProductByName }) => {
+const ProductDescription = ({history, match, selectProductByName, selectProductById }) => {
     useEffect(() => {
         window.scrollTo(0,0);
     }, []);
@@ -26,12 +26,19 @@ const ProductDescription = ({history, match, selectProductByName }) => {
         detailFieldTxtArea: '' 
     });
 
-    useEffect(() => {
-        if(typeof selectProductByName.length === "undefined" && selectProductByName.length !== 0){
-            setCollectionItem(selectProductByName.data[0]);
-        }
-    }, [selectProductByName]);
+    // useEffect(() => {
+    //     if(typeof selectProductByName.length === "undefined" && selectProductByName.length !== 0){
+    //         setCollectionItem(selectProductByName.data[0]);
+    //     }
+    // }, [selectProductByName]);
 
+    useEffect(() => {
+        if(typeof selectProductById.length === "undefined" && selectProductById.length !== 0){
+            setCollectionItem(selectProductById.data[0]);
+        }
+    }, [selectProductById]);
+
+    // console.log(collectionItem);
     const {id, name, description, speakerName, date, duration, detailFieldTxtArea } = collectionItem;
 
     return (
@@ -57,7 +64,8 @@ const ProductDescription = ({history, match, selectProductByName }) => {
 };
 
 const mapStateToProps = createStructuredSelector({
-    selectProductByName: selectProductByName
+    selectProductByName: selectProductByName,
+    selectProductById: selectProductById
 });
 
 export default withRouter(connect(mapStateToProps)(ProductDescription));

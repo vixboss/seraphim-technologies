@@ -143,9 +143,10 @@ export function* updateProductTitleStart({payload: {id, title}}) {
     }
 }
 
-export function* getProductById({payload: {id}}){
+export function* getProductById({payload}){
     try {
-        const productById = yield axios.get(`${host}/api/product/${id}`);
+        console.log(payload);
+        const productById = yield axios.get(`${host}/api/product/${payload}`);
         if(productById.status === 200 || productById.status === 201){
             yield put(getProductByIdSuccess(productById));
         }

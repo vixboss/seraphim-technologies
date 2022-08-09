@@ -9,13 +9,14 @@ import { fetchItemDescription } from './../../redux/shop/shop.actions';
 import './menu-card.styles.scss';
 
 const MenuCard = ({item, history, fetchItemDescription, type }) => {
-    
+    console.log(item);
     return(
         <>
             {
                 item.length != 0 ? item.map((itm, idx) => {
                     const category = itm.title;
                     const product = itm.name;
+                    const id = itm._id;
 
                     const itemIds = {
                         category,
@@ -46,10 +47,17 @@ const MenuCard = ({item, history, fetchItemDescription, type }) => {
                                         </span>
                                     </Card.Text>
                                     <Row style = {{ justifyContent: 'center', marginTop: 'auto'}}>
-                                        <Button variant="secondary" className="btn-text-size"
+                                        {/*<Button variant="secondary" className="btn-text-size"
                                         onClick = {() => {
-                                            history.push(`/shop/${itm.title.replace(/\s+/g, '-').toLowerCase()}/${itm.name.replace(/\s+/g, '-').toLowerCase()}`, {category, product})
+                                            history.push(`/shop/${itm.title.replace(/\s+/g, '-').toLowerCase()}/${itm.name.replace(/\s+/g, '-').toLowerCase()}?queryId=${id}`, {category, product, id})
                                         }}
+                                    >Know More...</Button> */}
+                                        <Button 
+                                            variant="secondary" 
+                                            className="btn-text-size"
+                                            onClick = {() => {
+                                                history.push(`/shop/${itm.title.replace(/([~!@#$%^&*()_+=`{}\[\]\|\\:;'<>,.\/? ])+/g, '-').replace(/^(-)+|(-)+$/g,'').toLowerCase()}/${itm.name.replace(/([~!@#$%^&*()_+=`{}\[\]\|\\:;'<>,.\/? ])+/g, '-').replace(/^(-)+|(-)+$/g,'').toLowerCase()}?queryId=${id}`, {category, product, id})
+                                            }}
                                         >Know More...</Button>
                                     </Row>
                                 </Card.Body>

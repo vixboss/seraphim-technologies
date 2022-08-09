@@ -41,17 +41,20 @@ const productReducer = (state= INITIAL_STATE, action) => {
 
         case ProductActionType.PRODUCT_GET_BY_ID_START:
             return{
-                ...state
+                ...state,
+                isFetching: true
             }
         case ProductActionType.PRODUCT_GET_BY_ID_SUCCESS:
             return{
                 ...state,
                 productById: action.payload,
+                isFetching: false,
                 error: null
             }
         case ProductActionType.PRODUCT_GET_BY_ID_FAILURE:
             return{
                 ...state,
+                isFetching: false,
                 error: action.payload
             }
         case ProductActionType.PRODUCT_GET_BY_NAME_START:
