@@ -48,6 +48,7 @@
     "react-responsive-carousel": "^3.2.22",
     "react-router-redux": "^4.0.8",
     "react-scripts": "^5.0.0",
+    "referrer-policy": "^1.2.0",
     "stripe": "6.28.0",
     "sweetalert2": "^11.3.0",
     "sweetalert2-react-content": "^4.2.0",

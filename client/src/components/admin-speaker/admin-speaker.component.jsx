@@ -1,34 +1,35 @@
 import React, {useEffect, useState} from 'react';
-import { Form, Container, Col, Row } from 'react-bootstrap';
-
+import { createStructuredSelector } from 'reselect';
+import { Form, Container, Col, Row, FloatingLabel } from 'react-bootstrap';
+import {connect} from 'react-redux';
 
 import FormInput from '../form-input/form-input.component';
 import CustomButton from '../custom-button/custom-button.component';
+import {addSpeakerStart, getSpeakerStart, updateSpeakerStart, deleteSpeakerStart} from '../../redux/speaker/speaker.action';
+import { selectAllSpeakers } from '../../redux/speaker/speaker.selector';
+import SpeakerListContainer from '../speaker-list/speaker-list.container';
 
 import './admin-speaker.styles.scss';
 
-const AdminSpeaker = () => {
+const AdminSpeaker = ({addSpeakerStart, getSpeakerStart, allSpeakers, updateSpeakerStart, deleteSpeakerStart}) => {
     const [speaker, setSpeaker] = useState({
         id: '', 
         title: '',
-        url: ''
+        url: '',
+        description:'',
+        qualification: ''
     });
     const [buttonName, setButtonName] = useState('Submit');
 
-    const {id,title, url} = speaker;
+    const {id,title, url, description, qualification} = speaker;
     
     const addSpeaker = async(event) =>{
         event.preventDefault();
         if(speaker.id === ''){
-            const prodTitle = {};
-            prodTitle.title = speaker.title.toLowerCase();
-            // addspeakerStart(prodTitle);
+            addSpeakerStart(speaker);
         }
         else{
-            const prodTitle = {};
-            prodTitle.id = speaker.id;
-            prodTitle.title = speaker.title.toLowerCase();
-            // updatespeakerStart(speaker);
+            updateSpeakerStart(speaker);
         }
     }
     const handleChange = (event) => {
@@ -36,59 +37,92 @@ const AdminSpeaker = () => {
         setSpeaker({ ...speaker, [name]: value });
     }
     const cancelChange = () => {
-        setSpeaker({id: '', title: ''});
+        setSpeaker({id: '', title: '', url: '', description: '', qualification: ''});
         setButtonName('Submit');
     }
 
     const updateTitle = (type) => {
-        const {id, title} = type
-        setSpeaker({'id': id, 'title': title});
+        const {_id, title, url, description, qualification} = type
+        setSpeaker({'id': _id, 'title': title, 'url': url, 'description': description, 'qualification': qualification});
         setButtonName('Update');
     }
 
-    const deletespeaker = (type) => {
-        const {id} = type;
-        // deletespeakerStart(id);
+    const deleteSpeaker = (type) => {
+        const {_id} = type;
+        deleteSpeakerStart(_id);
     }
 
-    // useEffect(() => {
-    //     cancelChange(); 
-    // },[productType]);
+    useEffect(() => {
+        cancelChange(); 
+    },[allSpeakers]);
 
     useEffect(() => {
-        // getAllspeakerStart();
-    }, [])
+        getSpeakerStart();
+    }, [getSpeakerStart])
     return(
         <Container>
             <Col className='admin-speaker'>
                 <Row>
                     <h1>Speakers</h1>
                 </Row>
-                <Row className='title-field'>
+                <Row>
                     <Form onSubmit={addSpeaker}>
                         <Row>
-                            <Col className="speaker-name" md = {6} xs={6} xm={6}>
-                                <FormInput
-                                    type="input"
-                                    name="title"
-                                    value={title}
-                                    handleChange={handleChange}
-                                    label="Title"
-                                    required
-                                />
+                            <Col md={6} lg={6}>
+                                <Row>
+                                    <Col className="speaker-name" md = {6} xs={6} xm={6}>
+                                        <FormInput
+                                            type="input"
+                                            name="title"
+                                            value={title}
+                                            handleChange={handleChange}
+                                            label="Title"
+                                            required
+                                        />
+                                    </Col>
+                                    <Col md = {6} xs={6} xm={6}>
+                                        <FormInput
+                                            type="input"
+                                            name="qualification"
+                                            value={qualification}
+                                            handleChange={handleChange}
+                                            label="Qualification"
+                                            required
+                                        />
+                                    </Col>
+                                </Row>
+                                <Row>
+                                    <Col>
+                                        <FormInput
+                                            type="input"
+                                            name="url"
+                                            value={url}
+                                            handleChange={handleChange}
+                                            label="URL"
+                                            required
+                                        />
+                                    </Col>
+                                </Row>
                             </Col>
-                            <Col className="URL" md = {6} xs={6} xm={6}>
-                                <FormInput
-                                    type="input"
-                                    name="url"
-                                    value={url}
-                                    handleChange={handleChange}
-                                    label="URL"
-                                    required
-                                />
+                            <Col md={6} lg={6}>
+                                <Row>
+                                    <Col lg md style = {{paddingBottom: '20px', paddingTop: '40px'}}>
+                                        <FloatingLabel controlId="floatingTextarea" name="description" label="Description">
+                                            <Form.Control
+                                            as="textarea"
+                                            name="description"
+                                            value={description}
+                                            placeholder="Leave a speaker description here"
+                                            style={{ height: '192px' }}
+                                            onChange={handleChange}
+                                            />
+                                        </FloatingLabel>
+                                    </Col>
+                                </Row>
                             </Col>
                         </Row>
-                        <Row>
+
+                        <Row className = 'title-field'>
                             <Col className='buttons'>
                                 <CustomButton
                                     type="submit"
@@ -110,12 +144,22 @@ const AdminSpeaker = () => {
                         </Row>
                     </Form>
                 </Row>
-                {/*<div className='title-table'>
-                    // <ProductTitleListContainer productType={productType} updateTitle={updateTitle} deleteProductTitle={deleteProductTitle}/>
-                                </div>*/}
+                <div>
+                    <SpeakerListContainer speakerList={allSpeakers} updateTitle={updateTitle} deleteSpeaker={deleteSpeaker}/>
+                </div>
             </Col>
         </Container>
     )
 }
 
-export default AdminSpeaker;
+const mapStateToProps = createStructuredSelector({
+    allSpeakers: selectAllSpeakers
+});
+const mapDispatchToProps = dispatch => ({
+    addSpeakerStart: (data) => dispatch(addSpeakerStart(data)),
+    getSpeakerStart: () => dispatch(getSpeakerStart()),
+    updateSpeakerStart: (data) => dispatch(updateSpeakerStart(data)),
+    deleteSpeakerStart: (data) => dispatch(deleteSpeakerStart(data))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(AdminSpeaker);

@@ -13,6 +13,8 @@ import userPurchaseReducer from './user-purchase/user-purchase.reducer';
 import userPurchaseListReducer from './user-purchase-list/user-purchase-list.reducer';
 import discountReducer from './discount/discount.reducer';
 import bannerReducer from './banner/banner.reducer';
+import speakerReducer from './speaker/speaker.reducer';
+import subscriptionReducer from './subscription/subscription.reducer';
 
 const persistConfig = {
     key: 'root',
@@ -31,6 +33,8 @@ const rootReducer = combineReducers({
     userPurchase: userPurchaseReducer,
     userPurchaseList: userPurchaseListReducer,
     discount:discountReducer,
-    banner: bannerReducer
+    banner: bannerReducer,
+    speaker: speakerReducer,
+    subscription: subscriptionReducer
 });
 export default persistReducer(persistConfig, rootReducer);

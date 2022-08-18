@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from 'react';
+import {connect} from 'react-redux';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
@@ -7,6 +8,8 @@ import { createTheme, ThemeProvider, styled } from '@mui/material/styles';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import SubscriptionsIcon from '@mui/icons-material/Subscriptions';
+
+import { addSubscriptionStart } from '../../redux/subscription/subscription.action';
 
 import './subscribe.styles.scss';
 
@@ -20,7 +23,7 @@ const Item = styled(Paper)(({ theme }) => ({
   }));
 const lightTheme = createTheme({ palette: { mode: 'light' } });
 
-const SubscribeComponent = () => {
+const SubscribeComponent = ({addSubscriptionStart}) => {
     useEffect(() => {
         window.scrollTo(0,0);
     }, []);
@@ -39,6 +42,7 @@ const SubscribeComponent = () => {
 
     const handleSubmit = async(event) => {
         event.preventDefault();
+        addSubscriptionStart(form);
     }
     return(
             <Container style={{display: 'flex'}}>
@@ -151,4 +155,7 @@ const SubscribeComponent = () => {
     );
 }
 
-export default SubscribeComponent;
+const mapDispatchToProps = dispatch => ({
+    addSubscriptionStart: (data) => dispatch(addSubscriptionStart(data))
+})
+export default connect(null, mapDispatchToProps)(SubscribeComponent);

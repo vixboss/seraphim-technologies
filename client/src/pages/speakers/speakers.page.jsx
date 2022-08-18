@@ -1,13 +1,27 @@
-import React from 'react';
+import React, { useState } from 'react';
 
-import SpeakerComponent from '../../components/speaker/speaker.component';
-
+import { createStructuredSelector } from 'reselect';
+import { connect } from 'react-redux';
+import SpeakerContainer from '../../components/speaker/speaker.container';
+import { getSpeakerStart } from '../../redux/speaker/speaker.action';
+import { selectAllSpeakers } from '../../redux/speaker/speaker.selector';
 import './speakers.styles.scss';
 
-const SpeakersPage = () => {
+const SpeakersPage = ({allSpeakers, getSpeakerStart}) => {
+    useState(() => {
+        getSpeakerStart();
+    }, [getSpeakerStart]);
+
     return(
-        <SpeakerComponent/>
+        <SpeakerContainer allSpeakers = {allSpeakers}/>
     )
 }
 
-export default SpeakersPage;
+const mapStateToProps = createStructuredSelector({
+    allSpeakers: selectAllSpeakers
+});
+const mapDispatchToProps = dispatch => ({
+    getSpeakerStart: () => dispatch(getSpeakerStart())
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(SpeakersPage);

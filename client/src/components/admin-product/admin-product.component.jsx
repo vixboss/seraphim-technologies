@@ -662,5 +662,6 @@ const mapDispatchToProps = dispatch => ({
     updateProductStart: (data) => dispatch(updateProductStart(data)),
     getAllProductTitleStart: () => dispatch(getAllProductTitleStart()),
     getAllMerchandiseTitleStart: () => dispatch(getAllMerchandiseTitleStart())
-})
+});
+
 export default connect(mapStateToProps, mapDispatchToProps)(AdminProduct);

@@ -2,15 +2,17 @@ const express = require('express');
 
 const verifyToken = require('./../authentication/token.authentication');
 const { 
-    addSpeaker
+    addSpeaker,
+    getSpeaker,
+    updateSpeaker,
+    deleteSpeakerById
 } = require('../controllers/speaker.controller');
 
 const router = express.Router();
 
-router.post('/speaker', addSpeaker);
-// router.get('/product-types', verifyToken, getAllProductType);
-// router.get('/product-type/:id', verifyToken, getProductTypeById);
-// router.put('/product-type/:id', verifyToken, updateProductType);
-// router.delete('/product-type/:id', verifyToken, deleteProductTypeById);
+router.post('/speaker',verifyToken, addSpeaker);
+router.get('/speaker', getSpeaker);
+router.put('/speaker/:id', verifyToken, updateSpeaker);
+router.delete('/speaker/:id', verifyToken, deleteSpeakerById);
 
 module.exports = router;

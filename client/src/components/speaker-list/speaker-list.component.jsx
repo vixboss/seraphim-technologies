@@ -9,70 +9,36 @@ import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import FormInput from '../form-input/form-input.component.jsx';
-import {checkUndefined, srvTime, currentDateAndTimeInIST, currentDateAndTimeInISTWithotFormat} from '../../factory';
-import './discount-list.styles.scss';
+import {checkUndefined} from '../../factory';
 
-const DiscountListComponent = ({allDiscount, deleteDiscount, updateDiscount}) => {
-
+const SpeakerListComponent = ({speakerList, deleteSpeaker, updateTitle}) => {
     const columns = [
-        { id: 'id', label: '#', minWidth: 20, format : (i) => i + 1 },
+        { id: '_id', label: '#', minWidth: 20, format : (i) => i + 1 },
         {
-          id: 'name',
-          label: 'Name',
+          id: 'title',
+          label: 'Speaker Name',
           minWidth: 150,
           align: 'left',
         },
         {
-            id: 'category',
-            label: 'Category',
+            id: 'url',
+            label: 'Image Url',
             minWidth: 100,
-            align: 'left',
-            format: (value) => {
-                return value === 'special' ? React.createElement("span",{style: {color: 'blue'}}, value.charAt(0).toUpperCase() + value.slice(1)): value.charAt(0).toUpperCase() + value.slice(1);
-            }
+            align: 'left'
           },
-        {
-          id: 'type',
-          label: 'Type',
-          minWidth: 20,
-          align: 'left',
-        },
-        {
-          id: 'value',
-          label: 'Value',
-          align: 'center',
-          minWidth: 50
-        },
-        { id: 'createdAt', label: 'Created_At', minWidth: 120, format: (value) => {
-            const date = currentDateAndTimeInIST(value);
-            return date;
-        }},
-        { id: 'validity', label: 'Validity', minWidth: 120, format: (value) => {
-            return value > 1 ? value + ' hrs': value + ' hr';
-        }},
-        { id: 'status', label: 'Status', minWidth: 150, format: (value) => {
-            var currentServerDateAndTime = srvTime();
-            var comparedDateObject = currentDateAndTimeInISTWithotFormat(value.createdAt, value.validity, currentServerDateAndTime);
-            
-            if(comparedDateObject.status === "Active") {
-                return React.createElement("span",{style: {color: 'green'}}, "Active");
-            }
-            else{
-                return React.createElement("span", {style: {color: 'red'}}, "Expired");
-            }
-        } },
+        
         { id: 'action', label: 'Action', minWidth: 50, format : (value) => {
-            return React.createElement("i",{className: 'fa fa-pencil-square-o fa-lg onHover', 'aria-hidden': 'true', onClick: () => updateDiscount(value)})
+            return React.createElement("i",{className: 'fa fa-pencil-square-o fa-lg onHover', 'aria-hidden': 'true', onClick: () => updateTitle(value)})
         }
         
         },
-        { id: 'remove', minWidth: 50, format: (value) => React.createElement('i',{className: 'fa fa-times fa-lg onHover', 'aria-hidden': 'true', onClick: () => deleteDiscount(value)})}
+        { id: 'remove', minWidth: 50, format: (value) => React.createElement('i',{className: 'fa fa-times fa-lg onHover', 'aria-hidden': 'true', onClick: () => deleteSpeaker(value)})}
     
     ];
 
-    const discountList = checkUndefined(allDiscount.discount);
+    const speakersList = checkUndefined(speakerList);
 
-    const [rows, setRows] = useState(discountList);
+    const [rows, setRows] = useState(speakersList);
 
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -93,21 +59,21 @@ const DiscountListComponent = ({allDiscount, deleteDiscount, updateDiscount}) =>
         const {value} = event.target;
         setSearch(value);
         if(value !== ""){
-            setRows(discountList.filter((discount) => {
-                return Object.values(discount)
+            setRows(speakersList.filter((data) => {
+                return Object.values(data)
                     .join(" ")
                     .toLowerCase()
                     .includes(value.toLowerCase());
             })); 
         }
         else {
-            setRows(discountList);
+            setRows(speakersList);
         }
     }
 
     useEffect(() => {
-        setRows(allDiscount.discount);
-    },[allDiscount]);
+        setRows(speakerList);
+    },[speakerList]);
 
     return(
         <Row md = {8} xs = {8} style={{paddingBottom: '30px'}}>
@@ -152,10 +118,10 @@ const DiscountListComponent = ({allDiscount, deleteDiscount, updateDiscount}) =>
                                 <TableRow hover role="checkbox" tabIndex={-1} key={ind + 1}>
                                     {columns.map((column) => {
                                     let value;
-                                        if(column.id === 'id'){
+                                        if(column.id === '_id'){
                                             value = ind;
                                         }
-                                        else if(column.id === 'action' || column.id === 'remove' || column.id === 'status'){
+                                        else if(column.id === 'action' || column.id === 'remove'){
                                             value = row;
                                         }
                                         else{
@@ -163,7 +129,6 @@ const DiscountListComponent = ({allDiscount, deleteDiscount, updateDiscount}) =>
                                         }
                                     return (
                                         <TableCell key={column.id} align={column.align}
-                                        style = {value === 'Active' ? {color: 'green'}:{color: ''}}
                                         >
                                             {
                                                 column.format ? column.format(value): value
@@ -175,7 +140,7 @@ const DiscountListComponent = ({allDiscount, deleteDiscount, updateDiscount}) =>
                                 );
                             }) :
                             <TableRow>
-                                <TableCell colSpan={6}>
+                                <TableCell colSpan={4}>
                                     No Record(s) Found.
                                 </TableCell>
                             </TableRow>
@@ -197,4 +162,4 @@ const DiscountListComponent = ({allDiscount, deleteDiscount, updateDiscount}) =>
     );
 }
 
-export default DiscountListComponent;
+export default SpeakerListComponent;

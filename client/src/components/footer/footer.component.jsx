@@ -35,13 +35,21 @@ const Footer = () => {
                         <Col xs={6} sm={3} md={3}>
                             <h4 style={{color: '#1aa5d8', paddingTop: '20px'}}>About Us</h4>
                             <Row>
-                                <span>Speaker</span>
+                                <span>
+                                    <Link to = '/speakers'>
+                                        Speaker
+                                    </Link>
+                                </span>
                                 <span>
                                     <Link to = '/faq'>
                                         Faq
                                     </Link>
                                 </span>
-                                <span>Unsubscribe</span>
+                                <span>
+                                    <Link to='/unsubscribe'>
+                                        Unsubscribe
+                                    </Link>
+                                </span>
                             </Row>
                         </Col>
                         <Col xs={6} sm={3} md={3}>

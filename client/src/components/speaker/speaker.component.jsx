@@ -1,11 +1,13 @@
-import React, {useEffect} from 'react';
-import {Link} from 'react-router-dom';
+import React, {useEffect, useState} from 'react';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
+import Chip from '@mui/material/Chip';
+import { withRouter } from 'react-router-dom';
 import { createTheme, ThemeProvider, styled } from '@mui/material/styles';
 import {Container, Row, Col} from 'react-bootstrap';
 
+import SpeakerDetailComponent from '../speaker-detail/speaker-detail.component';
 import './speaker.styles.scss';
 
 const Item = styled(Paper)(({ theme }) => ({
@@ -18,42 +20,18 @@ const Item = styled(Paper)(({ theme }) => ({
   }));
 const lightTheme = createTheme({ palette: { mode: 'light' } });
 
-const SpeakerComponent = () => {
+const SpeakerComponent = ({allSpeakers, history, match}) => {
+    
     useEffect(() => {
         window.scrollTo(0,0);
     }, []);
-    const speakersList = [
-        {
-            id: 1,
-            name: 'Laura A Dixon',
-            img: 'https://firebasestorage.googleapis.com/v0/b/seraphim-db.appspot.com/o/Laura-A_1647344853.png?alt=media&token=4930bef5-4807-4d30-9d38-0740784aaf23'
-        },
-        {
-            id: 2,
-            name: 'Laura A Dixon',
-            img: 'https://firebasestorage.googleapis.com/v0/b/seraphim-db.appspot.com/o/Laura-A_1647344853.png?alt=media&token=4930bef5-4807-4d30-9d38-0740784aaf23'
-        },
-        {
-            id: 3,
-            name: 'Laura A Dixon',
-            img: 'https://firebasestorage.googleapis.com/v0/b/seraphim-db.appspot.com/o/Laura-A_1647344853.png?alt=media&token=4930bef5-4807-4d30-9d38-0740784aaf23'
-        },
-        {
-            id: 4,
-            name: 'Laura A Dixon',
-            img: 'https://firebasestorage.googleapis.com/v0/b/seraphim-db.appspot.com/o/Laura-A_1647344853.png?alt=media&token=4930bef5-4807-4d30-9d38-0740784aaf23'
-        },
-        {
-            id: 5,
-            name: 'Laura A Dixon',
-            img: 'https://firebasestorage.googleapis.com/v0/b/seraphim-db.appspot.com/o/Laura-A_1647344853.png?alt=media&token=4930bef5-4807-4d30-9d38-0740784aaf23'
-        },
-        {
-            id: 6,
-            name: 'Laura A Dixon',
-            img: 'https://firebasestorage.googleapis.com/v0/b/seraphim-db.appspot.com/o/Laura-A_1647344853.png?alt=media&token=4930bef5-4807-4d30-9d38-0740784aaf23'
-        }
-    ];
+
+    const handleSpeaker = (speaker) => {
+        history.push(`${match.path}/${speaker.title.replace(/[^a-z0-9]+/gi, '-').replace(/^-+/, '').replace(/-+$/, '')}`, {data: speaker});
+    }
+
+    
+    const speakersList = allSpeakers;
     return(
         <Container>
             <Row>
@@ -61,12 +39,12 @@ const SpeakerComponent = () => {
                     textAlign: 'center', 
                     paddingTop: '30px',
                     paddingBottom: '30px'
-                }}> Speakers</h2>
+                    }}> Speakers</h2>
             </Row>
             <Row>
             {
                 speakersList && speakersList.map((list) => (
-                    <Col md = {3} xs = {6} xm = {6}>
+                    <Col md = {3} xs = {6} xm = {6} key={list._id}>
                         <Grid item style={{margin:'20px auto'}}>
                             <ThemeProvider theme={lightTheme}>
                                 <Box
@@ -80,7 +58,7 @@ const SpeakerComponent = () => {
                                     <Item elevation={16}>
                                         <Row>
                                             <img 
-                                                src = {list.img} 
+                                                src = {list.url} 
                                                 style = {{
                                                     height: 'auto', 
                                                     width: '50%', 
@@ -89,14 +67,14 @@ const SpeakerComponent = () => {
                                                     marginRight: 'auto',
                                                     marginBottom: '20px'
                                                 }}
-                                                alt = {list.name}
+                                                alt = {list.title}
                                             />
                                         </Row>
                                         <Row>
-                                            <h5>{list.name}</h5>
+                                            <h6>{list.title}</h6>
                                         </Row>
-                                        <Row>
-                                            <span style={{textAlign: 'right', margin: '0'}}>Read More...</span>
+                                        <Row className = "clickable-button" style = {{marginTop: '20px'}}>
+                                            <Chip label="Read More..." style = {{marginRight: 'auto', marginLeft: 'auto'}} onClick = {() => handleSpeaker(list)}/>
                                         </Row>
                                     </Item>
                                 </Box>
@@ -110,4 +88,4 @@ const SpeakerComponent = () => {
     )
 }
 
-export default SpeakerComponent;
+export default withRouter(SpeakerComponent);

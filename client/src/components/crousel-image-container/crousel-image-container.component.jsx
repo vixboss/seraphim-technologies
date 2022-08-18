@@ -9,7 +9,7 @@ const CrouselImageContainerComponent = ({bannerType}) => {
             {
                 bannerType.length !== 0 && 
                 bannerType.map((imageUrl) => {
-                    return (<div key = {imageUrl.id}>
+                    return (<div key = {imageUrl._id}>
                         <img className="imageSize" src={imageUrl.title}/>
                     </div>);
                 })

@@ -218,7 +218,6 @@ const addProductType = async(req, res, next) => {
             createdAt: currentDate()
         });
         var data = await ProductType.find({title: req.body.title});
-        console.log(data)
         if(data.length === 0 ){
             await title.save();  
         }
@@ -254,7 +253,6 @@ const getProductTypeById = async(req, res, next) => {
 
 const updateProductType = async(req, res, next) => {
     try {
-        console.log(req.params);
         let id = req.params.id;
         let title = req.body.title;
         await ProductType.findByIdAndUpdate({

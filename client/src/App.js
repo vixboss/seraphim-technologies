@@ -33,6 +33,7 @@ import ContactComponent from './components/contact/contact.component';
 import FaqPage from './pages/faq/faq.component';
 import SpeakersPage from './pages/speakers/speakers.page';
 import AdminSpeaker from './components/admin-speaker/admin-speaker.component';
+import SpeakerDetailComponent from './components/speaker-detail/speaker-detail.component';
 
 import { checkUserSession } from './redux/user/user.action';
 
@@ -123,10 +124,12 @@ const App = ({ checkUserSession, currentuser, currentAdmin }) => {
           <Route exact path = '/forgot-password' component = {ForgotPasswordComponent}/>
           <Route exact path = '/reset-password' component = {ResetPasswordComponent}/>
           <Route exact path = '/subscribe' component = {SubscribePage}/>
+          <Route exact path = '/unsubscribe' component = {SubscribePage}/>
           <Route exact path = '/about' component = {AboutAndContactPage}/>
           <Route exact path = '/contact' component = {AboutAndContactPage}/>
           <Route exact path = '/faq' component = {FaqPage}/>
           <Route exact path = '/speakers' component = {SpeakersPage}/>
+          <Route exact path = '/speakers/:id' component = {SpeakerDetailComponent}/>
 
           <Route exact path='/admin'
             render = {

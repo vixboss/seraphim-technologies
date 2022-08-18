@@ -11,6 +11,8 @@ import { UserPurchaseListSaga } from './user-purchase-list/user-purchase-list.sa
 import { DiscountSaga } from './discount/discount.saga';
 import { BannerSaga } from './banner/banner.saga';
 import { PaypalNotificationMailSaga } from './paypalPaymentNitificationMail/paypalPaymentNitificationMail.saga';
+import { SpeakerSaga } from "./speaker/speaker.saga";
+import { SubscriptionSaga } from './subscription/subscription.saga';
 
 export default function* rootSagas() {
     yield all([
@@ -24,6 +26,8 @@ export default function* rootSagas() {
        call(UserPurchaseListSaga),
        call(DiscountSaga),
        call(BannerSaga),
-       call(PaypalNotificationMailSaga)
+       call(PaypalNotificationMailSaga),
+       call(SpeakerSaga),
+       call(SubscriptionSaga)
     ]);
 }
