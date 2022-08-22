@@ -29,11 +29,11 @@ import ResetPasswordComponent from './components/reset-password/reset-password.c
 import ErrorPage from './pages/error-page/error-page.component';
 import SubscribePage from './pages/subscribepage/subscribepage.component';
 import AboutAndContactPage from './pages/about-and-contact/about-and-contact.component';
-import ContactComponent from './components/contact/contact.component';
 import FaqPage from './pages/faq/faq.component';
 import SpeakersPage from './pages/speakers/speakers.page';
 import AdminSpeaker from './components/admin-speaker/admin-speaker.component';
 import SpeakerDetailComponent from './components/speaker-detail/speaker-detail.component';
+import AdminSubscribeComponent from './components/admin-subscribe/admin-subscribe.component';
 
 import { checkUserSession } from './redux/user/user.action';
 
@@ -130,7 +130,7 @@ const App = ({ checkUserSession, currentuser, currentAdmin }) => {
           <Route exact path = '/faq' component = {FaqPage}/>
           <Route exact path = '/speakers' component = {SpeakersPage}/>
           <Route exact path = '/speakers/:id' component = {SpeakerDetailComponent}/>
-
+          <Route exact path = '/admin/subscription' component={AdminSubscribeComponent}/>
           <Route exact path='/admin'
             render = {
               () => currentAdmin ? <Redirect to='/admin/dashboard'/> : <AdminLoginPage/>

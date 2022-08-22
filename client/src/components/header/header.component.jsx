@@ -111,6 +111,8 @@ const Header = ({currentUser, hidden, signOutStart, history, match, searchCollec
                 return setShowSearch(true);
             case '/shop/healthcare':
                 return setShowSearch(true);
+            case '/shop/human%20resource':
+                return setShowSearch(true);
             default:
                 return setShowSearch(false)
         }

@@ -15,6 +15,20 @@ const currentDate = () => {
     return `${yyyy}-${mm}-${dd} ${hh}:${min}:${ss}`;
 }
 
+const getSubscription = async(req, res, next) => {
+    try {
+        const getSubscription = await Subscription.find();
+        if(getSubscription.length === 0){
+            return res.status(202).send('No Record(s) Found.');
+        }
+        else{
+            return res.status(200).send(getSubscription);
+        }
+    } catch (error) {
+        return res.status(400).send(error);
+    }
+}
+
 const addSubscription = async(req, res, next) => {
     try {
         let subscription = new Subscription({
@@ -63,5 +77,6 @@ const updateSubscription = async(req, res, next) => {
 
 module.exports = {
     addSubscription,
-    updateSubscription
+    updateSubscription,
+    getSubscription
 }
