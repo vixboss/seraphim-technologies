@@ -8,6 +8,7 @@ import { createStructuredSelector } from "reselect";
 import { selectProductByName, selectProductById } from './../../redux/product/product.selector';
 import ProductConfiguration from "../product-configuration/product-configuration.component";
 import ProductDescriptionLeftColumn from '../product-description-left-column/product-description-left-column.component';
+import OfferRibbonComponent from '../offer-ribbon/offer-ribbon.component';
 
 import './product-description.styles.scss';
 
@@ -42,7 +43,11 @@ const ProductDescription = ({history, match, selectProductByName, selectProductB
     const {id, name, description, speakerName, date, duration, detailFieldTxtArea } = collectionItem;
 
     return (
+          
             <Grid className="box-padding" container spacing={3}>
+                <Grid item xs = {12} md = {12} style = {{paddingTop: '0px'}}>
+                    <OfferRibbonComponent/>
+                </Grid>
                 <Grid item md={4}>
                     <ProductDescriptionLeftColumn id= {id} item = {collectionItem} name = {name} date = {date}/>
                 </Grid>

@@ -33,7 +33,7 @@ const ProductDescriptionPage = ({getProductByNameStart, selectProductByName, get
     // }, [getProductByNameStart]);
 
     useEffect(() => {
-        getProductByIdStart(queryId);
+        getProductByIdStart({id: queryId});
     }, [getProductByIdStart]);
 
     // useEffect(() => {
@@ -53,7 +53,7 @@ const ProductDescriptionPage = ({getProductByNameStart, selectProductByName, get
         {
             // typeof(collectionItemDetails) !== "undefined" && objLength !== 0 ?
             //     <ProductDescriptionContainer id={collectionItemDetails[0].id} collectionItem = {collectionItemDetails[0]}/> : <ProductDescriptionContainer id={itemDetails.id} collectionItem = {itemDetails}/>
-
+                
                 <ProductDescriptionContainer/> 
             
         }

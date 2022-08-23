@@ -128,106 +128,121 @@ const DiscountComponent = ({getAllDiscountStart, addDiscountStart, allDiscount, 
                 </Row>
                 <Row className='discount-field'>
                     <Form onSubmit={addDiscount}>
-                        <Row>
-                            <Col className="discount" md={3} xm = {3} xs = {3}>
-                                <FormInput
-                                    type="input"
-                                    name="discountName"
-                                    value={discount.discountName}
-                                    handleChange={handleChange}
-                                    label="Discount Name"
-                                    required
-                                />
+                        <Row style = {{paddingBottom: '40px'}}>
+                            <Col md = {4} xs = {12} xm = {12}>
+                                <Row>
+                                    <Col className="discount">
+                                        <FormInput
+                                            type="input"
+                                            name="discountName"
+                                            value={discount.discountName}
+                                            handleChange={handleChange}
+                                            label="Discount Name"
+                                            required
+                                        />
+                                    </Col>
+                                </Row>
                             </Col>
-                            <Col className="discount" md= {3} xm = {3} xs = {3}>
-                                <FormInput
-                                    type="input"
-                                    name="discountValue"
-                                    value={discount.discountValue}
-                                    handleChange={handleChange}
-                                    label="Value In Numbers"
-                                    onKeyPress={(event) => {
-                                        if (!/[0-9]/.test(event.key)) {
-                                          event.preventDefault();
+
+                            <Col md = {4} xs = {12} xm = {12}>
+                                <Row>
+                                    <Col className="discount">
+                                        <FormInput
+                                            type="input"
+                                            name="discountValue"
+                                            value={discount.discountValue}
+                                            handleChange={handleChange}
+                                            label="Value In Numbers"
+                                            onKeyPress={(event) => {
+                                                if (!/[0-9]/.test(event.key)) {
+                                                event.preventDefault();
+                                                }
+                                            }}
+                                            onPaste={(e)=>{
+                                                e.preventDefault()
+                                                return false;
+                                            }} 
+                                            onCopy={(e)=>{
+                                                e.preventDefault()
+                                                return false;
+                                            }} 
+                                            required
+                                        />
+                                    </Col>
+                                    
+                                    <Col className="discount">
+                                        <FormInput
+                                            type="input"
+                                            name="discountValidity"
+                                            value={discount.discountValidity}
+                                            handleChange={handleChange}
+                                            label="Exp. time in Hrs."
+                                            onKeyPress={(event) => {
+                                                if (!/[0-9]/.test(event.key)) {
+                                                event.preventDefault();
+                                                }
+                                            }}
+                                            onPaste={(e)=>{
+                                                e.preventDefault()
+                                                return false;
+                                            }} 
+                                            onCopy={(e)=>{
+                                                e.preventDefault()
+                                                return false;
+                                            }} 
+                                            required
+                                        />
+                                    </Col>
+                                </Row>
+                            </Col>
+                        
+                            <Col md = {4} xs = {12} xm = {12}>
+                                <Row>
+                                    <Col className="discount" xs = {6} xm = {6}>
+                                    <DropdownButton 
+                                        id="dropdown-basic-button" 
+                                        title= {discount.discountType} 
+                                        className="center-item"
+                                        required
+                                    >
+                                    {
+                                        discountCriteria.map((discount, index) => {
+                                            return(
+                                                <Dropdown.Item key={index}
+                                                    onClick = {(e) => typeDropdownChange(e)}
+                                                >
+                                                {discount.type}
+                                                </Dropdown.Item>
+                                            )
+                                        })
+                                    }
+                                    </DropdownButton>
+                                    </Col>
+                                    <Col className="discount" xs = {6} xm = {6}>
+                                        <DropdownButton 
+                                            id="dropdown-basic-button" 
+                                            title= {discount.discountCategory} 
+                                            className="center-item"
+                                            required
+                                        >
+                                        {
+                                            discountCategoryCriteria.map((discount, index) => {
+                                                return(
+                                                    <Dropdown.Item key={index}
+                                                        onClick = {(e) => categoryDropdownChange(e)}
+                                                    >
+                                                    {discount.category}
+                                                    </Dropdown.Item>
+                                                )
+                                            })
                                         }
-                                    }}
-                                    onPaste={(e)=>{
-                                        e.preventDefault()
-                                        return false;
-                                    }} 
-                                    onCopy={(e)=>{
-                                        e.preventDefault()
-                                        return false;
-                                    }} 
-                                    required
-                                />
-                            </Col>
-                            <Col className="discount" md= {3} xm = {3} xs = {3}>
-                                <DropdownButton 
-                                    id="dropdown-basic-button" 
-                                    title= {discount.discountType} 
-                                    className="center-item"
-                                    required
-                                >
-                                {
-                                    discountCriteria.map((discount, index) => {
-                                        return(
-                                            <Dropdown.Item key={index}
-                                                onClick = {(e) => typeDropdownChange(e)}
-                                            >
-                                            {discount.type}
-                                            </Dropdown.Item>
-                                        )
-                                    })
-                                }
-                                </DropdownButton>
-                            </Col>
-                            <Col className="discount" md= {3} xm = {3} xs = {3}>
-                                <DropdownButton 
-                                    id="dropdown-basic-button" 
-                                    title= {discount.discountCategory} 
-                                    className="center-item"
-                                    required
-                                >
-                                {
-                                    discountCategoryCriteria.map((discount, index) => {
-                                        return(
-                                            <Dropdown.Item key={index}
-                                                onClick = {(e) => categoryDropdownChange(e)}
-                                            >
-                                            {discount.category}
-                                            </Dropdown.Item>
-                                        )
-                                    })
-                                }
-                                </DropdownButton>
+                                        </DropdownButton>
+                                    </Col>
+                                </Row>
                             </Col>
                         </Row>
-                        <Row>
-                            <Col className="discount" md= {4} xm = {4} xs = {4}>
-                                <FormInput
-                                    type="input"
-                                    name="discountValidity"
-                                    value={discount.discountValidity}
-                                    handleChange={handleChange}
-                                    label="Exp. time in Hrs."
-                                    onKeyPress={(event) => {
-                                        if (!/[0-9]/.test(event.key)) {
-                                        event.preventDefault();
-                                        }
-                                    }}
-                                    onPaste={(e)=>{
-                                        e.preventDefault()
-                                        return false;
-                                    }} 
-                                    onCopy={(e)=>{
-                                        e.preventDefault()
-                                        return false;
-                                    }} 
-                                    required
-                                />
-                            </Col>
-                        </Row>
+
+
                         <Row md= {12}>
                             <Col className='buttons' md={4}>
                                 <CustomButton

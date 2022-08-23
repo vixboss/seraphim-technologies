@@ -89,9 +89,9 @@ export const deleteProductFailure = error => ({
     payload: error
 })
 
-export const getProductByIdStart = data => ({
+export const getProductByIdStart = id => ({
     type: ProductActionType.PRODUCT_GET_BY_ID_START,
-    payload: data
+    payload: id
 })
 
 export const getProductByIdSuccess = data => ({
