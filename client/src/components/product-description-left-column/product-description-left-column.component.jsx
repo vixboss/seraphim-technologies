@@ -34,7 +34,7 @@ const MySwal = withReactContent(Swal);
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
-const ProductDescriptionLeftColumn = ({id, item, addItem, name, date, history, addWishlistStart, currentUser}) => {
+const ProductDescriptionLeftColumn = ({id, item, addItem, name, date, history, addWishlistStart, currentUser, days}) => {
     const Root = styled('div')(({ theme }) => ({
         width: '100%',
         ...theme.typography.body2,
@@ -253,7 +253,6 @@ const ProductDescriptionLeftColumn = ({id, item, addItem, name, date, history, a
         doc.save('order_form.pdf');
         doc.autoPrint();
     }
-
     return (
         <>  
             <Row>
@@ -270,7 +269,7 @@ const ProductDescriptionLeftColumn = ({id, item, addItem, name, date, history, a
                </Col> */}
                     {
                         cost && cost.map((productPrice, index) => {
-                            if(productPrice.price !== '' && productPrice.price !== null){
+                            if(productPrice.price !== '' && productPrice.price !== null && (typeof days !== "undefined" || !productPrice.name.toLowerCase().includes("live"))){
                                 return (
                                     <Row className="align" key={index}>
                                         <Col sm = {8} xs = {6}>

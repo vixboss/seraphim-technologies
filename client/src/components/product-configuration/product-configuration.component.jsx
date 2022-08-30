@@ -1,33 +1,21 @@
 import React from 'react';
 import parse from 'html-react-parser';
 
-import { checkUndefined, paragraphToList } from '../../factory';
+import { checkUndefined } from '../../factory';
 import { Row, Col } from 'react-bootstrap';
 
 import './product-configuration.styles.scss';
-import { useEffect } from 'react';
 
-const ProductConfiguration = ({description, speakerName, date, duration, detailFieldTxtArea, industry}) => {
+const ProductConfiguration = ({description, speakerName, date, duration, detailFieldTxtArea, industry, time, days}) => {
     const details = detailFieldTxtArea;
     // const checkedData = checkUndefined(productConfiguration);
     description = checkUndefined(description);
     date = checkUndefined(date);
     speakerName = checkUndefined(speakerName);
     industry = checkUndefined(industry);
-    // let description = '';
-    let detailFields = '';
-    let detailFieldsHeading = '';
-    let detailFieldsContent= '';
-
-    // if(checkedData){
-    //     console.log(checkedData);
-    //     description = checkedData.description; 
-    //     detailFields = checkedData.detailFields;
-    //     detailFieldsHeading = Object.keys(detailFields).reverse();
-    //     detailFieldsContent = detailFieldsHeading.map(index => detailFields[index] );
-    // }
+    time = checkUndefined(time);
+    days = checkUndefined(days);
     
-    const list = paragraphToList(detailFieldsContent); 
     return(
         <div className='product-configuration'>
             <Row>
@@ -69,11 +57,27 @@ const ProductConfiguration = ({description, speakerName, date, duration, detailF
                             <span className='heading-size'>{date ? "Date:-" : ''}</span>
                         </Col>
                         <Col md = {8} xm = {6} xs = {6}>
-                            <p style = {{ fontSize: '18px'}}>{date.convertToDate()}</p>
+                            <p style = {{ fontSize: '18px'}}>{date.convertToDate()} &nbsp; | &nbsp; {time.convertToTime()} EST
+                            </p>
                         </Col>
                     </Row>
                 </Col>
             </Row>
+            {
+                days && 
+                <Row style={{marginBottom: '10px'}}>
+                    <Col md= {6}>
+                        <Row>
+                            <Col md = {4} xm = {6} xs = {6}>
+                                <span className='heading-size'>Available:-</span>
+                            </Col>
+                            <Col md = {8} xm = {6} xs = {6}>
+                                <span className = "days-span">{days}</span>
+                            </Col>
+                        </Row>
+                    </Col>
+                </Row>
+            }
             <span className='heading-size'> { description ? 'Description:-' : '' } </span>
             <p align="justify">{ description }</p>
             {   

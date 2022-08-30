@@ -286,6 +286,33 @@ export const filterWebinar = (currDate, webinarDate, webinarTime, webinarDuratio
     return status;
 }
 
+export const srvTimeInEST = () => {
+    
+    //FF, Opera, Safari, Chrome
+    var xmlHttp = new XMLHttpRequest();
+    
+    xmlHttp.open('HEAD',window.location.href.toString(),false);
+    xmlHttp.setRequestHeader("Content-Type", "text/html");
+    xmlHttp.send('');
+
+    var myTimezone = "America/New_York";
+    var myDatetimeFormat= "yyyy-MM-DD";
+    return moment(xmlHttp.getResponseHeader("Date")).tz(myTimezone).format(myDatetimeFormat);
+}
+
+export const dateDifferenceInEST = (date) => {
+    var currDate = srvTimeInEST();
+    var newDate = moment(date).format('yyyy-MM-DD');
+
+    var days = moment(newDate).diff(moment(currDate), 'days') 
+    if(days > 0){
+        return days !== 1 ? days + ' Days Left': days + ' Day Left'; 
+    }
+    else if(days === 0){
+        return 'Today';
+    }
+}
+
 Object.defineProperty(String.prototype, 'capitalizeFirstCharacter', {
     value: function() {
         return this.charAt(0).toUpperCase() + this.slice(1);

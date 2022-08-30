@@ -4,6 +4,19 @@
     width: 50%;
 }
 
+.span-align {
+    display:table; 
+    margin:auto; 
+    margin-top: 10px;
+    padding: 0 10px;
+    color: #fff;
+    font-size: larger;
+    font-weight: 600;
+    letter-spacing: 1px;
+    outline: 3px double rgb(216 219 221);
+    background-color:rgb(26, 165, 216);
+}
+
 .animate-charcter
 {
     text-transform: uppercase;

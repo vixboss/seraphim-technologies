@@ -4,7 +4,7 @@ import { Col, Row, Card, Button } from 'react-bootstrap';
 import { withRouter } from 'react-router-dom';
 
 import { fetchItemDescription } from './../../redux/shop/shop.actions';
-
+import { dateDifferenceInEST } from './../../factory.js'
 
 import './menu-card.styles.scss';
 
@@ -44,7 +44,16 @@ const MenuCard = ({item, history, fetchItemDescription, type }) => {
                                         <span>
                                             <i className='fa fa-calendar'></i> &nbsp;  
                                             {itm.date.convertToDate()} &nbsp; | &nbsp; {itm.time.convertToTime()} EST
-                                        </span>
+                                        </span><br/>
+                                        {
+
+                                            type === 'Upcoming' && 
+                                            <span className = "span-align">
+                                                {
+                                                    dateDifferenceInEST(itm.date.convertToDate())
+                                                }
+                                            </span>
+                                        }
                                     </Card.Text>
                                     <Row style = {{ justifyContent: 'center', marginTop: 'auto'}}>
                                         {/*<Button variant="secondary" className="btn-text-size"

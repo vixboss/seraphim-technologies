@@ -1,10 +1,10 @@
 import React, {useState, useEffect} from "react";
+import { connect } from "react-redux";
+import { createStructuredSelector } from "reselect";
 import { withRouter } from 'react-router-dom';
 import Grid from '@mui/material/Grid';
 
-import { connect } from "react-redux";
-import { createStructuredSelector } from "reselect";
-
+import { dateDifferenceInEST } from '../../factory';
 import { selectProductByName, selectProductById } from './../../redux/product/product.selector';
 import ProductConfiguration from "../product-configuration/product-configuration.component";
 import ProductDescriptionLeftColumn from '../product-description-left-column/product-description-left-column.component';
@@ -40,8 +40,9 @@ const ProductDescription = ({history, match, selectProductByName, selectProductB
     }, [selectProductById]);
 
     // console.log(collectionItem);
-    const {id, name, description, speakerName, date, duration, detailFieldTxtArea } = collectionItem;
-
+    const {id, name, description, speakerName, date, duration, detailFieldTxtArea, time } = collectionItem;
+    const days = dateDifferenceInEST(date.convertToDate());
+    
     return (
           
             <Grid className="box-padding" container spacing={3}>
@@ -49,7 +50,7 @@ const ProductDescription = ({history, match, selectProductByName, selectProductB
                     <OfferRibbonComponent/>
                 </Grid>
                 <Grid item md={4}>
-                    <ProductDescriptionLeftColumn id= {id} item = {collectionItem} name = {name} date = {date}/>
+                    <ProductDescriptionLeftColumn id= {id} item = {collectionItem} name = {name} date = {date} days = {days}/>
                 </Grid>
                 <Grid item md={8}>
                     <div className="product-description">
@@ -62,6 +63,8 @@ const ProductDescription = ({history, match, selectProductByName, selectProductB
                         duration = {duration}
                         speakerName = { speakerName }
                         industry = {match.params.id.toUpperCase()}
+                        time = {time}
+                        days = {days}
                     />
                 </Grid>
             </Grid>
