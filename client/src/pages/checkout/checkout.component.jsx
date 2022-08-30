@@ -210,202 +210,221 @@ const CheckoutPage = ({cartItems, total, history, currentUser, discountGetByName
     };
 
     return (
-    <Row className="page-border set-margin">
-        <div className="continue-button">
-            <span className="continue-button-span">
-                <Button 
-                    className="continue-shopping-button"
-                    variant="contained" 
-                    onClick={() => history.push('/shop')}
-                >
-                    <i className="fa fa-arrow-left" aria-hidden="true"></i>
-                    &nbsp; Continue Shopping
-                </Button>
-            </span>
-        </div>
-        {
-            cartItems.map((cartItem, index) =>(
-                <CheckoutItem key={index} cartItem={cartItem}/>
-            ))
-        }
-        <Paper spacing = {2}
-            sx={{
-                p: 2,
-                margin: 'auto',
-                maxWidth: 800,
-                marginTop: '20px',
-                flexGrow: 1,
-                backgroundColor: (theme) =>
-                theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
-            }}
-        >
-            <Row style={{fontWeight: '600', fontSize: 'larger'}}>
-                <Col md={6} xs={6} xm={6} style={{color: 'grey'}}>
-                    <span>Sub Total</span>
-                </Col>
-                <Col md={6} xs={6} xm={6} align="right" style={{letterSpacing: '2px'}}>
-                    <span>${total.toFixed(2)}</span>
-                </Col>
-            </Row>
-            <Row style={{fontWeight: '600', fontSize: 'larger'}}>
-                <Col md={6} xs={6} xm={6} style={{color: 'grey'}}>
-                    <span>Discount {
-                        cloneDiscount.discount !== null && cloneDiscount.discount !== "No Record(s) Found." ? 
-                        (cloneDiscount.discount[0].type === "$" ? '- ($' + coupon.value + ')': '- (' + coupon.value + '%)') : ''
-                    }</span>
-                </Col>
-                <Col md={6} xs={6} xm={6} align="right" style={{letterSpacing: '2px', color: '#fc5185'}}>
-                    <span> - ${coupon.calculatedValue.toFixed(2)}</span>
-                </Col>
-            </Row>
-            <Root>
-                <Divider>
-                    <Chip label="TOTAL" />
-                </Divider>
-            </Root>
-            <Row>
-                <Col md={6} xs={6} xm={6} style={{fontWeight: '600', fontSize: 'x-large'}}>
-                    <span>Total</span>
-                </Col>
-                <Col md={6} xs={6} xm={6} align="right" style={{letterSpacing: '2px', fontWeight: '600', fontSize: 'x-large', color: '#2f1c6a'}}>
-                    <span>${coupon.total.toFixed(2)}</span>
-                </Col>
-            </Row>
-            <Row>
-                {
-                    coupon.appliedCoupon === '' ?
-                    <Col md={6} xs={8} xm={8} style={{fontWeight: '600', fontSize: 'x-large'}}>
-                        <span onClick={handleClickOpen} className = "coupon">Have a coupon code?</span>
-                    </Col>
-                    :
-                    <Col md={6} xs={12} xm={12} style={{fontWeight: '600', fontSize: 'larger'}}>
-                        <span onClick={handleClickOpen}>Coupon code &nbsp;</span>
-                        <span
-                            style={{
-                                color: 'white',
-                                backgroundColor: '#fc5185',
-                                borderRadius: '5px',
-                                paddingLeft: '10px',
-                                paddingRight: '10px'
-                            }}
-                        >{coupon.appliedCoupon}</span>
-                        <span>
-                            <Tooltip title="Remove Applied Coupon">
-                                <IconButton color="primary" aria-label="add to shopping cart" onClick = {
-                                    () => {
-                                        handleRemoveCouponCode()
-                                    }
-                                } className="icon-color">
-                                    <DeleteIcon/>
-                                </IconButton>
-                            </Tooltip>
-                        </span>
-                    </Col>
-                }
-            </Row>
-            <Row>
-                {
-                    coupon.snack === 'active' &&
-                    <Snackbar
-                        open={snackOpen}
-                        autoHideDuration={5000}
-                        onClose={handleSnackClose}
-                        style={{width: 'auto'}}
-                        className = "snack-alert"
-                    >
-                        <Alert onClose={handleSnackClose} severity="success" sx={{ width: '100%' }}>
-                            Coupon Applied.
-                        </Alert>
-                    </Snackbar> 
-                }
-            </Row>
-            <Row>
-                {
-                    coupon.snack === 'notFound' &&
-                    <Snackbar
-                        open={snackOpen}
-                        autoHideDuration={5000}
-                        onClose={handleSnackClose}
-                        style={{width: 'auto'}}
-                        className = "snack-alert"
-                    >
-                        <Alert onClose={handleSnackClose} severity="warning" sx={{ width: '100%' }}>
-                            Coupon not found.
-                        </Alert>
-                    </Snackbar> 
-                }
-            </Row>
-            <Row>
-                {
-                    coupon.snack === 'expired' &&
-                    <Snackbar
-                        open={snackOpen}
-                        autoHideDuration={5000}
-                        onClose={handleSnackClose}
-                        style={{width: 'auto'}}
-                        className = "snack-alert"
-                    >
-                        <Alert onClose={handleSnackClose} severity="error" sx={{ width: '100%' }}>
-                            Coupon has expired.
-                        </Alert>
-                    </Snackbar> 
-                }
-            </Row>
-            <Row>
-                {
-                    coupon.snack === 'notApplicable' &&
-                    <Snackbar
-                        open={snackOpen}
-                        autoHideDuration={5000}
-                        onClose={handleSnackClose}
-                        style={{width: 'auto'}}
-                        className = "snack-alert"
-                    >
-                        <Alert onClose={handleSnackClose} severity="error" sx={{ width: '100%' }}>
-                            Coupon is not applicable.
-                        </Alert>
-                    </Snackbar> 
-                }
-            </Row>
-        </Paper>
-        
-        <Row className="test-warning">
-            *Please use the follwoing test credit card for the payments*
-            <br/>
-            4242 4242 4242 4242 - Exp: 01/24 -CVV: 123
-        </Row>
-        <div className="pay-button">
-            <span className="pay-button-span">
+        <>
             {
-                currentUser !== null ?  <PaymentOptionComponent discountPrice={coupon.calculatedValue.toFixed(2)} cartItems = {cartItems}/> :
-                <Button variant="contained" onClick={() => history.push('/signin')}>
-                    Sign In for payment.
-                </Button>
-            }
-            </span>
-        </div>
-        <Dialog open={open} onClose={handleClose}>
-            <DialogContent>
-            <TextField
-                autoFocus
-                margin="dense"
-                id="coupon"
-                label="Coupon Code"
-                type="text"
-                variant="standard"
-                name="couponCode"
-                value={couponCode}
-                onChange = {handleChange}
-            />
-            </DialogContent>
-            <DialogActions>
-                <Button style={{color: '#6c757d'}} onClick={handleClose}>Cancel</Button>
-                <Button style={{color: '#6c757d'}} onClick={() => {handleClose(); applyCoupon();}}>Apply</Button>
-            </DialogActions>
-        </Dialog>
-    </Row>
 
-)}
+                cartItems.length > 0 ?
+                <Row className="page-border set-margin">
+                    <div className="continue-button">
+                        <span className="continue-button-span">
+                            <Button 
+                                className="continue-shopping-button"
+                                variant="contained" 
+                                onClick={() => history.push('/shop')}
+                            >
+                                <i className="fa fa-arrow-left" aria-hidden="true"></i>
+                                &nbsp; Continue Shopping
+                            </Button>
+                        </span>
+                    </div>
+                    {
+                        cartItems.map((cartItem, index) =>(
+                            <CheckoutItem key={index} cartItem={cartItem}/>
+                        ))
+                    }
+                    
+                    <Paper spacing = {2}
+                        sx={{
+                            p: 2,
+                            margin: 'auto',
+                            maxWidth: 800,
+                            marginTop: '20px',
+                            flexGrow: 1,
+                            backgroundColor: (theme) =>
+                            theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
+                        }}
+                    >
+                        <Row style={{fontWeight: '600', fontSize: 'larger'}}>
+                            <Col md={6} xs={6} xm={6} style={{color: 'grey'}}>
+                                <span>Sub Total</span>
+                            </Col>
+                            <Col md={6} xs={6} xm={6} align="right" style={{letterSpacing: '2px'}}>
+                                <span>${total.toFixed(2)}</span>
+                            </Col>
+                        </Row>
+                        <Row style={{fontWeight: '600', fontSize: 'larger'}}>
+                            <Col md={6} xs={6} xm={6} style={{color: 'grey'}}>
+                                <span>Discount {
+                                    cloneDiscount.discount !== null && cloneDiscount.discount !== "No Record(s) Found." ? 
+                                    (cloneDiscount.discount[0].type === "$" ? '- ($' + coupon.value + ')': '- (' + coupon.value + '%)') : ''
+                                }</span>
+                            </Col>
+                            <Col md={6} xs={6} xm={6} align="right" style={{letterSpacing: '2px', color: '#fc5185'}}>
+                                <span> - ${coupon.calculatedValue.toFixed(2)}</span>
+                            </Col>
+                        </Row>
+                        <Root>
+                            <Divider>
+                                <Chip label="TOTAL" />
+                            </Divider>
+                        </Root>
+                        <Row>
+                            <Col md={6} xs={6} xm={6} style={{fontWeight: '600', fontSize: 'x-large'}}>
+                                <span>Total</span>
+                            </Col>
+                            <Col md={6} xs={6} xm={6} align="right" style={{letterSpacing: '2px', fontWeight: '600', fontSize: 'x-large', color: '#2f1c6a'}}>
+                                <span>${coupon.total.toFixed(2)}</span>
+                            </Col>
+                        </Row>
+                        <Row>
+                            {
+                                coupon.appliedCoupon === '' ?
+                                <Col md={6} xs={8} xm={8} style={{fontWeight: '600', fontSize: 'x-large'}}>
+                                    <span onClick={handleClickOpen} className = "coupon">Have a coupon code?</span>
+                                </Col>
+                                :
+                                <Col md={6} xs={12} xm={12} style={{fontWeight: '600', fontSize: 'larger'}}>
+                                    <span onClick={handleClickOpen}>Coupon code &nbsp;</span>
+                                    <span
+                                        style={{
+                                            color: 'white',
+                                            backgroundColor: '#fc5185',
+                                            borderRadius: '5px',
+                                            paddingLeft: '10px',
+                                            paddingRight: '10px'
+                                        }}
+                                    >{coupon.appliedCoupon}</span>
+                                    <span>
+                                        <Tooltip title="Remove Applied Coupon">
+                                            <IconButton color="primary" aria-label="add to shopping cart" onClick = {
+                                                () => {
+                                                    handleRemoveCouponCode()
+                                                }
+                                            } className="icon-color">
+                                                <DeleteIcon/>
+                                            </IconButton>
+                                        </Tooltip>
+                                    </span>
+                                </Col>
+                            }
+                        </Row>
+                        <Row>
+                            {
+                                coupon.snack === 'active' &&
+                                <Snackbar
+                                    open={snackOpen}
+                                    autoHideDuration={5000}
+                                    onClose={handleSnackClose}
+                                    style={{width: 'auto'}}
+                                    className = "snack-alert"
+                                >
+                                    <Alert onClose={handleSnackClose} severity="success" sx={{ width: '100%' }}>
+                                        Coupon Applied.
+                                    </Alert>
+                                </Snackbar> 
+                            }
+                        </Row>
+                        <Row>
+                            {
+                                coupon.snack === 'notFound' &&
+                                <Snackbar
+                                    open={snackOpen}
+                                    autoHideDuration={5000}
+                                    onClose={handleSnackClose}
+                                    style={{width: 'auto'}}
+                                    className = "snack-alert"
+                                >
+                                    <Alert onClose={handleSnackClose} severity="warning" sx={{ width: '100%' }}>
+                                        Coupon not found.
+                                    </Alert>
+                                </Snackbar> 
+                            }
+                        </Row>
+                        <Row>
+                            {
+                                coupon.snack === 'expired' &&
+                                <Snackbar
+                                    open={snackOpen}
+                                    autoHideDuration={5000}
+                                    onClose={handleSnackClose}
+                                    style={{width: 'auto'}}
+                                    className = "snack-alert"
+                                >
+                                    <Alert onClose={handleSnackClose} severity="error" sx={{ width: '100%' }}>
+                                        Coupon has expired.
+                                    </Alert>
+                                </Snackbar> 
+                            }
+                        </Row>
+                        <Row>
+                            {
+                                coupon.snack === 'notApplicable' &&
+                                <Snackbar
+                                    open={snackOpen}
+                                    autoHideDuration={5000}
+                                    onClose={handleSnackClose}
+                                    style={{width: 'auto'}}
+                                    className = "snack-alert"
+                                >
+                                    <Alert onClose={handleSnackClose} severity="error" sx={{ width: '100%' }}>
+                                        Coupon is not applicable.
+                                    </Alert>
+                                </Snackbar> 
+                            }
+                        </Row>
+                    </Paper>
+                    
+                    <Row className="test-warning">
+                        *Please use the follwoing test credit card for the payments*
+                        <br/>
+                        4242 4242 4242 4242 - Exp: 01/24 -CVV: 123
+                    </Row>
+                    <div className="pay-button">
+                        <span className="pay-button-span">
+                        {
+                            currentUser !== null ?  <PaymentOptionComponent discountPrice={coupon.calculatedValue.toFixed(2)} cartItems = {cartItems}/> :
+                            <Button variant="contained" onClick={() => history.push('/signin')}>
+                                Sign In for payment.
+                            </Button>
+                        }
+                        </span>
+                    </div>
+                    <Dialog open={open} onClose={handleClose}>
+                        <DialogContent>
+                        <TextField
+                            autoFocus
+                            margin="dense"
+                            id="coupon"
+                            label="Coupon Code"
+                            type="text"
+                            variant="standard"
+                            name="couponCode"
+                            value={couponCode}
+                            onChange = {handleChange}
+                        />
+                        </DialogContent>
+                        <DialogActions>
+                            <Button style={{color: '#6c757d'}} onClick={handleClose}>Cancel</Button>
+                            <Button style={{color: '#6c757d'}} onClick={() => {handleClose(); applyCoupon();}}>Apply</Button>
+                        </DialogActions>
+                    </Dialog>
+                </Row>
+                :
+                <Row className="page-border set-margin set-checkout-margin">
+                    <h1 className="set-alignment animate-charcter">Add products to cart...</h1>
+                    <Button 
+                        className="button-size"
+                        variant="contained" 
+                        style = {{ marginBottom: '80px',  backgroundColor: '#6c757d'}}
+                        onClick={() => history.push('/shop')}
+                    >
+                        <i className="fa fa-arrow-left" aria-hidden="true"></i>
+                        &nbsp; shop products
+                    </Button>
+                </Row>
+            }
+        </>
+    )}
 
 const mapDispatchToProps = dispatch => ({
     discountGetByNameStart: (name) => dispatch(discountGetByNameStart(name))

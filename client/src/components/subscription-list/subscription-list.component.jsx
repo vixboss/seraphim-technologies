@@ -101,7 +101,7 @@ const SubscriptionListComponent = ({allSubscriptions}) => {
     },[allSubscriptions]);
 
     return(
-        <Row md = {8} xs = {8} style={{paddingBottom: '30px'}}>
+        <Row md = {8} xs = {8} style={{paddingBottom: '30px'}} className= "m-t-30">
             <Paper sx={{ width: '100%', overflow: 'hidden' }} id= 'discount-list-paper'>
                 <Row>
                     <Col md = {2} className="search-input">

@@ -4,6 +4,7 @@
     display:inline-block;
     // margin:5em;
     text-align:center;
+    margin-top: 30px;
   }
   .text{
     display:inline-block;
@@ -48,16 +49,6 @@
     top:0.7em;
     right:-1.3em;
   }
-
-.marquee {
-  width: 450px;
-	line-height: 50px;
-	background-color: red;
-	color: white;
-  white-space: nowrap;
-  overflow: hidden;
-  box-sizing: border-box;
-}
 
 .animate-charcter
 {

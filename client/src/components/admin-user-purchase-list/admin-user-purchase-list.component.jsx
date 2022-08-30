@@ -247,7 +247,7 @@ const AdminUserPurchaseList = ({data, updateUserPurchaseDeliveryStatusStart}) =>
 
     return (
       <>
-        <Row style={{marginTop: '25px'}}>
+        <Row className = "m-t-30">
           <Col>
             <h2>User Purchase List</h2>
           </Col>

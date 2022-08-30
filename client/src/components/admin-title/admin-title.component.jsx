@@ -60,7 +60,7 @@ const AdminTitle = ({productType, getAllProductTitleStart, addProductTitleStart,
 
     return(
         <Container>
-            <Col className='admin-title'>
+            <Col className='admin-title m-t-30'>
                 <Row>
                     <h1>Product Type</h1>
                 </Row>

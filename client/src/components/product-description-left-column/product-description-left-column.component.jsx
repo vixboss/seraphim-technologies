@@ -14,21 +14,27 @@ import MuiGrid from "@mui/material/Grid";
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
 import jsPDF from 'jspdf';
-import autoTable from 'jspdf-autotable'
+import {createStructuredSelector} from 'reselect';
+
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
 
 import WD from './../../assets/wdNew.jpg';
 import { addItem } from '../../redux/cart/cart.action';
+import {addWishlistStart} from '../../redux/wishlist/wishlist.action';
+import { selectCurrentUser }  from '../../redux/user/user.selector';
 
 import './product-description-left-column.styles.scss';
 import { useEffect } from 'react';
 // import { AddButton } from './product-description-left-column.styles';
 // import { previousSaturday } from 'date-fns/esm';
 
+const MySwal = withReactContent(Swal);
 
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
-const ProductDescriptionLeftColumn = ({id, item, addItem, name, date, history}) => {
+const ProductDescriptionLeftColumn = ({id, item, addItem, name, date, history, addWishlistStart, currentUser}) => {
     const Root = styled('div')(({ theme }) => ({
         width: '100%',
         ...theme.typography.body2,
@@ -58,6 +64,7 @@ const ProductDescriptionLeftColumn = ({id, item, addItem, name, date, history}) 
         if(isChecked){
             setAccumulatedPrice(accumulatedPrice + newAmount);
             setItemList([...itemList, {
+                'id': item._id,
                 'price': newAmount,
                 'mode': mode,
                 'imageUrl': image,
@@ -74,9 +81,26 @@ const ProductDescriptionLeftColumn = ({id, item, addItem, name, date, history}) 
     const handleCartItem = () => {
         if(itemList.length !== 0){
             addItem(itemList);
-            handleClick();
         }
     }
+    const handleWishlist = () => {
+        if(itemList.length !== 0){
+            if(currentUser !== null){
+                addWishlistStart({itemList, email: currentUser.email});
+                handleClick();
+            }
+            else{
+                MySwal.fire({
+                    position: 'top-end',
+                    icon: 'warning',
+                    title: 'Please sign in to add products in wishlist.',
+                    showConfirmButton: false,
+                    timer: 3000
+                });
+            }
+        }
+    }
+
     const [open, setOpen] = React.useState(false);
 
     const handleClick = () => {
@@ -287,7 +311,7 @@ const ProductDescriptionLeftColumn = ({id, item, addItem, name, date, history}) 
                             <Grid container className="align-center">
                                 <Grid item xs>
                                     <Tooltip title = "Add To Wishlist">
-                                        <IconButton style = {{color: '#43484D'}} aria-label="add an alarm">
+                                        <IconButton style = {{color: '#43484D'}} aria-label="add an alarm" onClick = {handleWishlist}>
                                             <AlarmIcon />
                                         </IconButton>
                                     </Tooltip>
@@ -348,7 +372,7 @@ const ProductDescriptionLeftColumn = ({id, item, addItem, name, date, history}) 
                 className = "snack-alert"
                 >
                     <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
-                        Added To Cart.
+                        Added To Wishlist.
                     </Alert>
                 </Snackbar>
             </Row>
@@ -358,7 +382,12 @@ const ProductDescriptionLeftColumn = ({id, item, addItem, name, date, history}) 
 }
 
 const mapDispatchtoProps = dispatch => ({
-    addItem : item => dispatch(addItem(item))
+    addItem : item => dispatch(addItem(item)),
+    addWishlistStart: (data) => dispatch(addWishlistStart(data))
 });
 
-export default withRouter(connect(null, mapDispatchtoProps)(ProductDescriptionLeftColumn));
+const mapStateToProps = createStructuredSelector({
+    currentUser: selectCurrentUser
+})
+
+export default withRouter(connect(mapStateToProps, mapDispatchtoProps)(ProductDescriptionLeftColumn));

@@ -405,7 +405,7 @@ const AdminProduct = ({fetchCollectionsStart, updateProductStart, getProductById
 
     return(
         <Container>
-            <Col className='admin-product'>
+            <Col className='admin-product m-t-30'>
                 <Row>
                     <h1>Product</h1>
                 </Row>

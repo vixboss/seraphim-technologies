@@ -61,7 +61,7 @@ const AdminSpeaker = ({addSpeakerStart, getSpeakerStart, allSpeakers, updateSpea
     }, [getSpeakerStart])
     return(
         <Container>
-            <Col className='admin-speaker'>
+            <Col className='admin-speaker m-t-30'>
                 <Row>
                     <h1>Speakers</h1>
                 </Row>

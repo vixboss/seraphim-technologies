@@ -22,6 +22,7 @@ const productByNameRoutes = require('./routes/product-by-name.routes');
 const paypalPaymentNotificationMailRoutes = require('./routes/paypalPaymentNotificationMail.routes');
 const speakerRoutes = require('./routes/speakers.routes');
 const subscriptionRoutes = require('./routes/subscription.routes');
+const wishlistRoutes = require('./routes/wishlist.routes');
 
 // ************ MongoDB Connection ************* //
 mongoose.connect(`mongodb+srv://vikrant:${process.env.MONGODB_ATLAS_PW}@cluster0.lkqob.mongodb.net/webinardock?retryWrites=true&w=majority`)
@@ -93,6 +94,7 @@ app.use('/api', productByNameRoutes);
 app.use('/api', speakerRoutes);
 app.use('/api', paypalPaymentNotificationMailRoutes);
 app.use('/api', subscriptionRoutes);
+app.use('/api', wishlistRoutes);
 
 /*********************************************************/
 

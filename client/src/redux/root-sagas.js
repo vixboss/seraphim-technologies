@@ -13,6 +13,7 @@ import { BannerSaga } from './banner/banner.saga';
 import { PaypalNotificationMailSaga } from './paypalPaymentNitificationMail/paypalPaymentNitificationMail.saga';
 import { SpeakerSaga } from "./speaker/speaker.saga";
 import { SubscriptionSaga } from './subscription/subscription.saga';
+import { WishlistSaga } from "./wishlist/wishlist.saga";
 
 export default function* rootSagas() {
     yield all([
@@ -28,6 +29,7 @@ export default function* rootSagas() {
        call(BannerSaga),
        call(PaypalNotificationMailSaga),
        call(SpeakerSaga),
-       call(SubscriptionSaga)
+       call(SubscriptionSaga),
+       call(WishlistSaga)
     ]);
 }

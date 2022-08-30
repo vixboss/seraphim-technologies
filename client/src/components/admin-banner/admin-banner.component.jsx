@@ -65,7 +65,7 @@ const AdminBanner = ({bannerType, getAllBannerStart, addBannerStart, updateBanne
 
     return(
         <Container>
-            <Col className='admin-title'>
+            <Col className='admin-title m-t-30'>
                 <Row>
                     <h1>Banner</h1>
                 </Row>

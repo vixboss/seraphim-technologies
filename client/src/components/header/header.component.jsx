@@ -219,8 +219,22 @@ const Header = ({currentUser, hidden, signOutStart, history, match, searchCollec
                     </li>*/}
                     {
                         currentUser ?
-                            <li className="item item-highlight header-ul-li">
-                                <Link className="link" to='/' onClick={signOutStart}>SIGN OUT</Link>
+                            <li className="header-ul-li" onMouseLeave = {() => setHover(false)}>
+                                <label htmlFor="btn-4" className="show">Profile +</label>
+                                <Link className="link" to="#" onMouseEnter={() => setHover(true)}>Profile 
+                                {
+                                    hover ? <MdOutlineArrowDropUp/> : <MdOutlineArrowDropDown/>
+                                }
+                                </Link>
+                                <input type="checkbox" id="btn-4"/>
+                                <ul className="header-ul">
+                                    <li className="header-ul-li-ul-li">
+                                        <Link to="/wishlist" className="link">Wishlist</Link>
+                                    </li>
+                                    <li className="header-ul-li-ul-li">
+                                        <Link className="link" to='/' onClick={signOutStart}>SIGN OUT</Link>
+                                    </li>
+                                </ul>
                             </li>
                             :
                             <li className="item item-highlight">

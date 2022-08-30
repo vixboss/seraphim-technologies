@@ -66,7 +66,7 @@ const MerchandiseComponent = ({getAllMerchandiseTitleStart, addMerchandiseTitleS
 
     return(
         <Container>
-            <Col className='admin-title'>
+            <Col className='admin-title m-t-30'>
                 <Row>
                     <h1>Merchandise Title</h1>
                 </Row>

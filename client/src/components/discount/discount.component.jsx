@@ -122,7 +122,7 @@ const DiscountComponent = ({getAllDiscountStart, addDiscountStart, allDiscount, 
     }
     return (
         <Container>
-            <Col className='admin-discount'>
+            <Col className='admin-discount m-t-30'>
                 <Row>
                     <h1>Discount</h1>
                 </Row>
