@@ -21,7 +21,6 @@ const MySwal = withReactContent(Swal);
 export function* addSubscriptionStart({payload}){
     try {
         const {email,industry,name,phone,title} = payload;
-        console.log(payload);
         const addSubscription = yield axios.post(`${host}/api/subscription`, {email,industry,name,phone,title});
         if(addSubscription.status === 200 || addSubscription.status === 201){
             MySwal.fire({

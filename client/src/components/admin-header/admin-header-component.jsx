@@ -50,7 +50,7 @@ const AdminHeader = ({adminSignOutStart, history}) => {
         const webinar = document.querySelector('.webinar');
         const others = document.querySelector('.others');
         const subscription = document.querySelector('.subscription');
-
+        const speakerOpportunity = document.querySelector('.speakerOpportunity');
 
         if(newPath === "/admin"){
             toggle.classList.add('hidden');
@@ -65,6 +65,7 @@ const AdminHeader = ({adminSignOutStart, history}) => {
             webinar.classList.add("hidden");
             others.classList.add("hidden");
             subscription.classList.add("hidden");
+            speakerOpportunity.classList.add("hidden");
             menu.classList.remove("active");
 
         }
@@ -81,6 +82,7 @@ const AdminHeader = ({adminSignOutStart, history}) => {
             others.classList.remove('hidden');
             subscription.classList.remove('hidden');
             speaker.classList.remove('hidden');
+            speakerOpportunity.classList.remove('hidden');
         }
     });
     const [hover, setHover] = useState(false);
@@ -132,6 +134,9 @@ const AdminHeader = ({adminSignOutStart, history}) => {
                         <ul className="header-ul">
                             <li className="header-ul-li-ul-li item speaker hidden">
                                 <Link to="/admin/speaker" className="link">speaker</Link>
+                            </li>
+                            <li className="header-ul-li-ul-li item speakerOpportunity hidden">
+                                <Link to="/admin/speaker-opportunity" className="link">spkr. Opportunity</Link>
                             </li>
                             <li className="header-ul-li-ul-li item banner hidden">
                                 <Link to="/admin/banner" className="link">banner</Link>

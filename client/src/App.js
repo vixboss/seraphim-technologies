@@ -36,7 +36,7 @@ import SpeakerDetailComponent from './components/speaker-detail/speaker-detail.c
 import AdminSubscribeComponent from './components/admin-subscribe/admin-subscribe.component';
 import WishlistPage from './pages/wishlist-page/wishlist-page.component';
 import SpeakerOpportunityComponent from './pages/speaker-opportunity-page/speaker-opportunity-page.component';
-
+import AdminSpeakerOpportunity from './pages/admin-speaker-opportunity/admin-speaker-opportunity.component';
 import { checkUserSession } from './redux/user/user.action';
 
 import { GlobalStyle } from './global.styles';
@@ -135,6 +135,7 @@ const App = ({ checkUserSession, currentuser, currentAdmin }) => {
           <Route exact path = '/admin/subscription' component={AdminSubscribeComponent}/>
           <Route exact path = '/wishlist' component={WishlistPage}/>
           <Route exact path = '/speaker-opportunity' component={SpeakerOpportunityComponent}/>
+          <Route exact path = '/admin/speaker-opportunity' component={AdminSpeakerOpportunity}/>
           <Route exact path='/admin'
             render = {
               () => currentAdmin ? <Redirect to='/admin/dashboard'/> : <AdminLoginPage/>

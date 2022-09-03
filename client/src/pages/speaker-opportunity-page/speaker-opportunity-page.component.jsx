@@ -7,6 +7,8 @@ import {Container, Row, Col} from 'react-bootstrap';
 import { createTheme, ThemeProvider, styled } from '@mui/material/styles';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
+
+import { addSpeakerOpportunityStart } from '../../redux/speaker-opportunity/speaker-opportunity.action';
 import './speaker-opportunity-page.styles.scss';
 
 const Item = styled(Paper)(({ theme }) => ({
@@ -19,7 +21,7 @@ const Item = styled(Paper)(({ theme }) => ({
   }));
 const lightTheme = createTheme({ palette: { mode: 'light' } });
 
-const SpeakerOpportunityComponent = () => {
+const SpeakerOpportunityComponent = ({addSpeakerOpportunityStart}) => {
     useEffect(() => {
         window.scrollTo(0,0);
     }, []);
@@ -101,7 +103,7 @@ const SpeakerOpportunityComponent = () => {
 
     const handleSubmit = async(event) => {
         event.preventDefault();
-        // addSubscriptionStart(form);
+        addSpeakerOpportunityStart(form);
     }
 
     return(
@@ -268,4 +270,7 @@ const SpeakerOpportunityComponent = () => {
     );
 }
 
-export default SpeakerOpportunityComponent;
+const mapDispatchToProps = dispatch => ({
+    addSpeakerOpportunityStart: (data) => dispatch(addSpeakerOpportunityStart(data))
+})
+export default connect(null, mapDispatchToProps)(SpeakerOpportunityComponent);

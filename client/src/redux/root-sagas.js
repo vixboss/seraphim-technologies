@@ -14,6 +14,7 @@ import { PaypalNotificationMailSaga } from './paypalPaymentNitificationMail/payp
 import { SpeakerSaga } from "./speaker/speaker.saga";
 import { SubscriptionSaga } from './subscription/subscription.saga';
 import { WishlistSaga } from "./wishlist/wishlist.saga";
+import { SpeakerOpportunitySaga } from './speaker-opportunity/speaker-opportunity.saga';
 
 export default function* rootSagas() {
     yield all([
@@ -30,6 +31,7 @@ export default function* rootSagas() {
        call(PaypalNotificationMailSaga),
        call(SpeakerSaga),
        call(SubscriptionSaga),
-       call(WishlistSaga)
+       call(WishlistSaga),
+       call(SpeakerOpportunitySaga)
     ]);
 }
