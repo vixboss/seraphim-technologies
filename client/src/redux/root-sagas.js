@@ -15,6 +15,7 @@ import { SpeakerSaga } from "./speaker/speaker.saga";
 import { SubscriptionSaga } from './subscription/subscription.saga';
 import { WishlistSaga } from "./wishlist/wishlist.saga";
 import { SpeakerOpportunitySaga } from './speaker-opportunity/speaker-opportunity.saga';
+import { SuggestTopicSaga } from './suggest-topic/suggest-topic.saga';
 
 export default function* rootSagas() {
     yield all([
@@ -32,6 +33,7 @@ export default function* rootSagas() {
        call(SpeakerSaga),
        call(SubscriptionSaga),
        call(WishlistSaga),
-       call(SpeakerOpportunitySaga)
+       call(SpeakerOpportunitySaga),
+       call(SuggestTopicSaga)
     ]);
 }

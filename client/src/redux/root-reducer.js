@@ -17,6 +17,7 @@ import speakerReducer from './speaker/speaker.reducer';
 import subscriptionReducer from './subscription/subscription.reducer';
 import wishlistReducer from './wishlist/wishlist.reducer';
 import speakerOpportunityReducer from './speaker-opportunity/speaker-opportunity.reducer';
+import suggestTopicReducer from './suggest-topic/suggest-topic.reducer';
 
 const persistConfig = {
     key: 'root',
@@ -39,6 +40,7 @@ const rootReducer = combineReducers({
     speaker: speakerReducer,
     subscription: subscriptionReducer,
     wishlist: wishlistReducer,
-    speakerOpportunity: speakerOpportunityReducer
+    speakerOpportunity: speakerOpportunityReducer,
+    suggestTopic: suggestTopicReducer
 });
 export default persistReducer(persistConfig, rootReducer);

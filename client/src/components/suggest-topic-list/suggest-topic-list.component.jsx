@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import { Row, Col } from 'react-bootstrap';
 import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
@@ -9,75 +9,53 @@ import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import FormInput from '../form-input/form-input.component.jsx';
-import {checkUndefined, convertDateInEST} from '../../factory';
+import {checkUndefined} from '../../factory';
 
-import './admin-speaker-opportunity.styles.scss';
-
-const AdminSpeakerOpportunityComponent = ({speakerOpportunity}) => {
+const SuggestTopicListComponent = ({allSuggestTopic}) => {
     const columns = [
         { id: '_id', label: '#', minWidth: 20, format : (i) => i + 1 },
         {
-          id: 'firstName',
-          label: 'First Name',
-          minWidth: 100,
-          align: 'left',
-        },
-        {
-            id: 'lastName',
-            label: 'Last Name',
-            minWidth: 100,
+            id: 'name',
+            label: 'Name',
+            minWidth: 150,
             align: 'left',
         },
         {
             id: 'email',
             label: 'Email',
-            minWidth: 100,
+            minWidth: 150,
             align: 'left',
+        },
+        {
+            id: 'industry',
+            label: 'Industry',
+            minWidth: 100,
+            align: 'left'
         },
         {
             id: 'phone',
-            label: 'Phone_No:',
-            minWidth: 120,
-            align: 'left',
+            label: 'Phone',
+            minWidth: 50,
+            align: 'left'
         },
         {
-            id: 'fax',
-            label: 'Fax',
-            minWidth: 100,
-            align: 'left',
+            id: 'job',
+            label: 'JOB',
+            minWidth: 50,
+            align: 'left'
         },
         {
-            id: 'jobTitle',
-            label: 'Job',
-            minWidth: 100,
+            id: 'suggestedTopic',
+            label: 'Suggested Topic',
+            minWidth: 50,
             align: 'left',
-        },
-        {
-            id: 'company',
-            label: 'Company',
-            minWidth: 100,
-            align: 'left',
-        },
-        {
-            id: 'industries',
-            label: 'Industries',
-            minWidth: 100,
-            align: 'left',
-        },
-        {
-            id: 'createdAt',
-            label: 'Created_At',
-            minWidth: 100,
-            align: 'left',
-            format: (value) => {
-                return convertDateInEST(value)
-            }
         }
+    
     ];
 
-    const speakerOpportunities = checkUndefined(speakerOpportunity);
+    const suggestTopicList = checkUndefined(allSuggestTopic);
 
-    const [rows, setRows] = useState(speakerOpportunities);
+    const [rows, setRows] = useState(suggestTopicList);
 
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -98,7 +76,7 @@ const AdminSpeakerOpportunityComponent = ({speakerOpportunity}) => {
         const {value} = event.target;
         setSearch(value);
         if(value !== ""){
-            setRows(speakerOpportunities.filter((data) => {
+            setRows(suggestTopicList.filter((data) => {
                 return Object.values(data)
                     .join(" ")
                     .toLowerCase()
@@ -106,17 +84,17 @@ const AdminSpeakerOpportunityComponent = ({speakerOpportunity}) => {
             })); 
         }
         else {
-            setRows(speakerOpportunities);
+            setRows(suggestTopicList);
         }
     }
 
     useEffect(() => {
-        setRows(speakerOpportunity);
-    },[speakerOpportunity]);
+        setRows(allSuggestTopic);
+    },[allSuggestTopic]);
 
-    return (
-        <Row md = {8} xs = {8} style={{paddingBottom: '30px'}} className = "m-l-r-auto">
-            <Paper sx={{ width: '100%', overflow: 'hidden' }} id= 'speaker-opportunity-list'>
+    return(
+        <Row md = {8} xs = {8} style={{paddingBottom: '30px'}} className= "m-t-30 m-l-r-auto">
+            <Paper sx={{ width: '100%', overflow: 'hidden' }} id= 'discount-list-paper'>
                 <Row>
                     <Col md = {2} className="search-input">
                         <FormInput
@@ -160,9 +138,7 @@ const AdminSpeakerOpportunityComponent = ({speakerOpportunity}) => {
                                         if(column.id === '_id'){
                                             value = ind;
                                         }
-                                        else if(column.id === 'action' || column.id === 'remove'){
-                                            value = row;
-                                        }
+                                        
                                         else{
                                             value = row[column.id];
                                         }
@@ -179,7 +155,7 @@ const AdminSpeakerOpportunityComponent = ({speakerOpportunity}) => {
                                 );
                             }) :
                             <TableRow>
-                                <TableCell colSpan={4}>
+                                <TableCell colSpan={7}>
                                     No Record(s) Found.
                                 </TableCell>
                             </TableRow>
@@ -201,4 +177,4 @@ const AdminSpeakerOpportunityComponent = ({speakerOpportunity}) => {
     );
 }
 
-export default AdminSpeakerOpportunityComponent;
+export default SuggestTopicListComponent;

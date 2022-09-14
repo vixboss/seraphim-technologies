@@ -207,9 +207,12 @@ const Header = ({currentUser, hidden, signOutStart, history, match, searchCollec
                                     <li className="header-ul-li-ul-li-ul-li">
                                         <Link to="/subscribe" className="link">Subscribe</Link>
                                     </li>
-                                    {/*<li>
-                                        <Link to="#" className="link">Submenu-3</Link>
-                                    </li>*/}
+                                    <li className="header-ul-li-ul-li-ul-li">
+                                        <Link to="/speaker-opportunity" className="link">SPKR Opportunity</Link>
+                                    </li>
+                                    <li className="header-ul-li-ul-li-ul-li">
+                                        <Link to="/topic-suggestion" className="link">Suggest Topic</Link>
+                                    </li>
                                 </ul>
                             </li>
                         </ul>

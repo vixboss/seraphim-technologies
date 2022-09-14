@@ -74,6 +74,10 @@ export const GlobalStyle = createGlobalStyle`
         margin-top: 30px;
     }
 
+    .m-l-r-auto {
+        margin-left: auto;
+        margin-right: auto;
+    }
     .animate-charcter {
         text-transform: uppercase;
         background-image: linear-gradient(

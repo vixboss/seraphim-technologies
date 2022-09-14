@@ -60,7 +60,11 @@ const Footer = () => {
                                         Speaker Opportunity
                                     </Link>
                                 </span>
-                                <span>Suggest A Topic</span>
+                                <span>
+                                    <Link to='/topic-suggestion'>
+                                        Suggest A Topic
+                                    </Link>
+                                </span>
                                 <span>
                                     <Link to='/subscribe'>
                                         Subscribe Now

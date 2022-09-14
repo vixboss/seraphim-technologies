@@ -10,7 +10,7 @@ const OfferRibbonComponent = () => {
                 <span className="text">
                     <strong className="bold" style={{color: '#44107a'}}>Special Offer: </strong>
                     <span className='animate-charcter'>
-                        Get $30, $99 & $199 OFF on each Webinar*
+                        Get $30, $100 & $200 OFF on each Webinar*
                     </span>
                 </span>
             </p>

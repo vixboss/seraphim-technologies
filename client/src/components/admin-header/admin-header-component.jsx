@@ -50,6 +50,7 @@ const AdminHeader = ({adminSignOutStart, history}) => {
         const webinar = document.querySelector('.webinar');
         const others = document.querySelector('.others');
         const subscription = document.querySelector('.subscription');
+        const topicSuggestion = document.querySelector('.topic-suggestion');
         const speakerOpportunity = document.querySelector('.speakerOpportunity');
 
         if(newPath === "/admin"){
@@ -66,6 +67,7 @@ const AdminHeader = ({adminSignOutStart, history}) => {
             others.classList.add("hidden");
             subscription.classList.add("hidden");
             speakerOpportunity.classList.add("hidden");
+            topicSuggestion.classList.add('hidden');
             menu.classList.remove("active");
 
         }
@@ -82,6 +84,7 @@ const AdminHeader = ({adminSignOutStart, history}) => {
             others.classList.remove('hidden');
             subscription.classList.remove('hidden');
             speaker.classList.remove('hidden');
+            topicSuggestion.classList.remove('hidden');
             speakerOpportunity.classList.remove('hidden');
         }
     });
@@ -137,6 +140,9 @@ const AdminHeader = ({adminSignOutStart, history}) => {
                             </li>
                             <li className="header-ul-li-ul-li item speakerOpportunity hidden">
                                 <Link to="/admin/speaker-opportunity" className="link">spkr. Opportunity</Link>
+                            </li>
+                            <li className="header-ul-li-ul-li item topic-suggestion hidden">
+                                <Link to="/admin/topic-suggestion" className="link">Suggest Topic</Link>
                             </li>
                             <li className="header-ul-li-ul-li item banner hidden">
                                 <Link to="/admin/banner" className="link">banner</Link>

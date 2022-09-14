@@ -499,7 +499,7 @@ const AdminProduct = ({fetchCollectionsStart, updateProductStart, getProductById
                                 {
                                     productType.map((type, index) => {
                                         return(
-                                            <Dropdown.Item key={type.id}
+                                            <Dropdown.Item key={type._id}
                                             onClick={(e) => typeDropdownChange(e, type.id)}>{type.title.capitalizeFirstCharacter()}</Dropdown.Item>
                                         )
                                     })
